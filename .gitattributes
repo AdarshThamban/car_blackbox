@@ -1,0 +1,1 @@
+* text=auto\n*.c text eol=lf\n*.h text eol=lf\n*.i text eol=lf\n*.mk text eol=lf
