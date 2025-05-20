@@ -26,7 +26,8 @@
 #define SW4                     0x37
 #define SW5                     0x2F
 #define SW6                     0x1F
-
+#define LP_SW4                  0x44
+#define LP_SW5                  0x55
 #define ALL_RELEASED            INPUT_LINES
 
 unsigned char read_digital_keypad(unsigned char mode);

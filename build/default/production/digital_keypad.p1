@@ -219,67 +219,178 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i F986
 -> -> 1 `i `uc
 ]
+"21
+[; ;digital_keypad.c: 21:     static unsigned int long_press = 0;
+[v F987 `ui ~T0 @X0 1 s long_press ]
+[i F987
+-> -> 0 `i `ui
+]
 "22
-[; ;digital_keypad.c: 22:     if (mode == 0)
-[e $ ! == -> _mode `i -> 0 `i 101  ]
-"23
-[; ;digital_keypad.c: 23:     {
-{
+[; ;digital_keypad.c: 22:     static unsigned char switch_state = 0x3F;
+[v F988 `uc ~T0 @X0 1 s switch_state ]
+[i F988
+-> -> 63 `i `uc
+]
 "24
-[; ;digital_keypad.c: 24:         return PORTB & 0x3F;
-[e ) -> & -> _PORTB `i -> 63 `i `uc ]
-[e $UE 100  ]
-"25
-[; ;digital_keypad.c: 25:     }
-}
-[e $U 102  ]
+[; ;digital_keypad.c: 24:     unsigned char key = PORTB & 0x3F;
+[v _key `uc ~T0 @X0 1 a ]
+[e = _key -> & -> _PORTB `i -> 63 `i `uc ]
 "26
-[; ;digital_keypad.c: 26:     else
-[e :U 101 ]
+[; ;digital_keypad.c: 26:     if (mode == 0)
+[e $ ! == -> _mode `i -> 0 `i 101  ]
 "27
 [; ;digital_keypad.c: 27:     {
 {
 "28
-[; ;digital_keypad.c: 28:         if (((PORTB & 0x3F) != 0x3F) && once)
-[e $ ! && != & -> _PORTB `i -> 63 `i -> 63 `i != -> F986 `i -> 0 `i 103  ]
-"29
-[; ;digital_keypad.c: 29:         {
-{
-"30
-[; ;digital_keypad.c: 30:             once = 0;
-[e = F986 -> -> 0 `i `uc ]
-"32
-[; ;digital_keypad.c: 32:             return PORTB & 0x3F;
-[e ) -> & -> _PORTB `i -> 63 `i `uc ]
+[; ;digital_keypad.c: 28:         return key;
+[e ) _key ]
 [e $UE 100  ]
-"33
-[; ;digital_keypad.c: 33:         }
+"29
+[; ;digital_keypad.c: 29:     }
 }
-[e $U 104  ]
-"34
-[; ;digital_keypad.c: 34:         else if ((PORTB & 0x3F) == 0x3F)
-[e :U 103 ]
-[e $ ! == & -> _PORTB `i -> 63 `i -> 63 `i 105  ]
-"35
-[; ;digital_keypad.c: 35:         {
+[e $U 102  ]
+"30
+[; ;digital_keypad.c: 30:     else
+[e :U 101 ]
+"31
+[; ;digital_keypad.c: 31:     {
 {
+"33
+[; ;digital_keypad.c: 33:         if (key == 0x37 || key == 0x2F)
+[e $ ! || == -> _key `i -> 55 `i == -> _key `i -> 47 `i 103  ]
+"34
+[; ;digital_keypad.c: 34:         {
+{
+"35
+[; ;digital_keypad.c: 35:             if (key == switch_state)
+[e $ ! == -> _key `i -> F988 `i 104  ]
 "36
-[; ;digital_keypad.c: 36:             once = 1;
-[e = F986 -> -> 1 `i `uc ]
+[; ;digital_keypad.c: 36:             {
+{
 "37
-[; ;digital_keypad.c: 37:         }
+[; ;digital_keypad.c: 37:                 long_press++;
+[e ++ F987 -> -> 1 `i `ui ]
+"38
+[; ;digital_keypad.c: 38:                 if (long_press > 200)
+[e $ ! > F987 -> -> 200 `i `ui 105  ]
+"39
+[; ;digital_keypad.c: 39:                 {
+{
+"40
+[; ;digital_keypad.c: 40:                     long_press = 0;
+[e = F987 -> -> 0 `i `ui ]
+"41
+[; ;digital_keypad.c: 41:                     switch_state = 0x3F;
+[e = F988 -> -> 63 `i `uc ]
+"42
+[; ;digital_keypad.c: 42:                     return (key == 0x37) ? 0x44 : 0x55;
+[e ) -> ? == -> _key `i -> 55 `i : -> 68 `i -> 85 `i `uc ]
+[e $UE 100  ]
+"43
+[; ;digital_keypad.c: 43:                 }
 }
 [e :U 105 ]
+"44
+[; ;digital_keypad.c: 44:             }
+}
+[e $U 106  ]
+"45
+[; ;digital_keypad.c: 45:             else if (switch_state == 0x3F)
 [e :U 104 ]
-"38
-[; ;digital_keypad.c: 38:     }
+[e $ ! == -> F988 `i -> 63 `i 107  ]
+"46
+[; ;digital_keypad.c: 46:             {
+{
+"47
+[; ;digital_keypad.c: 47:                 switch_state = key;
+[e = F988 _key ]
+"48
+[; ;digital_keypad.c: 48:                 long_press = 0;
+[e = F987 -> -> 0 `i `ui ]
+"49
+[; ;digital_keypad.c: 49:             }
+}
+[e :U 107 ]
+[e :U 106 ]
+"50
+[; ;digital_keypad.c: 50:         }
+}
+[e $U 108  ]
+"51
+[; ;digital_keypad.c: 51:         else
+[e :U 103 ]
+"52
+[; ;digital_keypad.c: 52:         {
+{
+"53
+[; ;digital_keypad.c: 53:             if (switch_state == 0x37 || switch_state == 0x2F)
+[e $ ! || == -> F988 `i -> 55 `i == -> F988 `i -> 47 `i 109  ]
+"54
+[; ;digital_keypad.c: 54:             {
+{
+"56
+[; ;digital_keypad.c: 56:                 unsigned char temp = switch_state;
+[v _temp `uc ~T0 @X0 1 a ]
+[e = _temp F988 ]
+"57
+[; ;digital_keypad.c: 57:                 switch_state = 0x3F;
+[e = F988 -> -> 63 `i `uc ]
+"58
+[; ;digital_keypad.c: 58:                 long_press = 0;
+[e = F987 -> -> 0 `i `ui ]
+"59
+[; ;digital_keypad.c: 59:                 return temp;
+[e ) _temp ]
+[e $UE 100  ]
+"60
+[; ;digital_keypad.c: 60:             }
+}
+[e :U 109 ]
+"61
+[; ;digital_keypad.c: 61:         }
+}
+[e :U 108 ]
+"64
+[; ;digital_keypad.c: 64:         if (key != 0x3F && once && key != 0x37 && key != 0x2F)
+[e $ ! && && && != -> _key `i -> 63 `i != -> F986 `i -> 0 `i != -> _key `i -> 55 `i != -> _key `i -> 47 `i 110  ]
+"65
+[; ;digital_keypad.c: 65:         {
+{
+"66
+[; ;digital_keypad.c: 66:             once = 0;
+[e = F986 -> -> 0 `i `uc ]
+"67
+[; ;digital_keypad.c: 67:             return key;
+[e ) _key ]
+[e $UE 100  ]
+"68
+[; ;digital_keypad.c: 68:         }
+}
+[e $U 111  ]
+"69
+[; ;digital_keypad.c: 69:         else if (key == 0x3F)
+[e :U 110 ]
+[e $ ! == -> _key `i -> 63 `i 112  ]
+"70
+[; ;digital_keypad.c: 70:         {
+{
+"71
+[; ;digital_keypad.c: 71:             once = 1;
+[e = F986 -> -> 1 `i `uc ]
+"72
+[; ;digital_keypad.c: 72:         }
+}
+[e :U 112 ]
+[e :U 111 ]
+"73
+[; ;digital_keypad.c: 73:     }
 }
 [e :U 102 ]
-"40
-[; ;digital_keypad.c: 40:     return 0x3F;
+"75
+[; ;digital_keypad.c: 75:     return 0x3F;
 [e ) -> -> 63 `i `uc ]
 [e $UE 100  ]
-"41
-[; ;digital_keypad.c: 41: }
+"76
+[; ;digital_keypad.c: 76: }
 [e :UE 100 ]
 }

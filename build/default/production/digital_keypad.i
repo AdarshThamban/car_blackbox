@@ -1830,7 +1830,7 @@ extern __bank0 __bit __timeout;
 # 9 "digital_keypad.c" 2
 
 # 1 "./digital_keypad.h" 1
-# 32 "./digital_keypad.h"
+# 33 "./digital_keypad.h"
 unsigned char read_digital_keypad(unsigned char mode);
 void init_digital_keypad(void);
 # 10 "digital_keypad.c" 2
@@ -1845,20 +1845,55 @@ void init_digital_keypad(void)
 unsigned char read_digital_keypad(unsigned char mode)
 {
     static unsigned char once = 1;
+    static unsigned int long_press = 0;
+    static unsigned char switch_state = 0x3F;
+
+    unsigned char key = PORTB & 0x3F;
 
     if (mode == 0)
     {
-        return PORTB & 0x3F;
+        return key;
     }
     else
     {
-        if (((PORTB & 0x3F) != 0x3F) && once)
+
+        if (key == 0x37 || key == 0x2F)
+        {
+            if (key == switch_state)
+            {
+                long_press++;
+                if (long_press > 200)
+                {
+                    long_press = 0;
+                    switch_state = 0x3F;
+                    return (key == 0x37) ? 0x44 : 0x55;
+                }
+            }
+            else if (switch_state == 0x3F)
+            {
+                switch_state = key;
+                long_press = 0;
+            }
+        }
+        else
+        {
+            if (switch_state == 0x37 || switch_state == 0x2F)
+            {
+
+                unsigned char temp = switch_state;
+                switch_state = 0x3F;
+                long_press = 0;
+                return temp;
+            }
+        }
+
+
+        if (key != 0x3F && once && key != 0x37 && key != 0x2F)
         {
             once = 0;
-
-            return PORTB & 0x3F;
+            return key;
         }
-        else if ((PORTB & 0x3F) == 0x3F)
+        else if (key == 0x3F)
         {
             once = 1;
         }

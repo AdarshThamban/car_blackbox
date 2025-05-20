@@ -1846,7 +1846,7 @@ void clcd_write(unsigned char byte, unsigned char mode);
 # 13 "./main.h" 2
 
 # 1 "./digital_keypad.h" 1
-# 32 "./digital_keypad.h"
+# 33 "./digital_keypad.h"
 unsigned char read_digital_keypad(unsigned char mode);
 void init_digital_keypad(void);
 # 14 "./main.h" 2
@@ -1972,22 +1972,47 @@ void main(void) {
     init_config();
     unsigned char control_flag = 0x01, reset_flag;
     char event[3] = "ON";
-    unsigned char speed = 0;
+    unsigned char speed = 0, pre_key = 0;
     unsigned char gr = 0, key, menu;
     char *gear[] = {"GN", "GR", "G1", "G2", "G3", "G4"};
+    unsigned long int l_press = 0;
 
     log_car_event(event, speed);
-    eeprom_at24c04_str_write(0x00,"1010");
+    eeprom_at24c04_str_write(0x00, "1010");
     while (1) {
         key = read_digital_keypad(1);
         _delay((unsigned long)((20)*(20000000/4000.0)));
+
+        if (key == 0x37 || key == 0x2F) {
+            if (key != 0x3F) {
+                if ((l_press++) > 200) {
+                    if (key == 0x37) {
+                        key = 0x44;
+                    } else
+                        key = 0x55;
+                }
+            } else {
+                if (l_press < 200 && l_press > 0) {
+                    l_press = 0;
+                    if (key == 0x37) {
+                        key = 0x37;
+                    } else
+                        key = 0x2F;
+                }
+            }
+
+        } else
+            l_press = 0;
+
+
+
 
         speed = read_adc() / 10;
         if (speed > 99) {
             speed = 99;
         }
         if (key == 0x3E) {
-                strcpy(event, "C ");
+            strcpy(event, "C ");
             log_car_event(event, speed);
         } else if (key == 0x3D && gr < 6) {
             strcpy(event, gear[gr]);
@@ -2004,23 +2029,22 @@ void main(void) {
             clcd_write((0xC0 + 4), 0);
             clcd_write(0x0F, 0);
             reset_flag = 0X01;
-            TMR2ON = 1 ;
+            TMR2ON = 1;
 
         }
-# 83 "main.c"
+# 108 "main.c"
         switch (control_flag) {
             case 0x01:
                 display_dashboard(event, speed);
                 break;
             case 0x02:
-                switch(login(key, reset_flag))
-                {
+                switch (login(key, reset_flag)) {
                     case 0x03:
                         clear_screen();
-                       control_flag = 0x01;
-                       clcd_write(0x0C, 0);
-                       TMR2ON = 0;
-                       break;
+                        control_flag = 0x01;
+                        clcd_write(0x0C, 0);
+                        TMR2ON = 0;
+                        break;
                     case 0x01:
                         clear_screen();
                         clcd_write(0x0C, 0);
