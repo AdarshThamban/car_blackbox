@@ -189,3 +189,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
         }
     }
 }
+
+void view_log(void){
+    clear_screen();
+}

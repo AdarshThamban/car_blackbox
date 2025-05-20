@@ -32,6 +32,7 @@ void main(void) {
     unsigned char gr = 0, key, menu;
     char *gear[] = {"GN", "GR", "G1", "G2", "G3", "G4"};
     unsigned long int l_press = 0;
+    //extern unsigned char menu_pos;
 
     log_car_event(event, speed);
     eeprom_at24c04_str_write(0x00, "1010");
@@ -87,24 +88,27 @@ void main(void) {
             reset_flag = RESET_PASSWORD; //1st time entering to login screen
             TMR2ON = 1; //timer2 on
 
+        } else if ((control_flag == LOGIN_MENU_FLAG) && (key == LP_SW4)) {
+            switch (menu) {
+                case 0:
+                    control_flag = VIEW_LOG_FLAG;
+                    break;
+                case 1:
+                    control_flag = CLEAR_LOG_FLAG;
+                    break;
+                case 2:
+                    control_flag = DOWNLOAD_LOG_FLAG;
+                    break;
+                case 3:
+                    control_flag = SET_TIME_FLAG;
+                    break;
+                case 4:
+                    control_flag = CHANGE_PASSWORD_FLAG;
+                    break;
+            }
         }
-        //        else if(control_flag == LOGIN_MENU_FLAG && key == long_press(SW4)){
-        //            switch(menu)
-        //            {
-        //                case 0:
-        //                    //
-        //                    break;
-        //                case 1:
-        //                    //
-        //                    break;
-        //                case 2:
-        //                    //
-        //                    break;
-        //                    
-        //            }
-        // }
 
-        //write application code here
+
         switch (control_flag) {
             case DASH_BOARD_FLAG:
                 display_dashboard(event, speed);
@@ -131,8 +135,8 @@ void main(void) {
             case LOGIN_MENU_FLAG:
                 menu = menu_screen(key, reset_flag);
                 break;
-                //case view log:
-                //view_log();
+            case VIEW_LOG_FLAG:
+                view_log();
 
         }
         reset_flag = RESET_NOTHING;

@@ -32,7 +32,7 @@ unsigned char read_digital_keypad(unsigned char mode)
         // Long/Short press logic for SW4 and SW5
         if (key == SW4 || key == SW5)
         {
-            if (key == switch_state)  // key still being held
+            if (key == switch_state)  // key still  holding
             {
                 long_press++;
                 if (long_press > 200)
@@ -48,7 +48,7 @@ unsigned char read_digital_keypad(unsigned char mode)
                 long_press = 0;
             }
         }
-        else
+        else  // No SW4 or SW5 is currently pressed
         {
             if (switch_state == SW4 || switch_state == SW5)
             {
