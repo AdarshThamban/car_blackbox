@@ -35,9 +35,10 @@
 #define RESET_PASSWORD      0X03
 #define RESET_NOTHING       0X04
 #define RESET_LOGIN_MENU    0x05
-#define RESET_VIEW_LOG_POS  0x60
-#define LONG_P              0x70
-#define SHORT_P             0x80
+#define RESET_VIEW_LOG_POS  0x06
+#define LONG_P              0x07
+#define SHORT_P             0x08
+#define RESET_MEMORY        0x09
 
 #define DISPLAY_ON_AND_CURSOR_ON    0x0F
 

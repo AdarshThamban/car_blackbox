@@ -43,14 +43,16 @@
 [v _log_car_event log_car_event `(v  1 e 1 0 ]
 "83
 [v _menu_screen menu_screen `(uc  1 e 1 0 ]
-"111
+"113
 [v _clear_screen clear_screen `(v  1 e 1 0 ]
-"117
+"119
 [v _login login `(uc  1 e 1 0 ]
-"204
+"206
 [v _display_logs display_logs `(v  1 e 1 0 ]
-"226
+"229
 [v _view_log view_log `(v  1 e 1 0 ]
+"281
+[v _clear_log clear_log `(v  1 e 1 0 ]
 "12 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\clcd.c
 [v _clcd_write clcd_write `(v  1 e 1 0 ]
 "29
@@ -230,26 +232,26 @@
 "32
 [v main@menu menu `uc  1 a 1 6 ]
 "29
-[v main@F1211 F1211 `[3]uc  1 s 3 F1211 ]
+[v main@F1212 F1212 `[3]uc  1 s 3 F1212 ]
 "32
-[v main@F1217 F1217 `[6]*.24uc  1 s 6 F1217 ]
-"161
+[v main@F1218 F1218 `[6]*.24uc  1 s 6 F1218 ]
+"171
 } 0
-"226 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+"229 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _view_log view_log `(v  1 e 1 0 ]
 {
 [v view_log@key key `uc  1 a 1 wreg ]
 [v view_log@key key `uc  1 a 1 wreg ]
 [v view_log@reset_flag reset_flag `uc  1 p 1 4 ]
-"229
+"232
 [v view_log@key key `uc  1 a 1 8 ]
-"277
+"280
 } 0
-"204
+"206
 [v _display_logs display_logs `(v  1 e 1 0 ]
 {
 [v display_logs@i i `i  1 p 2 2 ]
-"224
+"227
 } 0
 "3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strcpy.c
 [v _strcpy strcpy `(*.4uc  1 e 1 0 ]
@@ -300,28 +302,28 @@
 "84
 [v menu_screen@menu_pos menu_pos `uc  1 s 1 menu_pos ]
 [v menu_screen@key key `uc  1 a 1 3 ]
-"109
+"111
 } 0
-"117
+"119
 [v _login login `(uc  1 e 1 0 ]
 {
 [v login@key key `uc  1 a 1 wreg ]
-"158
+"160
 [v login@j j `i  1 a 2 11 ]
-"157
+"159
 [v login@s_password s_password `[4]uc  1 a 4 6 ]
-"117
+"119
 [v login@key key `uc  1 a 1 wreg ]
 [v login@reset_flag reset_flag `uc  1 p 1 2 ]
-"123
-[v login@u_password u_password `[4]uc  1 s 4 u_password ]
-"124
-[v login@i i `uc  1 s 1 i ]
 "125
+[v login@u_password u_password `[4]uc  1 s 4 u_password ]
+"126
+[v login@i i `uc  1 s 1 i ]
+"127
 [v login@attempt_left attempt_left `uc  1 s 1 attempt_left ]
-"118
+"120
 [v login@key key `uc  1 a 1 10 ]
-"202
+"204
 } 0
 "3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strncmp.c
 [v _strncmp strncmp `(i  1 e 2 0 ]
@@ -346,12 +348,7 @@
 [v eeprom_at24c04_read@addr addr `uc  1 a 1 4 ]
 "35
 } 0
-"111 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
-[v _clear_screen clear_screen `(v  1 e 1 0 ]
-{
-"115
-} 0
-"74
+"74 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _log_car_event log_car_event `(v  1 e 1 0 ]
 {
 [v log_car_event@event event `*.4uc  1 a 1 wreg ]
@@ -561,23 +558,6 @@
 [v clcd_putch@data data `DCuc  1 a 1 1 ]
 "68
 } 0
-"70
-[v _clcd_print clcd_print `(v  1 e 1 0 ]
-{
-[v clcd_print@str str `*.26DCuc  1 p 2 6 ]
-[v clcd_print@addr addr `uc  1 p 1 8 ]
-"79
-} 0
-"12
-[v _clcd_write clcd_write `(v  1 e 1 0 ]
-{
-[v clcd_write@byte byte `uc  1 a 1 wreg ]
-[v clcd_write@byte byte `uc  1 a 1 wreg ]
-[v clcd_write@mode mode `uc  1 p 1 2 ]
-"14
-[v clcd_write@byte byte `uc  1 a 1 5 ]
-"27
-} 0
 "5 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\awmod.c
 [v ___awmod __awmod `(i  1 e 2 0 ]
 {
@@ -601,6 +581,33 @@
 [v ___awdiv@divisor divisor `i  1 p 2 2 ]
 [v ___awdiv@dividend dividend `i  1 p 2 4 ]
 "41
+} 0
+"281 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+[v _clear_log clear_log `(v  1 e 1 0 ]
+{
+"288
+} 0
+"113
+[v _clear_screen clear_screen `(v  1 e 1 0 ]
+{
+"117
+} 0
+"70 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\clcd.c
+[v _clcd_print clcd_print `(v  1 e 1 0 ]
+{
+[v clcd_print@str str `*.26DCuc  1 p 2 6 ]
+[v clcd_print@addr addr `uc  1 p 1 8 ]
+"79
+} 0
+"12
+[v _clcd_write clcd_write `(v  1 e 1 0 ]
+{
+[v clcd_write@byte byte `uc  1 a 1 wreg ]
+[v clcd_write@byte byte `uc  1 a 1 wreg ]
+[v clcd_write@mode mode `uc  1 p 1 2 ]
+"14
+[v clcd_write@byte byte `uc  1 a 1 5 ]
+"27
 } 0
 "5 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\lwdiv.c
 [v ___lwdiv __lwdiv `(ui  1 e 2 0 ]

@@ -83,9 +83,11 @@ void log_car_event(char event[], unsigned char speed) {
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
     static unsigned char menu_pos;
     if (reset_flag == RESET_LOGIN_MENU) {
+        
         menu_pos = 0;
-        //__delay_ms(1000);
+        
     }
+    
     if (key == SW4 && menu_pos < 4) {
         menu_pos++;
 
@@ -202,6 +204,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
 }
 
 void display_logs(int i) {
+    clear_screen();
 
     clcd_print("# TIME     E  SP", LINE1(0));
     clcd_putch(i + '0', LINE2(0));
@@ -214,7 +217,7 @@ void display_logs(int i) {
     clcd_putch(':', LINE2(7));
     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 4), LINE2(8));
     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 5), LINE2(9));
-    clcd_putch(' ', LINE2(10));
+    //clcd_putch(' ', LINE2(10));
 
     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 6), LINE2(11));
     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 7), LINE2(12));
@@ -274,4 +277,12 @@ void view_log(unsigned char key, unsigned char reset_flag) {
 
 
     }
+}
+void clear_log(){
+    
+    pos = -1;
+    roll_over_flag = 0;
+    clcd_print("  logs cleared  ", LINE1(0));
+    __delay_ms(2000);
+    clear_screen();
 }

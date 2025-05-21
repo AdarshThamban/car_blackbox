@@ -1871,6 +1871,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag);
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
 void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
+void clear_log(void);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
 # 18 "./external_eeprom.h"
@@ -2020,9 +2021,11 @@ void log_car_event(char event[], unsigned char speed) {
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
     static unsigned char menu_pos;
     if (reset_flag == 0x05) {
+
         menu_pos = 0;
 
     }
+
     if (key == 0x37 && menu_pos < 4) {
         menu_pos++;
 
@@ -2139,6 +2142,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
 }
 
 void display_logs(int i) {
+    clear_screen();
 
     clcd_print("# TIME     E  SP", (0x80 + 0));
     clcd_putch(i + '0', (0xC0 + 0));
@@ -2151,7 +2155,7 @@ void display_logs(int i) {
     clcd_putch(':', (0xC0 + 7));
     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 4), (0xC0 + 8));
     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 5), (0xC0 + 9));
-    clcd_putch(' ', (0xC0 + 10));
+
 
     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 6), (0xC0 + 11));
     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 7), (0xC0 + 12));
@@ -2168,7 +2172,7 @@ void view_log(unsigned char key, unsigned char reset_flag) {
         clcd_print("No logs avalable", (0xC0 + 0));
     } else {
 
-        if (reset_flag == 0x60) {
+        if (reset_flag == 0x06) {
             index = 0;
             display_logs(index);
             _delay((unsigned long)((1500)*(20000000/4000.0)));
@@ -2194,7 +2198,7 @@ void view_log(unsigned char key, unsigned char reset_flag) {
                         index = 9;
                     }
                 } else {
-                    if (reset_flag == 0x60) {
+                    if (reset_flag == 0x06) {
                         (index = pos);
                     } else {
                         index--;
@@ -2211,4 +2215,12 @@ void view_log(unsigned char key, unsigned char reset_flag) {
 
 
     }
+}
+void clear_log(){
+
+    pos = -1;
+    roll_over_flag = 0;
+    clcd_print("  logs cleared  ", (0x80 + 0));
+    _delay((unsigned long)((2000)*(20000000/4000.0)));
+    clear_screen();
 }

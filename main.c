@@ -97,7 +97,9 @@ void main(void) {
                     //key = ALL_RELEASED;
                     break;
                 case 1:
+                    clear_screen();
                     control_flag = CLEAR_LOG_FLAG;
+                    reset_flag = RESET_MEMORY;
                     break;
                 case 2:
                     control_flag = DOWNLOAD_LOG_FLAG;
@@ -153,6 +155,14 @@ void main(void) {
             case VIEW_LOG_FLAG:
                 //clear_screen();
                 view_log(key, reset_flag);
+                break;
+            case CLEAR_LOG_FLAG:
+                
+                clear_log();
+                control_flag = LOGIN_MENU_FLAG;
+                //reset_flag = RESET_LOGIN_MENU;
+                clear_screen();
+                
 
         }
         reset_flag = RESET_NOTHING;

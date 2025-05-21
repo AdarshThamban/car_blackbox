@@ -1864,6 +1864,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag);
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
 void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
+void clear_log(void);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
 # 18 "./external_eeprom.h"

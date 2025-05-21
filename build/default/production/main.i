@@ -1871,6 +1871,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag);
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
 void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
+void clear_log(void);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
 # 18 "./external_eeprom.h"
@@ -2030,11 +2031,13 @@ void main(void) {
             switch (menu) {
                 case 0:
                     control_flag = 0x14;
-                    reset_flag = 0x60;
+                    reset_flag = 0x06;
 
                     break;
                 case 1:
+                    clear_screen();
                     control_flag = 0x15;
+                    reset_flag = 0x09;
                     break;
                 case 2:
                     control_flag = 0x16;
@@ -2090,6 +2093,14 @@ void main(void) {
             case 0x14:
 
                 view_log(key, reset_flag);
+                break;
+            case 0x15:
+
+                clear_log();
+                control_flag = 0x13;
+
+                clear_screen();
+
 
         }
         reset_flag = 0X04;
