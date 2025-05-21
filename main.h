@@ -35,6 +35,7 @@
 #define RESET_PASSWORD      0X03
 #define RESET_NOTHING       0X04
 #define RESET_LOGIN_MENU    0x05
+#define RESET_VIEW_LOG_POS  0x60 
 
 #define DISPLAY_ON_AND_CURSOR_ON    0x0F
 

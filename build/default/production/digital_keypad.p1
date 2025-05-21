@@ -271,8 +271,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;digital_keypad.c: 37:                 long_press++;
 [e ++ F987 -> -> 1 `i `ui ]
 "38
-[; ;digital_keypad.c: 38:                 if (long_press > 200)
-[e $ ! > F987 -> -> 200 `i `ui 105  ]
+[; ;digital_keypad.c: 38:                 if (long_press > 20)
+[e $ ! > F987 -> -> 20 `i `ui 105  ]
 "39
 [; ;digital_keypad.c: 39:                 {
 {

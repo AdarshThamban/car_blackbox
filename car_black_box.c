@@ -10,7 +10,8 @@
 unsigned char clock_reg[3], sec, ret_time;
 char time[7]; //hh:mm:ss , avoid colon, so size = 7
 char log[11]; //hhmmssevsp
-int pos = -1;
+int pos = -1, roll_over_flag = 0;
+int index = 0;
 char *menu[] = {"View log", "Clear log", "Download log", "Set time", "Change passwd"};
 
 void get_time() {
@@ -60,6 +61,7 @@ void log_event() {
     pos++;
     if (pos == 10) {
         pos = 0;
+        roll_over_flag = 1;
     }
     addr = pos * 10 + addr;
     eeprom_at24c04_str_write(addr, log);
@@ -75,7 +77,7 @@ void log_car_event(char event[], unsigned char speed) {
     log_event();
 }
 
- unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
+unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
     static unsigned char menu_pos;
     if (reset_flag == RESET_LOGIN_MENU) {
         menu_pos = 0;
@@ -190,6 +192,77 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
     }
 }
 
-void view_log(void){
-    clear_screen();
+void display_logs(int i) {
+
+    clcd_print("# TIME     E  SP", LINE1(0));
+    clcd_putch(i + '0', LINE2(0));
+
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10)), LINE2(2));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 1), LINE2(3));
+    clcd_putch(':', LINE2(4));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 2), LINE2(5));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 3), LINE2(6));
+    clcd_putch(':', LINE2(7));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 4), LINE2(8));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 5), LINE2(9));
+    clcd_putch(' ', LINE2(10));
+
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 6), LINE2(11));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 7), LINE2(12));
+
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 8), LINE2(14));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 9), LINE2(15));
+}
+
+void view_log(unsigned char key, unsigned char reset_flag) {
+
+
+    clcd_print("# TIME     E  SP", LINE1(0));
+    if (pos == -1) {
+        clcd_print("No logs avalable", LINE2(0));
+    } else {
+
+        if (reset_flag == RESET_VIEW_LOG_POS) {
+            index = 0;
+            display_logs(index);
+            __delay_ms(1500);
+        } else {
+
+            if (key == SW4) {
+                if (roll_over_flag) {
+                    index++;
+                    if (index == 10) {
+                        index = 0;
+                    }
+                } else {
+                    index++;
+                    if (index > pos) {
+                        index = 0;
+                    }
+                }
+                display_logs(index);
+            } else if (key == SW5) {
+                if (roll_over_flag) {
+                    index--;
+                    if (index == -1) {
+                        index = 9;
+                    }
+                } else {
+                    if (reset_flag == RESET_VIEW_LOG_POS) {
+                        (index = pos);
+                    } else {
+                        index--;
+
+                        if (index == -1) {
+                            index = pos;
+                        }
+                    }
+                }
+                display_logs(index);
+            }
+        }
+
+
+
+    }
 }

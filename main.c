@@ -34,8 +34,8 @@ void main(void) {
     unsigned long int l_press = 0;
     //extern unsigned char menu_pos;
 
-    log_car_event(event, speed);
-    eeprom_at24c04_str_write(0x00, "1010");
+    //log_car_event(event, speed);
+    eeprom_at24c04_str_write(0x00, "1111");
     while (1) {
         key = read_digital_keypad(STATE);
         __delay_ms(20); // to avoid bouncing effect
@@ -92,6 +92,8 @@ void main(void) {
             switch (menu) {
                 case 0:
                     control_flag = VIEW_LOG_FLAG;
+                    //reset_flag = RESET_VIEW_LOG_POS;
+                    //key = ALL_RELEASED;
                     break;
                 case 1:
                     control_flag = CLEAR_LOG_FLAG;
@@ -136,7 +138,8 @@ void main(void) {
                 menu = menu_screen(key, reset_flag);
                 break;
             case VIEW_LOG_FLAG:
-                view_log();
+                //clear_screen();
+                view_log(key,reset_flag);
 
         }
         reset_flag = RESET_NOTHING;

@@ -199,8 +199,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "6
 [; ;isr.c: 6:     static unsigned int count = 0;
-[v F1204 `ui ~T0 @X0 1 s count ]
-[i F1204
+[v F1209 `ui ~T0 @X0 1 s count ]
+[i F1209
 -> -> 0 `i `ui
 ]
 "8
@@ -211,7 +211,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "10
 [; ;isr.c: 10:         if (++count == 1250)
-[e $ ! == =+ F1204 -> -> 1 `i `ui -> -> 1250 `i `ui 102  ]
+[e $ ! == =+ F1209 -> -> 1 `i `ui -> -> 1250 `i `ui 102  ]
 "11
 [; ;isr.c: 11:         {
 {
@@ -239,7 +239,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 104 ]
 "18
 [; ;isr.c: 18:             count = 0;
-[e = F1204 -> -> 0 `i `ui ]
+[e = F1209 -> -> 0 `i `ui ]
 "21
 [; ;isr.c: 21:         }
 }

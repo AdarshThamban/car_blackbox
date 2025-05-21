@@ -1829,35 +1829,30 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
-# 11 "./main.h" 2
-
+# 12 "./main.h" 2
 # 1 "./adc.h" 1
 # 12 "./adc.h"
 void init_adc(void);
 unsigned short read_adc(void);
-# 12 "./main.h" 2
-
+# 13 "./main.h" 2
 # 1 "./clcd.h" 1
 # 37 "./clcd.h"
 void init_clcd(void);
 void clcd_putch(const char data, unsigned char addr);
 void clcd_print(const char *str, unsigned char addr);
 void clcd_write(unsigned char byte, unsigned char mode);
-# 13 "./main.h" 2
-
+# 14 "./main.h" 2
 # 1 "./digital_keypad.h" 1
 # 33 "./digital_keypad.h"
 unsigned char read_digital_keypad(unsigned char mode);
 void init_digital_keypad(void);
-# 14 "./main.h" 2
-
+# 15 "./main.h" 2
 # 1 "./ds1307.h" 1
 # 20 "./ds1307.h"
 void init_ds1307(void);
 unsigned char read_ds1307(unsigned char addr);
 void write_ds1307(unsigned char addr, unsigned char data);
-# 15 "./main.h" 2
-
+# 16 "./main.h" 2
 # 1 "./i2c.h" 1
 # 14 "./i2c.h"
 void init_i2c(unsigned long baud);
@@ -1866,8 +1861,7 @@ void i2c_rep_start(void);
 void i2c_stop(void);
 unsigned char i2c_read(unsigned char ack);
 int i2c_write(unsigned char data);
-# 16 "./main.h" 2
-
+# 17 "./main.h" 2
 # 1 "./car_black_box.h" 1
 # 11 "./car_black_box.h"
 void display_dashboard(char event[], unsigned char speed);
@@ -1875,16 +1869,16 @@ void log_car_event(char event[], unsigned char speed);
 void clear_screen(void);
 unsigned char login(unsigned char key, unsigned char reset_flag);
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
-# 17 "./main.h" 2
-
+void view_log(unsigned char key, unsigned char);
+void display_logs(int i);
+# 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
 # 18 "./external_eeprom.h"
 void init_at24c04(void);
 unsigned char eeprom_at24c04_read(unsigned char addr);
 void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
 void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
-# 18 "./main.h" 2
-
+# 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\bits/alltypes.h" 1 3
@@ -1942,13 +1936,12 @@ size_t strxfrm_l (char *restrict, const char *restrict, size_t, locale_t);
 
 
 void *memccpy (void *restrict, const void *restrict, int, size_t);
-# 19 "./main.h" 2
-
+# 20 "./main.h" 2
 # 1 "./timers.h" 1
 # 11 "./timers.h"
 void init_timer0(void);
 void init_timer2(void);
-# 20 "./main.h" 2
+# 21 "./main.h" 2
 # 9 "main.c" 2
 
 #pragma config WDTE = OFF
@@ -1970,15 +1963,16 @@ static void init_config(void) {
 
 void main(void) {
     init_config();
-    unsigned char control_flag = 0x01, reset_flag;
+    unsigned char control_flag = 0x10, reset_flag;
     char event[3] = "ON";
     unsigned char speed = 0, pre_key = 0;
     unsigned char gr = 0, key, menu;
     char *gear[] = {"GN", "GR", "G1", "G2", "G3", "G4"};
     unsigned long int l_press = 0;
 
-    log_car_event(event, speed);
-    eeprom_at24c04_str_write(0x00, "1010");
+
+
+    eeprom_at24c04_str_write(0x00, "1111");
     while (1) {
         key = read_digital_keypad(1);
         _delay((unsigned long)((20)*(20000000/4000.0)));
@@ -2022,26 +2016,47 @@ void main(void) {
             gr--;
             strcpy(event, gear[gr]);
             log_car_event(event, speed);
-        } else if ((key == 0x37 || key == 0x2F) && control_flag == 0x01) {
-            control_flag = 0x02;
+        } else if ((key == 0x37 || key == 0x2F) && control_flag == 0x10) {
+            control_flag = 0x12;
             clear_screen();
             clcd_print("Enter Password", (0x80 + 0));
             clcd_write((0xC0 + 4), 0);
             clcd_write(0x0F, 0);
-            reset_flag = 0X01;
+            reset_flag = 0X03;
             TMR2ON = 1;
 
+        } else if ((control_flag == 0x13) && (key == 0x44)) {
+            switch (menu) {
+                case 0:
+                    control_flag = 0x14;
+
+
+                    break;
+                case 1:
+                    control_flag = 0x15;
+                    break;
+                case 2:
+                    control_flag = 0x16;
+                    break;
+                case 3:
+                    control_flag = 0x17;
+                    break;
+                case 4:
+                    control_flag = 0x18;
+                    break;
+            }
         }
-# 108 "main.c"
+
+
         switch (control_flag) {
-            case 0x01:
+            case 0x10:
                 display_dashboard(event, speed);
                 break;
-            case 0x02:
+            case 0x12:
                 switch (login(key, reset_flag)) {
-                    case 0x03:
+                    case 0x02:
                         clear_screen();
-                        control_flag = 0x01;
+                        control_flag = 0x10;
                         clcd_write(0x0C, 0);
                         TMR2ON = 0;
                         break;
@@ -2049,21 +2064,22 @@ void main(void) {
                         clear_screen();
                         clcd_write(0x0C, 0);
                         TMR2ON = 0;
-                        control_flag = 0x04;
+                        control_flag = 0x13;
                         reset_flag = 0x05;
 
                         continue;
 
                 }
                 break;
-            case 0x04:
+            case 0x13:
                 menu = menu_screen(key, reset_flag);
                 break;
+            case 0x14:
 
-
+                view_log(key,reset_flag);
 
         }
-        reset_flag = 0X00;
+        reset_flag = 0X04;
     }
     return;
 }

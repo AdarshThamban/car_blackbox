@@ -1829,35 +1829,30 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
-# 11 "./main.h" 2
-
+# 12 "./main.h" 2
 # 1 "./adc.h" 1
 # 12 "./adc.h"
 void init_adc(void);
 unsigned short read_adc(void);
-# 12 "./main.h" 2
-
+# 13 "./main.h" 2
 # 1 "./clcd.h" 1
 # 37 "./clcd.h"
 void init_clcd(void);
 void clcd_putch(const char data, unsigned char addr);
 void clcd_print(const char *str, unsigned char addr);
 void clcd_write(unsigned char byte, unsigned char mode);
-# 13 "./main.h" 2
-
+# 14 "./main.h" 2
 # 1 "./digital_keypad.h" 1
 # 33 "./digital_keypad.h"
 unsigned char read_digital_keypad(unsigned char mode);
 void init_digital_keypad(void);
-# 14 "./main.h" 2
-
+# 15 "./main.h" 2
 # 1 "./ds1307.h" 1
 # 20 "./ds1307.h"
 void init_ds1307(void);
 unsigned char read_ds1307(unsigned char addr);
 void write_ds1307(unsigned char addr, unsigned char data);
-# 15 "./main.h" 2
-
+# 16 "./main.h" 2
 # 1 "./i2c.h" 1
 # 14 "./i2c.h"
 void init_i2c(unsigned long baud);
@@ -1866,8 +1861,7 @@ void i2c_rep_start(void);
 void i2c_stop(void);
 unsigned char i2c_read(unsigned char ack);
 int i2c_write(unsigned char data);
-# 16 "./main.h" 2
-
+# 17 "./main.h" 2
 # 1 "./car_black_box.h" 1
 # 11 "./car_black_box.h"
 void display_dashboard(char event[], unsigned char speed);
@@ -1875,16 +1869,16 @@ void log_car_event(char event[], unsigned char speed);
 void clear_screen(void);
 unsigned char login(unsigned char key, unsigned char reset_flag);
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
-# 17 "./main.h" 2
-
+void view_log(unsigned char key, unsigned char);
+void display_logs(int i);
+# 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
 # 18 "./external_eeprom.h"
 void init_at24c04(void);
 unsigned char eeprom_at24c04_read(unsigned char addr);
 void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
 void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
-# 18 "./main.h" 2
-
+# 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\bits/alltypes.h" 1 3
@@ -1942,19 +1936,19 @@ size_t strxfrm_l (char *restrict, const char *restrict, size_t, locale_t);
 
 
 void *memccpy (void *restrict, const void *restrict, int, size_t);
-# 19 "./main.h" 2
-
+# 20 "./main.h" 2
 # 1 "./timers.h" 1
 # 11 "./timers.h"
 void init_timer0(void);
 void init_timer2(void);
-# 20 "./main.h" 2
+# 21 "./main.h" 2
 # 9 "car_black_box.c" 2
 
 unsigned char clock_reg[3], sec, ret_time;
 char time[7];
 char log[11];
-int pos = -1;
+int pos = -1, roll_over_flag = 0;
+int index = 0;
 char *menu[] = {"View log", "Clear log", "Download log", "Set time", "Change passwd"};
 
 void get_time() {
@@ -2004,6 +1998,7 @@ void log_event() {
     pos++;
     if (pos == 10) {
         pos = 0;
+        roll_over_flag = 1;
     }
     addr = pos * 10 + addr;
     eeprom_at24c04_str_write(addr, log);
@@ -2019,7 +2014,7 @@ void log_car_event(char event[], unsigned char speed) {
     log_event();
 }
 
- unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
+unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
     static unsigned char menu_pos;
     if (reset_flag == 0x05) {
         menu_pos = 0;
@@ -2058,7 +2053,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
     static unsigned char i;
     static unsigned char attempt_left;
 
-    if (reset_flag == 0X01) {
+    if (reset_flag == 0X03) {
 
         i = 0;
         u_password[0] = '\0';
@@ -2071,7 +2066,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
         ret_time = 5;
     }
     if (ret_time == 0) {
-        return 0x03;
+        return 0x02;
     }
     if (key == 0x37 && i < 4 ) {
         u_password[i] = '1';
@@ -2131,5 +2126,80 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
             ret_time = 5;
 
         }
+    }
+}
+
+void display_logs(int i) {
+
+    clcd_print("# TIME     E  SP", (0x80 + 0));
+    clcd_putch(i + '0', (0xC0 + 0));
+
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10)), (0xC0 + 2));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 1), (0xC0 + 3));
+    clcd_putch(':', (0xC0 + 4));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 2), (0xC0 + 5));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 3), (0xC0 + 6));
+    clcd_putch(':', (0xC0 + 7));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 4), (0xC0 + 8));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 5), (0xC0 + 9));
+    clcd_putch(' ', (0xC0 + 10));
+
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 6), (0xC0 + 11));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 7), (0xC0 + 12));
+
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 8), (0xC0 + 14));
+    clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 9), (0xC0 + 15));
+}
+
+void view_log(unsigned char key, unsigned char reset_flag) {
+
+
+    clcd_print("# TIME     E  SP", (0x80 + 0));
+    if (pos == -1) {
+        clcd_print("No logs avalable", (0xC0 + 0));
+    } else {
+
+        if (reset_flag == 0x60) {
+            index = 0;
+            display_logs(index);
+            _delay((unsigned long)((1500)*(20000000/4000.0)));
+        } else {
+
+            if (key == 0x37) {
+                if (roll_over_flag) {
+                    index++;
+                    if (index == 10) {
+                        index = 0;
+                    }
+                } else {
+                    index++;
+                    if (index > pos) {
+                        index = 0;
+                    }
+                }
+                display_logs(index);
+            } else if (key == 0x2F) {
+                if (roll_over_flag) {
+                    index--;
+                    if (index == -1) {
+                        index = 9;
+                    }
+                } else {
+                    if (reset_flag == 0x60) {
+                        (index = pos);
+                    } else {
+                        index--;
+
+                        if (index == -1) {
+                            index = pos;
+                        }
+                    }
+                }
+                display_logs(index);
+            }
+        }
+
+
+
     }
 }

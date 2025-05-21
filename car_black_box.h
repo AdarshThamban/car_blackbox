@@ -13,5 +13,7 @@ void log_car_event(char event[], unsigned char speed);
 void clear_screen(void);
 unsigned char login(unsigned char key, unsigned char reset_flag);
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
+void view_log(unsigned char key, unsigned char);
+void display_logs(int i);
 #endif	/* CAR_BLACK_BOX_H */
 

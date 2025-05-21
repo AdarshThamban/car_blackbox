@@ -1827,14 +1827,12 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
-# 9 "digital_keypad.c" 2
-
+# 10 "digital_keypad.c" 2
 # 1 "./digital_keypad.h" 1
 # 33 "./digital_keypad.h"
 unsigned char read_digital_keypad(unsigned char mode);
 void init_digital_keypad(void);
-# 10 "digital_keypad.c" 2
-
+# 11 "digital_keypad.c" 2
 
 void init_digital_keypad(void)
 {
@@ -1862,7 +1860,7 @@ unsigned char read_digital_keypad(unsigned char mode)
             if (key == switch_state)
             {
                 long_press++;
-                if (long_press > 200)
+                if (long_press > 20)
                 {
                     long_press = 0;
                     switch_state = 0x3F;

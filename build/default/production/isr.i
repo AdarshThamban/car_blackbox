@@ -1827,29 +1827,25 @@ extern __bank0 __bit __timeout;
 # 12 "./adc.h"
 void init_adc(void);
 unsigned short read_adc(void);
-# 12 "./main.h" 2
-
+# 13 "./main.h" 2
 # 1 "./clcd.h" 1
 # 37 "./clcd.h"
 void init_clcd(void);
 void clcd_putch(const char data, unsigned char addr);
 void clcd_print(const char *str, unsigned char addr);
 void clcd_write(unsigned char byte, unsigned char mode);
-# 13 "./main.h" 2
-
+# 14 "./main.h" 2
 # 1 "./digital_keypad.h" 1
 # 33 "./digital_keypad.h"
 unsigned char read_digital_keypad(unsigned char mode);
 void init_digital_keypad(void);
-# 14 "./main.h" 2
-
+# 15 "./main.h" 2
 # 1 "./ds1307.h" 1
 # 20 "./ds1307.h"
 void init_ds1307(void);
 unsigned char read_ds1307(unsigned char addr);
 void write_ds1307(unsigned char addr, unsigned char data);
-# 15 "./main.h" 2
-
+# 16 "./main.h" 2
 # 1 "./i2c.h" 1
 # 14 "./i2c.h"
 void init_i2c(unsigned long baud);
@@ -1858,8 +1854,7 @@ void i2c_rep_start(void);
 void i2c_stop(void);
 unsigned char i2c_read(unsigned char ack);
 int i2c_write(unsigned char data);
-# 16 "./main.h" 2
-
+# 17 "./main.h" 2
 # 1 "./car_black_box.h" 1
 # 11 "./car_black_box.h"
 void display_dashboard(char event[], unsigned char speed);
@@ -1867,16 +1862,16 @@ void log_car_event(char event[], unsigned char speed);
 void clear_screen(void);
 unsigned char login(unsigned char key, unsigned char reset_flag);
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
-# 17 "./main.h" 2
-
+void view_log(unsigned char key, unsigned char);
+void display_logs(int i);
+# 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
 # 18 "./external_eeprom.h"
 void init_at24c04(void);
 unsigned char eeprom_at24c04_read(unsigned char addr);
 void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
 void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
-# 18 "./main.h" 2
-
+# 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\bits/alltypes.h" 1 3
@@ -1934,13 +1929,12 @@ size_t strxfrm_l (char *restrict, const char *restrict, size_t, locale_t);
 
 
 void *memccpy (void *restrict, const void *restrict, int, size_t);
-# 19 "./main.h" 2
-
+# 20 "./main.h" 2
 # 1 "./timers.h" 1
 # 11 "./timers.h"
 void init_timer0(void);
 void init_timer2(void);
-# 20 "./main.h" 2
+# 21 "./main.h" 2
 # 2 "isr.c" 2
 
 extern unsigned char sec, ret_time;

@@ -35,7 +35,7 @@ unsigned char read_digital_keypad(unsigned char mode)
             if (key == switch_state)  // key still  holding
             {
                 long_press++;
-                if (long_press > 200)
+                if (long_press > 20)
                 {
                     long_press = 0;
                     switch_state = ALL_RELEASED;
