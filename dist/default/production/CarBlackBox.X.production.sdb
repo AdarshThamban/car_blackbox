@@ -31,25 +31,25 @@
 [v ___eecpymem __eecpymem `(v  1 e 1 0 ]
 "39
 [v ___memcpyee __memcpyee `(v  1 e 1 0 ]
-"17 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+"18 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _get_time get_time `(v  1 e 1 0 ]
-"36
+"37
 [v _display_time display_time `(v  1 e 1 0 ]
-"49
+"50
 [v _display_dashboard display_dashboard `(v  1 e 1 0 ]
-"59
+"62
 [v _log_event log_event `(v  1 e 1 0 ]
-"71
+"74
 [v _log_car_event log_car_event `(v  1 e 1 0 ]
-"80
+"83
 [v _menu_screen menu_screen `(uc  1 e 1 0 ]
-"107
+"111
 [v _clear_screen clear_screen `(v  1 e 1 0 ]
-"113
+"117
 [v _login login `(uc  1 e 1 0 ]
-"195
+"204
 [v _display_logs display_logs `(v  1 e 1 0 ]
-"217
+"226
 [v _view_log view_log `(v  1 e 1 0 ]
 "12 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\clcd.c
 [v _clcd_write clcd_write `(v  1 e 1 0 ]
@@ -191,63 +191,65 @@
 [v _TXIF TXIF `VEb  1 e 0 @100 ]
 "3070
 [v _nDONE nDONE `VEb  1 e 0 @250 ]
-"10 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+"11 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _clock_reg clock_reg `[3]uc  1 e 3 0 ]
 [v _sec sec `uc  1 e 1 0 ]
 [v _ret_time ret_time `uc  1 e 1 0 ]
-"11
-[v _time time `[7]uc  1 e 7 0 ]
 "12
-[v _log log `[11]uc  1 e 11 0 ]
+[v _time time `[7]uc  1 e 7 0 ]
 "13
+[v _log log `[11]uc  1 e 11 0 ]
+"14
 [v _pos pos `i  1 e 2 0 ]
 [v _roll_over_flag roll_over_flag `i  1 e 2 0 ]
-"14
-[v _index index `i  1 e 2 0 ]
 "15
+[v _index index `i  1 e 2 0 ]
+"16
 [v _menu menu `[5]*.24uc  1 e 5 0 ]
-"27 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\main.c
+"11 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\main.c
+[v _ret_time_edit ret_time_edit `uc  1 e 1 0 ]
+"27
 [v _main main `(v  1 e 1 0 ]
 {
 "33
-[v main@gear gear `[6]*.24uc  1 a 6 18 ]
+[v main@gear gear `[6]*.24uc  1 a 6 0 ]
 "34
-[v main@l_press l_press `ul  1 a 4 28 ]
+[v main@l_press l_press `ul  1 a 4 10 ]
 "30
-[v main@event event `[3]uc  1 a 3 25 ]
+[v main@event event `[3]uc  1 a 3 7 ]
 "32
-[v main@key key `uc  1 a 1 36 ]
+[v main@key key `uc  1 a 1 18 ]
+"29
+[v main@control_flag control_flag `uc  1 a 1 17 ]
 "31
-[v main@speed speed `uc  1 a 1 35 ]
-"29
-[v main@control_flag control_flag `uc  1 a 1 34 ]
+[v main@speed speed `uc  1 a 1 16 ]
 "32
-[v main@gr gr `uc  1 a 1 33 ]
+[v main@gr gr `uc  1 a 1 15 ]
 "29
-[v main@reset_flag reset_flag `uc  1 a 1 32 ]
+[v main@reset_flag reset_flag `uc  1 a 1 14 ]
 "32
-[v main@menu menu `uc  1 a 1 24 ]
+[v main@menu menu `uc  1 a 1 6 ]
 "29
-[v main@F1210 F1210 `[3]uc  1 s 3 F1210 ]
+[v main@F1211 F1211 `[3]uc  1 s 3 F1211 ]
 "32
 [v main@F1217 F1217 `[6]*.24uc  1 s 6 F1217 ]
-"148
+"161
 } 0
-"217 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+"226 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _view_log view_log `(v  1 e 1 0 ]
 {
 [v view_log@key key `uc  1 a 1 wreg ]
 [v view_log@key key `uc  1 a 1 wreg ]
 [v view_log@reset_flag reset_flag `uc  1 p 1 4 ]
-"220
+"229
 [v view_log@key key `uc  1 a 1 8 ]
-"268
+"277
 } 0
-"195
+"204
 [v _display_logs display_logs `(v  1 e 1 0 ]
 {
 [v display_logs@i i `i  1 p 2 2 ]
-"215
+"224
 } 0
 "3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strcpy.c
 [v _strcpy strcpy `(*.4uc  1 e 1 0 ]
@@ -267,7 +269,7 @@
 {
 [v read_digital_keypad@mode mode `uc  1 a 1 wreg ]
 "56
-[v read_digital_keypad@temp temp `uc  1 a 1 5 ]
+[v read_digital_keypad@temp temp `uc  1 a 1 3 ]
 "24
 [v read_digital_keypad@key key `uc  1 a 1 6 ]
 "18
@@ -289,37 +291,37 @@
 [v read_adc@adc_reg_val adc_reg_val `us  1 a 2 4 ]
 "35
 } 0
-"80 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+"83 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _menu_screen menu_screen `(uc  1 e 1 0 ]
 {
 [v menu_screen@key key `uc  1 a 1 wreg ]
 [v menu_screen@key key `uc  1 a 1 wreg ]
 [v menu_screen@reset_flag reset_flag `uc  1 p 1 2 ]
-"81
+"84
 [v menu_screen@menu_pos menu_pos `uc  1 s 1 menu_pos ]
 [v menu_screen@key key `uc  1 a 1 3 ]
-"105
+"109
 } 0
-"113
+"117
 [v _login login `(uc  1 e 1 0 ]
 {
 [v login@key key `uc  1 a 1 wreg ]
-"149
+"158
 [v login@j j `i  1 a 2 11 ]
-"148
+"157
 [v login@s_password s_password `[4]uc  1 a 4 6 ]
-"113
+"117
 [v login@key key `uc  1 a 1 wreg ]
 [v login@reset_flag reset_flag `uc  1 p 1 2 ]
-"115
+"123
 [v login@u_password u_password `[4]uc  1 s 4 u_password ]
-"116
+"124
 [v login@i i `uc  1 s 1 i ]
-"117
+"125
 [v login@attempt_left attempt_left `uc  1 s 1 attempt_left ]
-"119
+"118
 [v login@key key `uc  1 a 1 10 ]
-"193
+"202
 } 0
 "3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strncmp.c
 [v _strncmp strncmp `(i  1 e 2 0 ]
@@ -344,19 +346,19 @@
 [v eeprom_at24c04_read@addr addr `uc  1 a 1 4 ]
 "35
 } 0
-"107 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+"111 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _clear_screen clear_screen `(v  1 e 1 0 ]
 {
-"111
+"115
 } 0
-"71
+"74
 [v _log_car_event log_car_event `(v  1 e 1 0 ]
 {
 [v log_car_event@event event `*.4uc  1 a 1 wreg ]
 [v log_car_event@event event `*.4uc  1 a 1 wreg ]
 [v log_car_event@speed speed `uc  1 p 1 0 ]
 [v log_car_event@event event `*.4uc  1 a 1 3 ]
-"78
+"81
 } 0
 "3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strncpy.c
 [v _strncpy strncpy `(*.4uc  1 e 1 0 ]
@@ -372,12 +374,12 @@
 [v strncpy@d d `*.4uc  1 a 1 5 ]
 "15
 } 0
-"59 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+"62 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _log_event log_event `(v  1 e 1 0 ]
 {
-"60
+"63
 [v log_event@addr addr `uc  1 a 1 8 ]
-"69
+"72
 } 0
 "46 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\external_eeprom.c
 [v _eeprom_at24c04_str_write eeprom_at24c04_str_write `(v  1 e 1 0 ]
@@ -476,25 +478,25 @@
 {
 "18
 } 0
-"49 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
+"50 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\car_black_box.c
 [v _display_dashboard display_dashboard `(v  1 e 1 0 ]
 {
 [v display_dashboard@event event `*.4uc  1 a 1 wreg ]
 [v display_dashboard@event event `*.4uc  1 a 1 wreg ]
 [v display_dashboard@speed speed `uc  1 p 1 2 ]
-"52
+"54
 [v display_dashboard@event event `*.4uc  1 a 1 5 ]
-"57
+"60
 } 0
-"36
+"37
 [v _display_time display_time `(v  1 e 1 0 ]
 {
-"47
+"48
 } 0
-"17
+"18
 [v _get_time get_time `(v  1 e 1 0 ]
 {
-"34
+"35
 } 0
 "21 C:\Users\USER\Desktop\car_blackbox\CarBlackBox.X\ds1307.c
 [v _read_ds1307 read_ds1307 `(uc  1 e 1 0 ]
@@ -604,9 +606,9 @@
 [v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
 {
 "10
-[v ___lwdiv@quotient quotient `ui  1 a 2 0 ]
+[v ___lwdiv@quotient quotient `ui  1 a 2 1 ]
 "11
-[v ___lwdiv@counter counter `uc  1 a 1 2 ]
+[v ___lwdiv@counter counter `uc  1 a 1 0 ]
 "5
 [v ___lwdiv@divisor divisor `ui  1 p 2 6 ]
 [v ___lwdiv@dividend dividend `ui  1 p 2 8 ]

@@ -8,7 +8,7 @@
 
 #include "main.h"
 #pragma config WDTE = OFF // Watchdog Timer Enable bit (WDT disabled)
-
+ unsigned char ret_time_edit = 0;////llllllloooooooooooooooooong prss
 static void init_config(void) {
     //write initialization code here
     init_i2c(100000); //IT SHOULD BE FIRST 
@@ -28,10 +28,11 @@ void main(void) {
     init_config();
     unsigned char control_flag = DASH_BOARD_FLAG, reset_flag;
     char event[3] = "ON";
-    unsigned char speed = 0, pre_key = 0; // 00 to 99
+    unsigned char speed = 0; // 00 to 99
     unsigned char gr = 0, key, menu;
     char *gear[] = {"GN", "GR", "G1", "G2", "G3", "G4"};
     unsigned long int l_press = 0;
+    unsigned char key_st = 0;
     //extern unsigned char menu_pos;
 
     //log_car_event(event, speed);
@@ -42,14 +43,14 @@ void main(void) {
 
         if (key == SW4 || key == SW5) {
             if (key != ALL_RELEASED) {
-                if ((l_press++) > 200) {
+                if ((l_press++) > 100) {
                     if (key == SW4) {
                         key = LP_SW4;
                     } else
                         key = LP_SW5;
                 }
             } else {
-                if (l_press < 200 && l_press > 0) {
+                if (l_press < 100 && l_press > 0) {
                     l_press = 0;
                     if (key == SW4) {
                         key = SW4;
@@ -88,11 +89,11 @@ void main(void) {
             reset_flag = RESET_PASSWORD; //1st time entering to login screen
             TMR2ON = 1; //timer2 on
 
-        } else if ((control_flag == LOGIN_MENU_FLAG) && (key == LP_SW4)) {
+        } else if ((control_flag == LOGIN_MENU_FLAG) && (key == LP_SW4)) {////////ppppppppppppp
             switch (menu) {
                 case 0:
                     control_flag = VIEW_LOG_FLAG;
-                    //reset_flag = RESET_VIEW_LOG_POS;
+                    reset_flag = RESET_VIEW_LOG_POS;
                     //key = ALL_RELEASED;
                     break;
                 case 1:
@@ -108,14 +109,26 @@ void main(void) {
                     control_flag = CHANGE_PASSWORD_FLAG;
                     break;
             }
+        } else if ((control_flag == VIEW_LOG_FLAG)&& (key == LP_SW4)) {////////////pppppppppp
+            control_flag = LOGIN_MENU_FLAG;
+            reset_flag = RESET_LOGIN_MENU;
         }
 
-
+       
+        else if ((control_flag == LOGIN_MENU_FLAG)&& (key == LP_SW5)) {
+            clear_screen();
+            control_flag = DASH_BOARD_FLAG;
+            ret_time_edit = 1;////////////////lllllllllllllloooooooooooong press
+        }
+        
         switch (control_flag) {
             case DASH_BOARD_FLAG:
                 display_dashboard(event, speed);
+                
+               
                 break;
             case LOGIN_FLAG:
+                //__delay_ms(1000);
                 switch (login(key, reset_flag)) {
                     case RETURN_BACK: //change screen to dashboard
                         clear_screen();
@@ -139,7 +152,7 @@ void main(void) {
                 break;
             case VIEW_LOG_FLAG:
                 //clear_screen();
-                view_log(key,reset_flag);
+                view_log(key, reset_flag);
 
         }
         reset_flag = RESET_NOTHING;

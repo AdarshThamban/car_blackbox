@@ -1944,6 +1944,7 @@ void init_timer2(void);
 # 21 "./main.h" 2
 # 9 "car_black_box.c" 2
 
+extern char ret_time_edit;
 unsigned char clock_reg[3], sec, ret_time;
 char time[7];
 char log[11];
@@ -1986,11 +1987,13 @@ void display_time() {
 void display_dashboard(char event[], unsigned char speed) {
 
 
+
     clcd_print("TIME     E  SP", (0x80 + 2));
     display_time();
     clcd_print(event, (0xC0 + 11));
     clcd_putch(speed / 10 + '0', (0xC0 + 14));
     clcd_putch(speed % 10 + '0', (0xC0 + 15));
+
 }
 
 void log_event() {
@@ -2018,6 +2021,7 @@ unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
     static unsigned char menu_pos;
     if (reset_flag == 0x05) {
         menu_pos = 0;
+
     }
     if (key == 0x37 && menu_pos < 4) {
         menu_pos++;
@@ -2048,6 +2052,10 @@ void clear_screen() {
 }
 
 unsigned char login(unsigned char key, unsigned char reset_flag) {
+    if(ret_time_edit == 1){
+        ret_time =0;
+        clear_screen();
+    }
 
     static char u_password[4];
     static unsigned char i;
@@ -2066,6 +2074,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
         ret_time = 5;
     }
     if (ret_time == 0) {
+        ret_time_edit = 0;
         return 0x02;
     }
     if (key == 0x37 && i < 4 ) {

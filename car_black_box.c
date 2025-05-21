@@ -7,6 +7,7 @@
 
 
 #include "main.h"
+extern char ret_time_edit;
 unsigned char clock_reg[3], sec, ret_time;
 char time[7]; //hh:mm:ss , avoid colon, so size = 7
 char log[11]; //hhmmssevsp
@@ -48,12 +49,14 @@ void display_time() {
 
 void display_dashboard(char event[], unsigned char speed) {
 
-
+    
+    
     clcd_print("TIME     E  SP", LINE1(2));
     display_time();
     clcd_print(event, LINE2(11)); // event is a string, so using clcd_print()
     clcd_putch(speed / 10 + '0', LINE2(14)); //convert int to char
     clcd_putch(speed % 10 + '0', LINE2(15));
+    
 }
 
 void log_event() {
@@ -81,6 +84,7 @@ unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
     static unsigned char menu_pos;
     if (reset_flag == RESET_LOGIN_MENU) {
         menu_pos = 0;
+        //__delay_ms(1000);
     }
     if (key == SW4 && menu_pos < 4) {
         menu_pos++;
@@ -111,7 +115,11 @@ void clear_screen() {
 }
 
 unsigned char login(unsigned char key, unsigned char reset_flag) {
-
+    if(ret_time_edit == 1){///looooooooooooonng press
+        ret_time =0;
+        clear_screen();
+    }//////////////
+    
     static char u_password[4];
     static unsigned char i;
     static unsigned char attempt_left;
@@ -129,6 +137,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
         ret_time = 5;
     }
     if (ret_time == 0) {
+        ret_time_edit = 0;////////////loooooooooong prsss
         return RETURN_BACK;
     }
     if (key == SW4 && i < 4 /*&& reset_flag != RESET_PASSWORD*/) {

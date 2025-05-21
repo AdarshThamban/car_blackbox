@@ -250,6 +250,12 @@ Version 4.0 HI-TECH Software Intermediate Code
 "10 main.c
 [; ;main.c: 10: 
 [p x WDTE  =  OFF  ]
+"11
+[; ;main.c: 11: 
+[v _ret_time_edit `uc ~T0 @X0 1 e ]
+[i _ret_time_edit
+-> -> 0 `i `uc
+]
 "12
 [; ;main.c: 12: 
 [v _init_config `(v ~T0 @X0 1 sf ]
@@ -272,7 +278,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;main.c: 18:     char event[3] = "ON";
 [e ( _init_adc ..  ]
 "19
-[; ;main.c: 19:     unsigned char speed = 0, pre_key = 0;
+[; ;main.c: 19:     unsigned char speed = 0;
 [e ( _init_timer2 ..  ]
 "20
 [; ;main.c: 20:     unsigned char gr = 0, key, menu;
@@ -286,39 +292,37 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [v $root$_main `(v ~T0 @X0 0 e ]
 "27
-[; ;main.c: 27:     while (1) {
+[; ;main.c: 27:     eeprom_at24c04_str_write(0x00, "1111");
 [v _main `(v ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
 "28
-[; ;main.c: 28:         key = read_digital_keypad(1);
+[; ;main.c: 28:     while (1) {
 [e ( _init_config ..  ]
 "29
-[; ;main.c: 29:         _delay((unsigned long)((20)*(20000000/4000.0)));
+[; ;main.c: 29:         key = read_digital_keypad(1);
 [v _control_flag `uc ~T0 @X0 1 a ]
 [e = _control_flag -> -> 16 `i `uc ]
 [v _reset_flag `uc ~T0 @X0 1 a ]
-[v F1210 `uc ~T0 @X0 -> 3 `i s ]
-[i F1210
+[v F1211 `uc ~T0 @X0 -> 3 `i s ]
+[i F1211
 :U ..
 "30
-[; ;main.c: 30: 
+[; ;main.c: 30:         _delay((unsigned long)((20)*(20000000/4000.0)));
 -> 79 `c
 -> 78 `c
 -> 0 `c
 ..
 ]
 [v _event `uc ~T0 @X0 -> 3 `i a ]
-[e = _event F1210 ]
+[e = _event F1211 ]
 "31
-[; ;main.c: 31:         if (key == 0x37 || key == 0x2F) {
+[; ;main.c: 31: 
 [v _speed `uc ~T0 @X0 1 a ]
 [e = _speed -> -> 0 `i `uc ]
-[v _pre_key `uc ~T0 @X0 1 a ]
-[e = _pre_key -> -> 0 `i `uc ]
 "32
-[; ;main.c: 32:             if (key != 0x3F) {
+[; ;main.c: 32:         if (key == 0x37 || key == 0x2F) {
 [v _gr `uc ~T0 @X0 1 a ]
 [e = _gr -> -> 0 `i `uc ]
 [v _key `uc ~T0 @X0 1 a ]
@@ -327,7 +331,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [i F1217
 :U ..
 "33
-[; ;main.c: 33:                 if ((l_press++) > 200) {
+[; ;main.c: 33:             if (key != 0x3F) {
 :s 1C
 :s 2C
 :s 3C
@@ -339,242 +343,249 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _gear `*uc ~T0 @X0 -> 6 `i a ]
 [e = _gear F1217 ]
 "34
-[; ;main.c: 34:                     if (key == 0x37) {
+[; ;main.c: 34:                 if ((l_press++) > 100) {
 [v _l_press `ul ~T0 @X0 1 a ]
 [e = _l_press -> -> -> 0 `i `l `ul ]
-"38
-[; ;main.c: 38:                 }
-[e ( _eeprom_at24c04_str_write (2 , -> -> 0 `i `uc :s 7C ]
+"35
+[; ;main.c: 35:                     if (key == 0x37) {
+[v _key_st `uc ~T0 @X0 1 a ]
+[e = _key_st -> -> 0 `i `uc ]
 "39
-[; ;main.c: 39:             } else {
+[; ;main.c: 39:                 }
+[e ( _eeprom_at24c04_str_write (2 , -> -> 0 `i `uc :s 7C ]
+"40
+[; ;main.c: 40:             } else {
 [e :U 103 ]
 {
-"40
-[; ;main.c: 40:                 if (l_press < 200 && l_press > 0) {
-[e = _key ( _read_digital_keypad (1 -> -> 1 `i `uc ]
 "41
-[; ;main.c: 41:                     l_press = 0;
+[; ;main.c: 41:                 if (l_press < 100 && l_press > 0) {
+[e = _key ( _read_digital_keypad (1 -> -> 1 `i `uc ]
+"42
+[; ;main.c: 42:                     l_press = 0;
 [e ( __delay (1 -> * -> -> 20 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"43
-[; ;main.c: 43:                         key = 0x37;
+"44
+[; ;main.c: 44:                         key = 0x37;
 [e $ ! || == -> _key `i -> 55 `i == -> _key `i -> 47 `i 105  ]
 {
-"44
-[; ;main.c: 44:                     } else
+"45
+[; ;main.c: 45:                     } else
 [e $ ! != -> _key `i -> 63 `i 106  ]
 {
-"45
-[; ;main.c: 45:                         key = 0x2F;
-[e $ ! > ++ _l_press -> -> -> 1 `i `l `ul -> -> -> 200 `i `l `ul 107  ]
-{
 "46
-[; ;main.c: 46:                 }
-[e $ ! == -> _key `i -> 55 `i 108  ]
+[; ;main.c: 46:                         key = 0x2F;
+[e $ ! > ++ _l_press -> -> -> 1 `i `l `ul -> -> -> 100 `i `l `ul 107  ]
 {
 "47
-[; ;main.c: 47:             }
-[e = _key -> -> 68 `i `uc ]
+[; ;main.c: 47:                 }
+[e $ ! == -> _key `i -> 55 `i 108  ]
+{
 "48
-[; ;main.c: 48: 
+[; ;main.c: 48:             }
+[e = _key -> -> 68 `i `uc ]
+"49
+[; ;main.c: 49: 
 }
 [e $U 109  ]
 [e :U 108 ]
-"49
-[; ;main.c: 49:         } else
+"50
+[; ;main.c: 50:         } else
 [e = _key -> -> 85 `i `uc ]
 [e :U 109 ]
-"50
-[; ;main.c: 50:             l_press = 0;
+"51
+[; ;main.c: 51:             l_press = 0;
 }
 [e :U 107 ]
-"51
-[; ;main.c: 51: 
+"52
+[; ;main.c: 52: 
 }
 [e $U 110  ]
 [e :U 106 ]
 {
-"52
-[; ;main.c: 52: 
-[e $ ! && < _l_press -> -> -> 200 `i `l `ul > _l_press -> -> -> 0 `i `l `ul 111  ]
-{
 "53
 [; ;main.c: 53: 
-[e = _l_press -> -> -> 0 `i `l `ul ]
+[e $ ! && < _l_press -> -> -> 100 `i `l `ul > _l_press -> -> -> 0 `i `l `ul 111  ]
+{
 "54
 [; ;main.c: 54: 
+[e = _l_press -> -> -> 0 `i `l `ul ]
+"55
+[; ;main.c: 55: 
 [e $ ! == -> _key `i -> 55 `i 112  ]
 {
-"55
-[; ;main.c: 55:         speed = read_adc() / 10;
-[e = _key -> -> 55 `i `uc ]
 "56
-[; ;main.c: 56:         if (speed > 99) {
+[; ;main.c: 56:         speed = read_adc() / 10;
+[e = _key -> -> 55 `i `uc ]
+"57
+[; ;main.c: 57:         if (speed > 99) {
 }
 [e $U 113  ]
 [e :U 112 ]
-"57
-[; ;main.c: 57:             speed = 99;
+"58
+[; ;main.c: 58:             speed = 99;
 [e = _key -> -> 47 `i `uc ]
 [e :U 113 ]
-"58
-[; ;main.c: 58:         }
+"59
+[; ;main.c: 59:         }
 }
 [e :U 111 ]
-"59
-[; ;main.c: 59:         if (key == 0x3E) {
+"60
+[; ;main.c: 60:         if (key == 0x3E) {
 }
 [e :U 110 ]
-"61
-[; ;main.c: 61:             log_car_event(event, speed);
+"62
+[; ;main.c: 62:             log_car_event(event, speed);
 }
 [e $U 114  ]
 [e :U 105 ]
-"62
-[; ;main.c: 62:         } else if (key == 0x3D && gr < 6) {
+"63
+[; ;main.c: 63:         } else if (key == 0x3D && gr < 6) {
 [e = _l_press -> -> -> 0 `i `l `ul ]
 [e :U 114 ]
-"67
-[; ;main.c: 67:             gr--;
-[e = _speed -> / -> ( _read_adc ..  `ui -> -> 10 `i `ui `uc ]
 "68
-[; ;main.c: 68:             strcpy(event, gear[gr]);
+[; ;main.c: 68:             gr--;
+[e = _speed -> / -> ( _read_adc ..  `ui -> -> 10 `i `ui `uc ]
+"69
+[; ;main.c: 69:             strcpy(event, gear[gr]);
 [e $ ! > -> _speed `i -> 99 `i 115  ]
 {
-"69
-[; ;main.c: 69:             log_car_event(event, speed);
-[e = _speed -> -> 99 `i `uc ]
 "70
-[; ;main.c: 70:         } else if ((key == 0x37 || key == 0x2F) && control_flag == 0x10) {
+[; ;main.c: 70:             log_car_event(event, speed);
+[e = _speed -> -> 99 `i `uc ]
+"71
+[; ;main.c: 71:         } else if ((key == 0x37 || key == 0x2F) && control_flag == 0x10) {
 }
 [e :U 115 ]
-"71
-[; ;main.c: 71:             control_flag = 0x12;
+"72
+[; ;main.c: 72:             control_flag = 0x12;
 [e $ ! == -> _key `i -> 62 `i 116  ]
 {
-"72
-[; ;main.c: 72:             clear_screen();
-[e ( _strcpy (2 , &U _event :s 8C ]
 "73
-[; ;main.c: 73:             clcd_print("Enter Password", (0x80 + 0));
-[e ( _log_car_event (2 , &U _event _speed ]
+[; ;main.c: 73:             clear_screen();
+[e ( _strcpy (2 , &U _event :s 8C ]
 "74
-[; ;main.c: 74:             clcd_write((0xC0 + 4), 0);
+[; ;main.c: 74:             clcd_print("Enter Password", (0x80 + 0));
+[e ( _log_car_event (2 , &U _event _speed ]
+"75
+[; ;main.c: 75:             clcd_write((0xC0 + 4), 0);
 }
 [e $U 117  ]
 [e :U 116 ]
 [e $ ! && == -> _key `i -> 61 `i < -> _gr `i -> 6 `i 118  ]
 {
-"75
-[; ;main.c: 75:             clcd_write(0x0F, 0);
-[e ( _strcpy (2 , &U _event -> *U + &U _gear * -> _gr `ux -> -> # *U &U _gear `ui `ux `*Cuc ]
 "76
-[; ;main.c: 76:             reset_flag = 0X03;
-[e ++ _gr -> -> 1 `i `uc ]
+[; ;main.c: 76:             clcd_write(0x0F, 0);
+[e ( _strcpy (2 , &U _event -> *U + &U _gear * -> _gr `ux -> -> # *U &U _gear `ui `ux `*Cuc ]
 "77
-[; ;main.c: 77:             TMR2ON = 1;
-[e ( _log_car_event (2 , &U _event _speed ]
+[; ;main.c: 77:             reset_flag = 0X03;
+[e ++ _gr -> -> 1 `i `uc ]
 "78
-[; ;main.c: 78: 
+[; ;main.c: 78:             TMR2ON = 1;
+[e ( _log_car_event (2 , &U _event _speed ]
+"79
+[; ;main.c: 79: 
 }
 [e $U 119  ]
 [e :U 118 ]
 [e $ ! && == -> _key `i -> 59 `i > -> _gr `i -> 0 `i 120  ]
 {
-"79
-[; ;main.c: 79:         } else if ((control_flag == 0x13) && (key == 0x44)) {
-[e -- _gr -> -> 1 `i `uc ]
 "80
-[; ;main.c: 80:             switch (menu) {
-[e ( _strcpy (2 , &U _event -> *U + &U _gear * -> _gr `ux -> -> # *U &U _gear `ui `ux `*Cuc ]
+[; ;main.c: 80:         } else if ((control_flag == 0x13) && (key == 0x44)) {
+[e -- _gr -> -> 1 `i `uc ]
 "81
-[; ;main.c: 81:                 case 0:
-[e ( _log_car_event (2 , &U _event _speed ]
+[; ;main.c: 81:             switch (menu) {
+[e ( _strcpy (2 , &U _event -> *U + &U _gear * -> _gr `ux -> -> # *U &U _gear `ui `ux `*Cuc ]
 "82
-[; ;main.c: 82:                     control_flag = 0x14;
+[; ;main.c: 82:                 case 0:
+[e ( _log_car_event (2 , &U _event _speed ]
+"83
+[; ;main.c: 83:                     control_flag = 0x14;
 }
 [e $U 121  ]
 [e :U 120 ]
 [e $ ! && || == -> _key `i -> 55 `i == -> _key `i -> 47 `i == -> _control_flag `i -> 16 `i 122  ]
 {
-"83
-[; ;main.c: 83: 
-[e = _control_flag -> -> 18 `i `uc ]
 "84
-[; ;main.c: 84: 
-[e ( _clear_screen ..  ]
+[; ;main.c: 84:                     reset_flag = 0x60;
+[e = _control_flag -> -> 18 `i `uc ]
 "85
-[; ;main.c: 85:                     break;
-[e ( _clcd_print (2 , :s 9C -> + -> 128 `i -> 0 `i `uc ]
+[; ;main.c: 85: 
+[e ( _clear_screen ..  ]
 "86
-[; ;main.c: 86:                 case 1:
-[e ( _clcd_write (2 , -> + -> 192 `i -> 4 `i `uc -> -> 0 `i `uc ]
+[; ;main.c: 86:                     break;
+[e ( _clcd_print (2 , :s 9C -> + -> 128 `i -> 0 `i `uc ]
 "87
-[; ;main.c: 87:                     control_flag = 0x15;
-[e ( _clcd_write (2 , -> -> 15 `i `uc -> -> 0 `i `uc ]
+[; ;main.c: 87:                 case 1:
+[e ( _clcd_write (2 , -> + -> 192 `i -> 4 `i `uc -> -> 0 `i `uc ]
 "88
-[; ;main.c: 88:                     break;
-[e = _reset_flag -> -> 3 `i `uc ]
+[; ;main.c: 88:                     control_flag = 0x15;
+[e ( _clcd_write (2 , -> -> 15 `i `uc -> -> 0 `i `uc ]
 "89
-[; ;main.c: 89:                 case 2:
+[; ;main.c: 89:                     break;
+[e = _reset_flag -> -> 3 `i `uc ]
+"90
+[; ;main.c: 90:                 case 2:
 [e = _TMR2ON -> -> 1 `i `b ]
-"91
-[; ;main.c: 91:                     break;
+"92
+[; ;main.c: 92:                     break;
 }
 [e $U 123  ]
 [e :U 122 ]
 [e $ ! && == -> _control_flag `i -> 19 `i == -> _key `i -> 68 `i 124  ]
 {
-"92
-[; ;main.c: 92:                 case 3:
+"93
+[; ;main.c: 93:                 case 3:
 [e $U 126  ]
 {
-"93
-[; ;main.c: 93:                     control_flag = 0x17;
-[e :U 127 ]
 "94
-[; ;main.c: 94:                     break;
+[; ;main.c: 94:                     control_flag = 0x17;
+[e :U 127 ]
+"95
+[; ;main.c: 95:                     break;
 [e = _control_flag -> -> 20 `i `uc ]
-"97
-[; ;main.c: 97:                     break;
-[e $U 125  ]
+"96
+[; ;main.c: 96:                 case 4:
+[e = _reset_flag -> -> 96 `i `uc ]
 "98
-[; ;main.c: 98:             }
-[e :U 128 ]
+[; ;main.c: 98:                     break;
+[e $U 125  ]
 "99
-[; ;main.c: 99:         }
-[e = _control_flag -> -> 21 `i `uc ]
+[; ;main.c: 99:             }
+[e :U 128 ]
 "100
-[; ;main.c: 100: 
-[e $U 125  ]
+[; ;main.c: 100:         } else if ((control_flag == 0x14)&& (key == 0x44)) {
+[e = _control_flag -> -> 21 `i `uc ]
 "101
-[; ;main.c: 101: 
-[e :U 129 ]
+[; ;main.c: 101:             control_flag = 0x13;
+[e $U 125  ]
 "102
-[; ;main.c: 102:         switch (control_flag) {
-[e = _control_flag -> -> 22 `i `uc ]
+[; ;main.c: 102:             reset_flag = 0x05;
+[e :U 129 ]
 "103
-[; ;main.c: 103:             case 0x10:
-[e $U 125  ]
+[; ;main.c: 103:         }
+[e = _control_flag -> -> 22 `i `uc ]
 "104
-[; ;main.c: 104:                 display_dashboard(event, speed);
-[e :U 130 ]
+[; ;main.c: 104: 
+[e $U 125  ]
 "105
-[; ;main.c: 105:                 break;
-[e = _control_flag -> -> 23 `i `uc ]
+[; ;main.c: 105: 
+[e :U 130 ]
 "106
-[; ;main.c: 106:             case 0x12:
-[e $U 125  ]
+[; ;main.c: 106:         else if ((control_flag == 0x13)&& (key == 0x55)) {
+[e = _control_flag -> -> 23 `i `uc ]
 "107
-[; ;main.c: 107:                 switch (login(key, reset_flag)) {
-[e :U 131 ]
-"108
-[; ;main.c: 108:                     case 0x02:
-[e = _control_flag -> -> 24 `i `uc ]
-"109
-[; ;main.c: 109:                         clear_screen();
+[; ;main.c: 107:             clear_screen();
 [e $U 125  ]
+"108
+[; ;main.c: 108:             control_flag = 0x10;
+[e :U 131 ]
+"109
+[; ;main.c: 109:             ret_time_edit = 1;
+[e = _control_flag -> -> 24 `i `uc ]
 "110
-[; ;main.c: 110:                         control_flag = 0x10;
+[; ;main.c: 110:         }
+[e $U 125  ]
+"111
+[; ;main.c: 111: 
 }
 [e $U 125  ]
 [e :U 126 ]
@@ -585,115 +596,148 @@ Version 4.0 HI-TECH Software Intermediate Code
  , $ -> 4 `i 131
  125 ]
 [e :U 125 ]
-"111
-[; ;main.c: 111:                         clcd_write(0x0C, 0);
+"112
+[; ;main.c: 112:         switch (control_flag) {
 }
+[e $U 132  ]
 [e :U 124 ]
+[e $ ! && == -> _control_flag `i -> 20 `i == -> _key `i -> 68 `i 133  ]
+{
+"113
+[; ;main.c: 113:             case 0x10:
+[e = _control_flag -> -> 19 `i `uc ]
+"114
+[; ;main.c: 114:                 display_dashboard(event, speed);
+[e = _reset_flag -> -> 5 `i `uc ]
+"115
+[; ;main.c: 115: 
+}
+[e $U 134  ]
+"118
+[; ;main.c: 118:             case 0x12:
+[e :U 133 ]
+[e $ ! && == -> _control_flag `i -> 19 `i == -> _key `i -> 85 `i 135  ]
+{
+"119
+[; ;main.c: 119: 
+[e ( _clear_screen ..  ]
+"120
+[; ;main.c: 120:                 switch (login(key, reset_flag)) {
+[e = _control_flag -> -> 16 `i `uc ]
+"121
+[; ;main.c: 121:                     case 0x02:
+[e = _ret_time_edit -> -> 1 `i `uc ]
+"122
+[; ;main.c: 122:                         clear_screen();
+}
+[e :U 135 ]
+[e :U 134 ]
+[e :U 132 ]
 [e :U 123 ]
 [e :U 121 ]
 [e :U 119 ]
 [e :U 117 ]
-"114
-[; ;main.c: 114:                     case 0x01:
-[e $U 133  ]
-{
-"115
-[; ;main.c: 115:                         clear_screen();
-[e :U 134 ]
-"116
-[; ;main.c: 116:                         clcd_write(0x0C, 0);
-[e ( _display_dashboard (2 , &U _event _speed ]
-"117
-[; ;main.c: 117:                         TMR2ON = 0;
-[e $U 132  ]
-"118
-[; ;main.c: 118:                         control_flag = 0x13;
-[e :U 135 ]
-"119
-[; ;main.c: 119:                         reset_flag = 0x05;
+"124
+[; ;main.c: 124:                         clcd_write(0x0C, 0);
 [e $U 137  ]
 {
-"120
-[; ;main.c: 120: 
-[e :U 138 ]
-"121
-[; ;main.c: 121:                         continue;
-[e ( _clear_screen ..  ]
-"122
-[; ;main.c: 122: 
-[e = _control_flag -> -> 16 `i `uc ]
-"123
-[; ;main.c: 123:                 }
-[e ( _clcd_write (2 , -> -> 12 `i `uc -> -> 0 `i `uc ]
-"124
-[; ;main.c: 124:                 break;
-[e = _TMR2ON -> -> 0 `i `b ]
 "125
-[; ;main.c: 125:             case 0x13:
-[e $U 136  ]
+[; ;main.c: 125:                         TMR2ON = 0;
+[e :U 138 ]
 "126
-[; ;main.c: 126:                 menu = menu_screen(key, reset_flag);
-[e :U 139 ]
-"127
-[; ;main.c: 127:                 break;
-[e ( _clear_screen ..  ]
-"128
-[; ;main.c: 128:             case 0x14:
-[e ( _clcd_write (2 , -> -> 12 `i `uc -> -> 0 `i `uc ]
+[; ;main.c: 126:                         break;
+[e ( _display_dashboard (2 , &U _event _speed ]
 "129
-[; ;main.c: 129: 
-[e = _TMR2ON -> -> 0 `i `b ]
+[; ;main.c: 129:                         clcd_write(0x0C, 0);
+[e $U 136  ]
 "130
-[; ;main.c: 130:                 view_log(key,reset_flag);
-[e = _control_flag -> -> 19 `i `uc ]
-"131
-[; ;main.c: 131: 
-[e = _reset_flag -> -> 5 `i `uc ]
+[; ;main.c: 130:                         TMR2ON = 0;
+[e :U 139 ]
+"132
+[; ;main.c: 132:                         reset_flag = 0x05;
+[e $U 141  ]
+{
 "133
-[; ;main.c: 133:         reset_flag = 0X04;
-[e $U 102  ]
+[; ;main.c: 133: 
+[e :U 142 ]
+"134
+[; ;main.c: 134:                         continue;
+[e ( _clear_screen ..  ]
 "135
-[; ;main.c: 135:     return;
+[; ;main.c: 135: 
+[e = _control_flag -> -> 16 `i `uc ]
+"136
+[; ;main.c: 136:                 }
+[e ( _clcd_write (2 , -> -> 12 `i `uc -> -> 0 `i `uc ]
+"137
+[; ;main.c: 137:                 break;
+[e = _TMR2ON -> -> 0 `i `b ]
+"138
+[; ;main.c: 138:             case 0x13:
+[e $U 140  ]
+"139
+[; ;main.c: 139:                 menu = menu_screen(key, reset_flag);
+[e :U 143 ]
+"140
+[; ;main.c: 140:                 break;
+[e ( _clear_screen ..  ]
+"141
+[; ;main.c: 141:             case 0x14:
+[e ( _clcd_write (2 , -> -> 12 `i `uc -> -> 0 `i `uc ]
+"142
+[; ;main.c: 142: 
+[e = _TMR2ON -> -> 0 `i `b ]
+"143
+[; ;main.c: 143:                 view_log(key, reset_flag);
+[e = _control_flag -> -> 19 `i `uc ]
+"144
+[; ;main.c: 144: 
+[e = _reset_flag -> -> 5 `i `uc ]
+"146
+[; ;main.c: 146:         reset_flag = 0X04;
+[e $U 102  ]
+"148
+[; ;main.c: 148:     return;
+}
+[e $U 140  ]
+[e :U 141 ]
+[e [\ ( _login (2 , _key _reset_flag , $ -> 2 `i 142
+ , $ -> 1 `i 143
+ 140 ]
+[e :U 140 ]
+"149
+[; ;main.c: 149: }
+[e $U 136  ]
+"150
+[e :U 144 ]
+"151
+[e = _menu ( _menu_screen (2 , _key _reset_flag ]
+"152
+[e $U 136  ]
+"153
+[e :U 145 ]
+"155
+[e ( _view_log (2 , _key _reset_flag ]
+"157
 }
 [e $U 136  ]
 [e :U 137 ]
-[e [\ ( _login (2 , _key _reset_flag , $ -> 2 `i 138
- , $ -> 1 `i 139
+[e [\ _control_flag , $ -> 16 `i 138
+ , $ -> 18 `i 139
+ , $ -> 19 `i 144
+ , $ -> 20 `i 145
  136 ]
 [e :U 136 ]
-"136
-[; ;main.c: 136: }
-[e $U 132  ]
-"137
-[e :U 140 ]
-"138
-[e = _menu ( _menu_screen (2 , _key _reset_flag ]
-"139
-[e $U 132  ]
-"140
-[e :U 141 ]
-"142
-[e ( _view_log (2 , _key _reset_flag ]
-"144
-}
-[e $U 132  ]
-[e :U 133 ]
-[e [\ _control_flag , $ -> 16 `i 134
- , $ -> 18 `i 135
- , $ -> 19 `i 140
- , $ -> 20 `i 141
- 132 ]
-[e :U 132 ]
-"145
+"158
 [e = _reset_flag -> -> 4 `i `uc ]
-"146
+"159
 }
 [e :U 102 ]
 [e $U 103  ]
 [e :U 104 ]
-"147
+"160
 [e $UE 101  ]
-"148
+"161
 [e :UE 101 ]
 }
 [a 9C 69 110 116 101 114 32 80 97 115 115 119 111 114 100 0 ]

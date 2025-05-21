@@ -1945,7 +1945,7 @@ void init_timer2(void);
 # 9 "main.c" 2
 
 #pragma config WDTE = OFF
-
+ unsigned char ret_time_edit = 0;
 static void init_config(void) {
 
     init_i2c(100000);
@@ -1965,10 +1965,11 @@ void main(void) {
     init_config();
     unsigned char control_flag = 0x10, reset_flag;
     char event[3] = "ON";
-    unsigned char speed = 0, pre_key = 0;
+    unsigned char speed = 0;
     unsigned char gr = 0, key, menu;
     char *gear[] = {"GN", "GR", "G1", "G2", "G3", "G4"};
     unsigned long int l_press = 0;
+    unsigned char key_st = 0;
 
 
 
@@ -1979,14 +1980,14 @@ void main(void) {
 
         if (key == 0x37 || key == 0x2F) {
             if (key != 0x3F) {
-                if ((l_press++) > 200) {
+                if ((l_press++) > 100) {
                     if (key == 0x37) {
                         key = 0x44;
                     } else
                         key = 0x55;
                 }
             } else {
-                if (l_press < 200 && l_press > 0) {
+                if (l_press < 100 && l_press > 0) {
                     l_press = 0;
                     if (key == 0x37) {
                         key = 0x37;
@@ -2029,7 +2030,7 @@ void main(void) {
             switch (menu) {
                 case 0:
                     control_flag = 0x14;
-
+                    reset_flag = 0x60;
 
                     break;
                 case 1:
@@ -2045,14 +2046,26 @@ void main(void) {
                     control_flag = 0x18;
                     break;
             }
+        } else if ((control_flag == 0x14)&& (key == 0x44)) {
+            control_flag = 0x13;
+            reset_flag = 0x05;
         }
 
+
+        else if ((control_flag == 0x13)&& (key == 0x55)) {
+            clear_screen();
+            control_flag = 0x10;
+            ret_time_edit = 1;
+        }
 
         switch (control_flag) {
             case 0x10:
                 display_dashboard(event, speed);
+
+
                 break;
             case 0x12:
+
                 switch (login(key, reset_flag)) {
                     case 0x02:
                         clear_screen();
@@ -2076,7 +2089,7 @@ void main(void) {
                 break;
             case 0x14:
 
-                view_log(key,reset_flag);
+                view_log(key, reset_flag);
 
         }
         reset_flag = 0X04;
