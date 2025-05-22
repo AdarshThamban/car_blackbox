@@ -68,10 +68,12 @@ void log_event() {
     }
     addr = pos * 10 + addr;
     eeprom_at24c04_str_write(addr, log);
+    
 
 }
 
 void log_car_event(char event[], unsigned char speed) {
+    get_time(); // to refresh time from RTC -----------updation
     strncpy(log, time, 6); //hhmmss (6), no need of null
     strncpy(log + 6, event, 2); //ON
     log[8] = speed / 10 + '0';

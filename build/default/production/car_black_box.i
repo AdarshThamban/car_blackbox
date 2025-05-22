@@ -2007,9 +2007,11 @@ void log_event() {
     addr = pos * 10 + addr;
     eeprom_at24c04_str_write(addr, log);
 
+
 }
 
 void log_car_event(char event[], unsigned char speed) {
+    get_time();
     strncpy(log, time, 6);
     strncpy(log + 6, event, 2);
     log[8] = speed / 10 + '0';

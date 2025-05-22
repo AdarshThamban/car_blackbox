@@ -5,9 +5,9 @@
         <group>
             <file>file:/C:/Users/USER/Desktop/car_blackbox/CarBlackBox.X/main.h</file>
             <file>file:/C:/Users/USER/Desktop/car_blackbox/CarBlackBox.X/main.c</file>
+            <file>file:/C:/Users/USER/Desktop/car_blackbox/CarBlackBox.X/external_eeprom.c</file>
             <file>file:/C:/Users/USER/Desktop/car_blackbox/CarBlackBox.X/car_black_box.h</file>
             <file>file:/C:/Users/USER/Desktop/car_blackbox/CarBlackBox.X/isr.c</file>
-            <file>file:/C:/Users/USER/Desktop/car_blackbox/CarBlackBox.X/digital_keypad.c</file>
             <file>file:/C:/Users/USER/Desktop/car_blackbox/CarBlackBox.X/car_black_box.c</file>
         </group>
     </open-files>
