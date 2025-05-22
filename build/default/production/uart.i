@@ -7,6 +7,8 @@
 # 1 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
 # 1 "uart.c" 2
+# 1 "./main.h" 1
+# 11 "./main.h"
 # 1 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 1 3
 # 18 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 3
 extern const char __xc8_OPTIM_SPEED;
@@ -1819,19 +1821,124 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
+# 12 "./main.h" 2
+# 1 "./adc.h" 1
+# 12 "./adc.h"
+void init_adc(void);
+unsigned short read_adc(void);
+# 13 "./main.h" 2
+# 1 "./clcd.h" 1
+# 37 "./clcd.h"
+void init_clcd(void);
+void clcd_putch(const char data, unsigned char addr);
+void clcd_print(const char *str, unsigned char addr);
+void clcd_write(unsigned char byte, unsigned char mode);
+# 14 "./main.h" 2
+# 1 "./digital_keypad.h" 1
+# 33 "./digital_keypad.h"
+unsigned char read_digital_keypad(unsigned char mode);
+void init_digital_keypad(void);
+# 15 "./main.h" 2
+# 1 "./ds1307.h" 1
+# 20 "./ds1307.h"
+void init_ds1307(void);
+unsigned char read_ds1307(unsigned char addr);
+void write_ds1307(unsigned char addr, unsigned char data);
+# 16 "./main.h" 2
+# 1 "./i2c.h" 1
+# 14 "./i2c.h"
+void init_i2c(unsigned long baud);
+void i2c_start(void);
+void i2c_rep_start(void);
+void i2c_stop(void);
+unsigned char i2c_read(unsigned char ack);
+int i2c_write(unsigned char data);
+# 17 "./main.h" 2
+# 1 "./car_black_box.h" 1
+# 11 "./car_black_box.h"
+void display_dashboard(char event[], unsigned char speed);
+void log_car_event(char event[], unsigned char speed);
+void clear_screen(void);
+unsigned char login(unsigned char key, unsigned char reset_flag);
+unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
+void view_log(unsigned char key, unsigned char);
+void display_logs(int i);
+void clear_log(void);
+void download_log(void);
+# 18 "./main.h" 2
+# 1 "./external_eeprom.h" 1
+# 15 "./external_eeprom.h"
+unsigned char eeprom_read(unsigned char addr);
+void eeprom_write(unsigned char addr, unsigned char data);
+void eeprom_write_string(unsigned char addr, char *data);
+# 19 "./main.h" 2
+# 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
+# 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
+# 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\bits/alltypes.h" 1 3
+# 421 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\bits/alltypes.h" 3
+typedef struct __locale_struct * locale_t;
+# 26 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 2 3
+
+void *memcpy (void *restrict, const void *restrict, size_t);
+void *memmove (void *, const void *, size_t);
+void *memset (void *, int, size_t);
+int memcmp (const void *, const void *, size_t);
+void *memchr (const void *, int, size_t);
+
+char *strcpy (char *restrict, const char *restrict);
+char *strncpy (char *restrict, const char *restrict, size_t);
+
+char *strcat (char *restrict, const char *restrict);
+char *strncat (char *restrict, const char *restrict, size_t);
+
+int strcmp (const char *, const char *);
+int strncmp (const char *, const char *, size_t);
+
+int strcoll (const char *, const char *);
+size_t strxfrm (char *restrict, const char *restrict, size_t);
+
+char *strchr (const char *, int);
+char *strrchr (const char *, int);
+
+size_t strcspn (const char *, const char *);
+size_t strspn (const char *, const char *);
+char *strpbrk (const char *, const char *);
+char *strstr (const char *, const char *);
+char *strtok (char *restrict, const char *restrict);
+
+size_t strlen (const char *);
+
+char *strerror (int);
+
+
+
+
+char *strtok_r (char *restrict, const char *restrict, char **restrict);
+int strerror_r (int, char *, size_t);
+char *stpcpy(char *restrict, const char *restrict);
+char *stpncpy(char *restrict, const char *restrict, size_t);
+size_t strnlen (const char *, size_t);
+char *strdup (const char *);
+char *strndup (const char *, size_t);
+char *strsignal(int);
+char *strerror_l (int, locale_t);
+int strcoll_l (const char *, const char *, locale_t);
+size_t strxfrm_l (char *restrict, const char *restrict, size_t, locale_t);
+
+
+
+
+void *memccpy (void *restrict, const void *restrict, int, size_t);
+# 20 "./main.h" 2
+# 1 "./timers.h" 1
+# 11 "./timers.h"
+void init_timer0(void);
+void init_timer2(void);
+# 21 "./main.h" 2
 # 1 "uart.c" 2
 
-# 1 "./uart.h" 1
-# 10 "./uart.h"
-void init_uart(unsigned long baud);
-unsigned char getchar(void);
-void putchar(unsigned char data);
-void puts(const char *s);
-# 2 "uart.c" 2
 
-
-void init_uart(unsigned long baud)
-{
+void init_uart(unsigned long baud) {
 
     SPEN = 1;
 
@@ -1842,11 +1949,9 @@ void init_uart(unsigned long baud)
     SPBRG = (20000000 / (16 * baud)) - 1;
 }
 
-unsigned char getchar(void)
-{
+unsigned char getchar(void) {
 
-    while (RCIF != 1)
-    {
+    while (RCIF != 1) {
         continue;
     }
 
@@ -1857,14 +1962,12 @@ unsigned char getchar(void)
     return RCREG;
 }
 
-void putchar(unsigned char data)
-{
+void putchar(unsigned char data) {
 
     TXREG = data;
 
 
-    do
-    {
+    do {
         continue;
     } while (TXIF != 1);
 
@@ -1872,10 +1975,8 @@ void putchar(unsigned char data)
     TXIF = 0;
 }
 
-void puts(const char *s)
-{
-    while (*s)
-    {
+void puts(const char *s) {
+    while (*s) {
         putchar(*s++);
     }
 }

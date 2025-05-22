@@ -200,139 +200,113 @@ Version 4.0 HI-TECH Software Intermediate Code
 "2363
 [; ;C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f877a.h: 2363: __asm("EECON2 equ 018Dh");
 [; <" EECON2 equ 018Dh ;# ">
-"4 uart.c
-[; ;uart.c: 4: void init_uart(unsigned long baud)
+"3 uart.c
+[; ;uart.c: 3: void init_uart(unsigned long baud) {
 [v _init_uart `(v ~T0 @X0 1 ef1`ul ]
-"5
-[; ;uart.c: 5: {
 {
 [e :U _init_uart ]
-"4
-[; ;uart.c: 4: void init_uart(unsigned long baud)
 [v _baud `ul ~T0 @X0 1 r1 ]
-"5
-[; ;uart.c: 5: {
 [f ]
-"7
-[; ;uart.c: 7:     SPEN = 1;
+"5
+[; ;uart.c: 5:     SPEN = 1;
 [e = _SPEN -> -> 1 `i `b ]
-"10
-[; ;uart.c: 10:     CREN = 1;
+"8
+[; ;uart.c: 8:     CREN = 1;
 [e = _CREN -> -> 1 `i `b ]
-"13
-[; ;uart.c: 13:     SPBRG = (20000000 / (16 * baud)) - 1;
+"11
+[; ;uart.c: 11:     SPBRG = (20000000 / (16 * baud)) - 1;
 [e = _SPBRG -> - / -> -> 20000000 `l `ul * -> -> -> 16 `i `l `ul _baud -> -> -> 1 `i `l `ul `uc ]
-"14
-[; ;uart.c: 14: }
-[e :UE 99 ]
+"12
+[; ;uart.c: 12: }
+[e :UE 100 ]
 }
-"16
-[; ;uart.c: 16: unsigned char getchar(void)
+"14
+[; ;uart.c: 14: unsigned char getchar(void) {
 [v _getchar `(uc ~T0 @X0 1 ef ]
-"17
-[; ;uart.c: 17: {
 {
 [e :U _getchar ]
 [f ]
-"19
-[; ;uart.c: 19:     while (RCIF != 1)
-[e $U 101  ]
-[e :U 102 ]
-"20
-[; ;uart.c: 20:     {
-{
-"21
-[; ;uart.c: 21:         continue;
-[e $U 101  ]
-"22
-[; ;uart.c: 22:     }
-}
-[e :U 101 ]
-"19
-[; ;uart.c: 19:     while (RCIF != 1)
-[e $ != -> _RCIF `i -> 1 `i 102  ]
+"16
+[; ;uart.c: 16:     while (RCIF != 1) {
+[e $U 102  ]
 [e :U 103 ]
-"25
-[; ;uart.c: 25:     RCIF = 0;
-[e = _RCIF -> -> 0 `i `b ]
-"28
-[; ;uart.c: 28:     return RCREG;
-[e ) _RCREG ]
-[e $UE 100  ]
-"29
-[; ;uart.c: 29: }
-[e :UE 100 ]
+{
+"17
+[; ;uart.c: 17:         continue;
+[e $U 102  ]
+"18
+[; ;uart.c: 18:     }
 }
-"31
-[; ;uart.c: 31: void putchar(unsigned char data)
+[e :U 102 ]
+"16
+[; ;uart.c: 16:     while (RCIF != 1) {
+[e $ != -> _RCIF `i -> 1 `i 103  ]
+[e :U 104 ]
+"21
+[; ;uart.c: 21:     RCIF = 0;
+[e = _RCIF -> -> 0 `i `b ]
+"24
+[; ;uart.c: 24:     return RCREG;
+[e ) _RCREG ]
+[e $UE 101  ]
+"25
+[; ;uart.c: 25: }
+[e :UE 101 ]
+}
+"27
+[; ;uart.c: 27: void putchar(unsigned char data) {
 [v _putchar `(v ~T0 @X0 1 ef1`uc ]
-"32
-[; ;uart.c: 32: {
 {
 [e :U _putchar ]
-"31
-[; ;uart.c: 31: void putchar(unsigned char data)
 [v _data `uc ~T0 @X0 1 r1 ]
-"32
-[; ;uart.c: 32: {
 [f ]
-"34
-[; ;uart.c: 34:     TXREG = data;
+"29
+[; ;uart.c: 29:     TXREG = data;
 [e = _TXREG _data ]
-"37
-[; ;uart.c: 37:     do
-[e :U 107 ]
-"38
-[; ;uart.c: 38:     {
+"32
+[; ;uart.c: 32:     do {
+[e :U 108 ]
 {
-"39
-[; ;uart.c: 39:         continue;
-[e $U 105  ]
-"40
-[; ;uart.c: 40:     } while (TXIF != 1);
+"33
+[; ;uart.c: 33:         continue;
+[e $U 106  ]
+"34
+[; ;uart.c: 34:     } while (TXIF != 1);
 }
-[e :U 105 ]
-[e $ != -> _TXIF `i -> 1 `i 107  ]
 [e :U 106 ]
-"43
-[; ;uart.c: 43:     TXIF = 0;
+[e $ != -> _TXIF `i -> 1 `i 108  ]
+[e :U 107 ]
+"37
+[; ;uart.c: 37:     TXIF = 0;
 [e = _TXIF -> -> 0 `i `b ]
-"44
-[; ;uart.c: 44: }
-[e :UE 104 ]
+"38
+[; ;uart.c: 38: }
+[e :UE 105 ]
 }
-"46
-[; ;uart.c: 46: void puts(const char *s)
+"40
+[; ;uart.c: 40: void puts(const char *s) {
 [v _puts `(v ~T0 @X0 1 ef1`*Cuc ]
-"47
-[; ;uart.c: 47: {
 {
 [e :U _puts ]
-"46
-[; ;uart.c: 46: void puts(const char *s)
 [v _s `*Cuc ~T0 @X0 1 r1 ]
-"47
-[; ;uart.c: 47: {
 [f ]
-"48
-[; ;uart.c: 48:     while (*s)
-[e $U 109  ]
-[e :U 110 ]
-"49
-[; ;uart.c: 49:     {
-{
-"50
-[; ;uart.c: 50:         putchar(*s++);
-[e ( _putchar (1 -> *U ++ _s * -> -> 1 `i `x -> -> # *U _s `i `x `uc ]
-"51
-[; ;uart.c: 51:     }
-}
-[e :U 109 ]
-"48
-[; ;uart.c: 48:     while (*s)
-[e $ != -> *U _s `i -> 0 `i 110  ]
+"41
+[; ;uart.c: 41:     while (*s) {
+[e $U 110  ]
 [e :U 111 ]
-"52
-[; ;uart.c: 52: }
-[e :UE 108 ]
+{
+"42
+[; ;uart.c: 42:         putchar(*s++);
+[e ( _putchar (1 -> *U ++ _s * -> -> 1 `i `x -> -> # *U _s `i `x `uc ]
+"43
+[; ;uart.c: 43:     }
+}
+[e :U 110 ]
+"41
+[; ;uart.c: 41:     while (*s) {
+[e $ != -> *U _s `i -> 0 `i 111  ]
+[e :U 112 ]
+"44
+[; ;uart.c: 44: }
+[e :UE 109 ]
 }

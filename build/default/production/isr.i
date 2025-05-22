@@ -1865,13 +1865,13 @@ unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
 void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
 void clear_log(void);
+void download_log(void);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
-# 18 "./external_eeprom.h"
-void init_at24c04(void);
-unsigned char eeprom_at24c04_read(unsigned char addr);
-void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
-void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
+# 15 "./external_eeprom.h"
+unsigned char eeprom_read(unsigned char addr);
+void eeprom_write(unsigned char addr, unsigned char data);
+void eeprom_write_string(unsigned char addr, char *data);
 # 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3

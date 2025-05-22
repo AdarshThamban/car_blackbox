@@ -1872,13 +1872,13 @@ unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
 void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
 void clear_log(void);
+void download_log(void);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
-# 18 "./external_eeprom.h"
-void init_at24c04(void);
-unsigned char eeprom_at24c04_read(unsigned char addr);
-void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
-void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
+# 15 "./external_eeprom.h"
+unsigned char eeprom_read(unsigned char addr);
+void eeprom_write(unsigned char addr, unsigned char data);
+void eeprom_write_string(unsigned char addr, char *data);
 # 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
@@ -1948,17 +1948,30 @@ void init_timer2(void);
 #pragma config WDTE = OFF
  unsigned char ret_time_edit = 0;
 static void init_config(void) {
-
+# 26 "main.c"
     init_i2c(100000);
+
+
     init_ds1307();
+
+
     init_clcd();
+
+
     init_digital_keypad();
+
+
     init_adc();
+
+
     init_timer2();
     GIE = 1;
     PEIE = 1;
 
 
+    init_uart(9600);
+
+    puts("UART Test Code\n\r");
 
 }
 
@@ -2041,7 +2054,12 @@ void main(void) {
                     break;
                 case 2:
                     control_flag = 0x16;
+                    clear_screen();
+                    clcd_print(" OPEN TERATERM ", (0x80 + 0));
+                    _delay((unsigned long)((2000)*(20000000/4000.0)));
+                    reset_flag = 0x05;
                     break;
+
                 case 3:
                     control_flag = 0x17;
                     break;
@@ -2100,6 +2118,14 @@ void main(void) {
                 control_flag = 0x13;
 
                 clear_screen();
+                break;
+            case 0x16:
+                download_log();
+                control_flag = 0x13;
+                reset_flag = 0x05;
+                clear_screen();
+                break;
+
 
 
         }

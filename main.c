@@ -11,16 +11,41 @@
  unsigned char ret_time_edit = 0;////llllllloooooooooooooooooong prss
 static void init_config(void) {
     //write initialization code here
-    init_i2c(100000); //IT SHOULD BE FIRST 
+//    init_i2c(100000); //IT SHOULD BE FIRST 
+//    init_ds1307();
+//    init_clcd();
+//    init_digital_keypad();
+//    init_adc();
+//    init_timer2();
+//    GIE = 1;
+//    PEIE = 1;
+//    init_uart(9600);
+ // initialization
+   //Initializations here
+    // To Initialize I2C
+    init_i2c(100000);
+
+    // To Initialize RTC
     init_ds1307();
+
+    // To Initialize CLCD
     init_clcd();
+
+    // To Initialize DKP
     init_digital_keypad();
+
+    // To Initialize ADC
     init_adc();
+
+    // To Initialize Timer2
     init_timer2();
     GIE = 1;
     PEIE = 1;
-    //init_at24c04();
 
+    //To Initialize UART Polling
+    init_uart(9600);
+
+    puts("UART Test Code\n\r");
 
 }
 
@@ -103,7 +128,12 @@ void main(void) {
                     break;
                 case 2:
                     control_flag = DOWNLOAD_LOG_FLAG;
+                    clear_screen();
+                    clcd_print(" OPEN TERATERM ", LINE1(0));
+                    __delay_ms(2000);
+                    reset_flag = RESET_LOGIN_MENU;
                     break;
+                    
                 case 3:
                     control_flag = SET_TIME_FLAG;
                     break;
@@ -162,6 +192,14 @@ void main(void) {
                 control_flag = LOGIN_MENU_FLAG;
                 //reset_flag = RESET_LOGIN_MENU;
                 clear_screen();
+                break;
+            case DOWNLOAD_LOG_FLAG:
+                download_log();
+                control_flag = LOGIN_MENU_FLAG;
+                reset_flag = RESET_LOGIN_MENU;
+                clear_screen();
+                break;
+                
                 
 
         }

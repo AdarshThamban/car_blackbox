@@ -1872,13 +1872,13 @@ unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
 void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
 void clear_log(void);
+void download_log(void);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
-# 18 "./external_eeprom.h"
-void init_at24c04(void);
-unsigned char eeprom_at24c04_read(unsigned char addr);
-void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
-void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
+# 15 "./external_eeprom.h"
+unsigned char eeprom_read(unsigned char addr);
+void eeprom_write(unsigned char addr, unsigned char data);
+void eeprom_write_string(unsigned char addr, char *data);
 # 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
@@ -2057,8 +2057,8 @@ void clear_screen() {
 }
 
 unsigned char login(unsigned char key, unsigned char reset_flag) {
-    if(ret_time_edit == 1){
-        ret_time =0;
+    if (ret_time_edit == 1) {
+        ret_time = 0;
         clear_screen();
     }
 
@@ -2218,11 +2218,82 @@ void view_log(unsigned char key, unsigned char reset_flag) {
 
     }
 }
-void clear_log(){
+
+void clear_log() {
 
     pos = -1;
     roll_over_flag = 0;
     clcd_print("  logs cleared  ", (0x80 + 0));
     _delay((unsigned long)((2000)*(20000000/4000.0)));
     clear_screen();
+}
+# 389 "car_black_box.c"
+void download_log(void) {
+    int index = -1;
+    char records[11];
+    records[10] = '\0';
+    int position = 0;
+    unsigned char addr;
+
+
+    if (pos == -1) {
+        puts("No logs available");
+    }
+    else {
+        puts("Logs :");
+        putchar('\n');
+
+        puts(" #     Time        Event       Speed");
+        putchar('\n');
+
+
+        while (index < pos) {
+
+            position = index + 1;
+
+            index++;
+
+
+            for (int i = 0; i < 10; i++) {
+
+                addr = (unsigned char) (position * 10 + 5 + i);
+
+                records[i] = eeprom_read(addr);
+            }
+
+
+            if (index < 10)
+                putchar(' ');
+
+            putchar(index + '0');
+            puts("   ");
+
+
+            putchar(records[0]);
+            putchar(records[1]);
+            putchar(':');
+
+
+            putchar(records[2]);
+            putchar(records[3]);
+            putchar(':');
+
+
+            putchar(records[4]);
+            putchar(records[5]);
+
+            puts("      ");
+
+
+            putchar(records[6]);
+            putchar(records[7]);
+
+            puts("          ");
+
+
+            putchar(records[8]);
+            putchar(records[9]);
+            putchar('\n');
+        }
+    }
 }

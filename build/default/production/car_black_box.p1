@@ -8,9 +8,9 @@ Version 4.0 HI-TECH Software Intermediate Code
 "39
 [; ;./clcd.h: 39: void clcd_print(const char *str, unsigned char addr);
 [v _clcd_print `(v ~T0 @X0 0 ef2`*Cuc`uc ]
-"21 ./external_eeprom.h
-[; ;./external_eeprom.h: 21: void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
-[v _eeprom_at24c04_str_write `(v ~T0 @X0 0 ef2`uc`*uc ]
+"70 car_black_box.c
+[; ;car_black_box.c: 70:     eeprom_at24c04_str_write(addr, log);
+[v _eeprom_at24c04_str_write `(i ~T0 @X0 0 e? ]
 "34 C:\Program Files\Microchip\xc8\v2.46\pic\include\c99\string.h
 [; ;C:\Program Files\Microchip\xc8\v2.46\pic\include\c99\string.h: 34: char *strncpy (char *restrict, const char *restrict, size_t);
 [v _strncpy `(*uc ~T0 @X0 0 ef3`*uc`*Cuc`ui ]
@@ -27,12 +27,21 @@ Version 4.0 HI-TECH Software Intermediate Code
 "10 car_black_box.c
 [; ;car_black_box.c: 10: extern char ret_time_edit;
 [v _ret_time_edit `uc ~T0 @X0 0 e ]
-"19 ./external_eeprom.h
-[; ;./external_eeprom.h: 19: unsigned char eeprom_at24c04_read(unsigned char addr);
-[v _eeprom_at24c04_read `(uc ~T0 @X0 0 ef1`uc ]
+"163
+[; ;car_black_box.c: 163:             s_password[j] = eeprom_at24c04_read(j);
+[v _eeprom_at24c04_read `(i ~T0 @X0 0 e? ]
 "40 C:\Program Files\Microchip\xc8\v2.46\pic\include\c99\string.h
 [; ;C:\Program Files\Microchip\xc8\v2.46\pic\include\c99\string.h: 40: int strncmp (const char *, const char *, size_t);
 [v _strncmp `(i ~T0 @X0 0 ef3`*Cuc`*Cuc`ui ]
+"398 car_black_box.c
+[; ;car_black_box.c: 398:         puts("No logs available");
+[v _puts `(i ~T0 @X0 0 e? ]
+"402
+[; ;car_black_box.c: 402:         putchar('\n');
+[v _putchar `(i ~T0 @X0 0 e? ]
+"15 ./external_eeprom.h
+[; ;./external_eeprom.h: 15: unsigned char eeprom_read(unsigned char addr);
+[v _eeprom_read `(uc ~T0 @X0 0 ef1`uc ]
 "54 C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f877a.h
 [; ;C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\pic\include\proc\pic16f877a.h: 54: __asm("INDF equ 00h");
 [; <" INDF equ 00h ;# ">
@@ -388,7 +397,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e = _addr -> + * _pos -> 10 `i -> _addr `i `uc ]
 "70
 [; ;car_black_box.c: 70:     eeprom_at24c04_str_write(addr, log);
-[e ( _eeprom_at24c04_str_write (2 , -> _addr `uc -> &U _log `*uc ]
+[e ( _eeprom_at24c04_str_write , -> _addr `i &U _log ]
 "73
 [; ;car_black_box.c: 73: }
 [e :UE 103 ]
@@ -436,25 +445,25 @@ Version 4.0 HI-TECH Software Intermediate Code
 [f ]
 "86
 [; ;car_black_box.c: 86:     static unsigned char menu_pos;
-[v F1230 `uc ~T0 @X0 1 s menu_pos ]
+[v F1232 `uc ~T0 @X0 1 s menu_pos ]
 "87
 [; ;car_black_box.c: 87:     if (reset_flag == 0x05) {
 [e $ ! == -> _reset_flag `i -> 5 `i 107  ]
 {
 "89
 [; ;car_black_box.c: 89:         menu_pos = 0;
-[e = F1230 -> -> 0 `i `uc ]
+[e = F1232 -> -> 0 `i `uc ]
 "91
 [; ;car_black_box.c: 91:     }
 }
 [e :U 107 ]
 "93
 [; ;car_black_box.c: 93:     if (key == 0x37 && menu_pos < 4) {
-[e $ ! && == -> _key `i -> 55 `i < -> F1230 `i -> 4 `i 108  ]
+[e $ ! && == -> _key `i -> 55 `i < -> F1232 `i -> 4 `i 108  ]
 {
 "94
 [; ;car_black_box.c: 94:         menu_pos++;
-[e ++ F1230 -> -> 1 `i `uc ]
+[e ++ F1232 -> -> 1 `i `uc ]
 "96
 [; ;car_black_box.c: 96:         clear_screen();
 [e ( _clear_screen ..  ]
@@ -463,11 +472,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 109  ]
 [e :U 108 ]
-[e $ ! && == -> _key `i -> 47 `i > -> F1230 `i -> 0 `i 110  ]
+[e $ ! && == -> _key `i -> 47 `i > -> F1232 `i -> 0 `i 110  ]
 {
 "98
 [; ;car_black_box.c: 98:         menu_pos--;
-[e -- F1230 -> -> 1 `i `uc ]
+[e -- F1232 -> -> 1 `i `uc ]
 "99
 [; ;car_black_box.c: 99:         clear_screen();
 [e ( _clear_screen ..  ]
@@ -478,14 +487,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 109 ]
 "102
 [; ;car_black_box.c: 102:     if (menu_pos == 4) {
-[e $ ! == -> F1230 `i -> 4 `i 111  ]
+[e $ ! == -> F1232 `i -> 4 `i 111  ]
 {
 "103
 [; ;car_black_box.c: 103:         clcd_print(menu[menu_pos - 1], (0x80 + 2));
-[e ( _clcd_print (2 , -> *U + &U _menu * -> -> - -> F1230 `i -> 1 `i `ui `ux -> -> # *U &U _menu `ui `ux `*Cuc -> + -> 128 `i -> 2 `i `uc ]
+[e ( _clcd_print (2 , -> *U + &U _menu * -> -> - -> F1232 `i -> 1 `i `ui `ux -> -> # *U &U _menu `ui `ux `*Cuc -> + -> 128 `i -> 2 `i `uc ]
 "104
 [; ;car_black_box.c: 104:         clcd_print(menu[menu_pos ], (0xC0 + 2));
-[e ( _clcd_print (2 , -> *U + &U _menu * -> F1230 `ux -> -> # *U &U _menu `ui `ux `*Cuc -> + -> 192 `i -> 2 `i `uc ]
+[e ( _clcd_print (2 , -> *U + &U _menu * -> F1232 `ux -> -> # *U &U _menu `ui `ux `*Cuc -> + -> 192 `i -> 2 `i `uc ]
 "105
 [; ;car_black_box.c: 105:         clcd_putch('*', (0xC0 + 0));
 [e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + -> 192 `i -> 0 `i `uc ]
@@ -497,10 +506,10 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "107
 [; ;car_black_box.c: 107:         clcd_print(menu[menu_pos], (0x80 + 2));
-[e ( _clcd_print (2 , -> *U + &U _menu * -> F1230 `ux -> -> # *U &U _menu `ui `ux `*Cuc -> + -> 128 `i -> 2 `i `uc ]
+[e ( _clcd_print (2 , -> *U + &U _menu * -> F1232 `ux -> -> # *U &U _menu `ui `ux `*Cuc -> + -> 128 `i -> 2 `i `uc ]
 "108
 [; ;car_black_box.c: 108:         clcd_print(menu[menu_pos + 1], (0xC0 + 2));
-[e ( _clcd_print (2 , -> *U + &U _menu * -> -> + -> F1230 `i -> 1 `i `ui `ux -> -> # *U &U _menu `ui `ux `*Cuc -> + -> 192 `i -> 2 `i `uc ]
+[e ( _clcd_print (2 , -> *U + &U _menu * -> -> + -> F1232 `i -> 1 `i `ui `ux -> -> # *U &U _menu `ui `ux `*Cuc -> + -> 192 `i -> 2 `i `uc ]
 "109
 [; ;car_black_box.c: 109:         clcd_putch('*', (0x80 + 0));
 [e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + -> 128 `i -> 0 `i `uc ]
@@ -510,7 +519,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 112 ]
 "111
 [; ;car_black_box.c: 111:     return menu_pos;
-[e ) F1230 ]
+[e ) F1232 ]
 [e $UE 106  ]
 "113
 [; ;car_black_box.c: 113: }
@@ -541,11 +550,11 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _reset_flag `uc ~T0 @X0 1 r2 ]
 [f ]
 "122
-[; ;car_black_box.c: 122:     if(ret_time_edit == 1){
+[; ;car_black_box.c: 122:     if (ret_time_edit == 1) {
 [e $ ! == -> _ret_time_edit `i -> 1 `i 115  ]
 {
 "123
-[; ;car_black_box.c: 123:         ret_time =0;
+[; ;car_black_box.c: 123:         ret_time = 0;
 [e = _ret_time -> -> 0 `i `uc ]
 "124
 [; ;car_black_box.c: 124:         clear_screen();
@@ -556,38 +565,38 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 115 ]
 "127
 [; ;car_black_box.c: 127:     static char u_password[4];
-[v F1235 `uc ~T0 @X0 -> 4 `i s u_password ]
+[v F1237 `uc ~T0 @X0 -> 4 `i s u_password ]
 "128
 [; ;car_black_box.c: 128:     static unsigned char i;
-[v F1236 `uc ~T0 @X0 1 s i ]
+[v F1238 `uc ~T0 @X0 1 s i ]
 "129
 [; ;car_black_box.c: 129:     static unsigned char attempt_left;
-[v F1237 `uc ~T0 @X0 1 s attempt_left ]
+[v F1239 `uc ~T0 @X0 1 s attempt_left ]
 "131
 [; ;car_black_box.c: 131:     if (reset_flag == 0X03) {
 [e $ ! == -> _reset_flag `i -> 3 `i 116  ]
 {
 "133
 [; ;car_black_box.c: 133:         i = 0;
-[e = F1236 -> -> 0 `i `uc ]
+[e = F1238 -> -> 0 `i `uc ]
 "134
 [; ;car_black_box.c: 134:         u_password[0] = '\0';
-[e = *U + &U F1235 * -> -> -> 0 `i `ui `ux -> -> # *U &U F1235 `ui `ux -> -> 0 `ui `uc ]
+[e = *U + &U F1237 * -> -> -> 0 `i `ui `ux -> -> # *U &U F1237 `ui `ux -> -> 0 `ui `uc ]
 "135
 [; ;car_black_box.c: 135:         u_password[1] = '\0';
-[e = *U + &U F1235 * -> -> -> 1 `i `ui `ux -> -> # *U &U F1235 `ui `ux -> -> 0 `ui `uc ]
+[e = *U + &U F1237 * -> -> -> 1 `i `ui `ux -> -> # *U &U F1237 `ui `ux -> -> 0 `ui `uc ]
 "136
 [; ;car_black_box.c: 136:         u_password[2] = '\0';
-[e = *U + &U F1235 * -> -> -> 2 `i `ui `ux -> -> # *U &U F1235 `ui `ux -> -> 0 `ui `uc ]
+[e = *U + &U F1237 * -> -> -> 2 `i `ui `ux -> -> # *U &U F1237 `ui `ux -> -> 0 `ui `uc ]
 "137
 [; ;car_black_box.c: 137:         u_password[3] = '\0';
-[e = *U + &U F1235 * -> -> -> 3 `i `ui `ux -> -> # *U &U F1235 `ui `ux -> -> 0 `ui `uc ]
+[e = *U + &U F1237 * -> -> -> 3 `i `ui `ux -> -> # *U &U F1237 `ui `ux -> -> 0 `ui `uc ]
 "139
 [; ;car_black_box.c: 139:         key = 0x3F;
 [e = _key -> -> 63 `i `uc ]
 "140
 [; ;car_black_box.c: 140:         attempt_left = 3;
-[e = F1237 -> -> 3 `i `uc ]
+[e = F1239 -> -> 3 `i `uc ]
 "141
 [; ;car_black_box.c: 141:         ret_time = 5;
 [e = _ret_time -> -> 5 `i `uc ]
@@ -612,17 +621,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 117 ]
 "147
 [; ;car_black_box.c: 147:     if (key == 0x37 && i < 4 ) {
-[e $ ! && == -> _key `i -> 55 `i < -> F1236 `i -> 4 `i 118  ]
+[e $ ! && == -> _key `i -> 55 `i < -> F1238 `i -> 4 `i 118  ]
 {
 "148
 [; ;car_black_box.c: 148:         u_password[i] = '1';
-[e = *U + &U F1235 * -> F1236 `ux -> -> # *U &U F1235 `ui `ux -> -> 49 `ui `uc ]
+[e = *U + &U F1237 * -> F1238 `ux -> -> # *U &U F1237 `ui `ux -> -> 49 `ui `uc ]
 "149
 [; ;car_black_box.c: 149:         clcd_putch('*', (0xC0 + 4 + i));
-[e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + + -> 192 `i -> 4 `i -> F1236 `i `uc ]
+[e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + + -> 192 `i -> 4 `i -> F1238 `i `uc ]
 "150
 [; ;car_black_box.c: 150:         i++;
-[e ++ F1236 -> -> 1 `i `uc ]
+[e ++ F1238 -> -> 1 `i `uc ]
 "151
 [; ;car_black_box.c: 151:         ret_time = 5;
 [e = _ret_time -> -> 5 `i `uc ]
@@ -631,17 +640,17 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 119  ]
 [e :U 118 ]
-[e $ ! && == -> _key `i -> 47 `i < -> F1236 `i -> 4 `i 120  ]
+[e $ ! && == -> _key `i -> 47 `i < -> F1238 `i -> 4 `i 120  ]
 {
 "153
 [; ;car_black_box.c: 153:         u_password[i] = '0';
-[e = *U + &U F1235 * -> F1236 `ux -> -> # *U &U F1235 `ui `ux -> -> 48 `ui `uc ]
+[e = *U + &U F1237 * -> F1238 `ux -> -> # *U &U F1237 `ui `ux -> -> 48 `ui `uc ]
 "154
 [; ;car_black_box.c: 154:         clcd_putch('*', (0xC0 + 4 + i));
-[e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + + -> 192 `i -> 4 `i -> F1236 `i `uc ]
+[e ( _clcd_putch (2 , -> -> 42 `ui `uc -> + + -> 192 `i -> 4 `i -> F1238 `i `uc ]
 "155
 [; ;car_black_box.c: 155:         i++;
-[e ++ F1236 -> -> 1 `i `uc ]
+[e ++ F1238 -> -> 1 `i `uc ]
 "156
 [; ;car_black_box.c: 156:         ret_time = 5;
 [e = _ret_time -> -> 5 `i `uc ]
@@ -652,7 +661,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 119 ]
 "159
 [; ;car_black_box.c: 159:     if (i == 4) {
-[e $ ! == -> F1236 `i -> 4 `i 121  ]
+[e $ ! == -> F1238 `i -> 4 `i 121  ]
 {
 "160
 [; ;car_black_box.c: 160:         clcd_write(0x0C, 0);
@@ -671,7 +680,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "163
 [; ;car_black_box.c: 163:             s_password[j] = eeprom_at24c04_read(j);
-[e = *U + &U _s_password * -> -> _j `ui `ux -> -> # *U &U _s_password `ui `ux ( _eeprom_at24c04_read (1 -> _j `uc ]
+[e = *U + &U _s_password * -> -> _j `ui `ux -> -> # *U &U _s_password `ui `ux -> ( _eeprom_at24c04_read _j `uc ]
 "164
 [; ;car_black_box.c: 164:         }
 }
@@ -681,7 +690,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 "165
 [; ;car_black_box.c: 165:         if (strncmp(u_password, s_password, 4) == 0) {
-[e $ ! == ( _strncmp (3 , , -> &U F1235 `*Cuc -> &U _s_password `*Cuc -> -> 4 `i `ui -> 0 `i 125  ]
+[e $ ! == ( _strncmp (3 , , -> &U F1237 `*Cuc -> &U _s_password `*Cuc -> -> 4 `i `ui -> 0 `i 125  ]
 {
 "166
 [; ;car_black_box.c: 166:             clear_screen();
@@ -704,20 +713,20 @@ Version 4.0 HI-TECH Software Intermediate Code
 {
 "172
 [; ;car_black_box.c: 172:             attempt_left--;
-[e -- F1237 -> -> 1 `i `uc ]
+[e -- F1239 -> -> 1 `i `uc ]
 "173
 [; ;car_black_box.c: 173:             clear_screen();
 [e ( _clear_screen ..  ]
 "175
 [; ;car_black_box.c: 175:             if (attempt_left != 0) {
-[e $ ! != -> F1237 `i -> 0 `i 127  ]
+[e $ ! != -> F1239 `i -> 0 `i 127  ]
 {
 "176
 [; ;car_black_box.c: 176:                 clcd_print("Wrong passwrod", (0x80 + 0));
 [e ( _clcd_print (2 , :s 8C -> + -> 128 `i -> 0 `i `uc ]
 "177
 [; ;car_black_box.c: 177:                 clcd_putch((attempt_left + '0'), (0xC0 + 0));
-[e ( _clcd_putch (2 , -> + -> F1237 `ui -> 48 `ui `uc -> + -> 192 `i -> 0 `i `uc ]
+[e ( _clcd_putch (2 , -> + -> F1239 `ui -> 48 `ui `uc -> + -> 192 `i -> 0 `i `uc ]
 "178
 [; ;car_black_box.c: 178:                 clcd_print("attempts left", (0xC0 + 2));
 [e ( _clcd_print (2 , :s 9C -> + -> 192 `i -> 2 `i `uc ]
@@ -729,7 +738,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 }
 [e $U 128  ]
 [e :U 127 ]
-[e $ ! == -> F1237 `i -> 0 `i 129  ]
+[e $ ! == -> F1239 `i -> 0 `i 129  ]
 {
 "182
 [; ;car_black_box.c: 182:                 clcd_print("You are blocked", (0x80 + 0));
@@ -764,7 +773,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :U 132 ]
 "193
 [; ;car_black_box.c: 193:                 attempt_left = 3;
-[e = F1237 -> -> 3 `i `uc ]
+[e = F1239 -> -> 3 `i `uc ]
 "196
 [; ;car_black_box.c: 196:             }
 }
@@ -784,7 +793,7 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _clcd_write (2 , -> -> 15 `i `uc -> -> 0 `i `uc ]
 "201
 [; ;car_black_box.c: 201:             i = 0;
-[e = F1236 -> -> 0 `i `uc ]
+[e = F1238 -> -> 0 `i `uc ]
 "202
 [; ;car_black_box.c: 202:             ret_time = 5;
 [e = _ret_time -> -> 5 `i `uc ]
@@ -818,40 +827,40 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e ( _clcd_putch (2 , -> + -> _i `ui -> 48 `ui `uc -> + -> 192 `i -> 0 `i `uc ]
 "214
 [; ;car_black_box.c: 214:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10)), (0xC0 + 2));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + -> 5 `i * _i -> 10 `i `uc `uc -> + -> 192 `i -> 2 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + -> 5 `i * _i -> 10 `i `uc -> + -> 192 `i -> 2 `i `uc ]
 "215
 [; ;car_black_box.c: 215:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 1), (0xC0 + 3));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 1 `i `uc `uc -> + -> 192 `i -> 3 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 1 `i `uc -> + -> 192 `i -> 3 `i `uc ]
 "216
 [; ;car_black_box.c: 216:     clcd_putch(':', (0xC0 + 4));
 [e ( _clcd_putch (2 , -> -> 58 `ui `uc -> + -> 192 `i -> 4 `i `uc ]
 "217
 [; ;car_black_box.c: 217:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 2), (0xC0 + 5));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 2 `i `uc `uc -> + -> 192 `i -> 5 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 2 `i `uc -> + -> 192 `i -> 5 `i `uc ]
 "218
 [; ;car_black_box.c: 218:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 3), (0xC0 + 6));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 3 `i `uc `uc -> + -> 192 `i -> 6 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 3 `i `uc -> + -> 192 `i -> 6 `i `uc ]
 "219
 [; ;car_black_box.c: 219:     clcd_putch(':', (0xC0 + 7));
 [e ( _clcd_putch (2 , -> -> 58 `ui `uc -> + -> 192 `i -> 7 `i `uc ]
 "220
 [; ;car_black_box.c: 220:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 4), (0xC0 + 8));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 4 `i `uc `uc -> + -> 192 `i -> 8 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 4 `i `uc -> + -> 192 `i -> 8 `i `uc ]
 "221
 [; ;car_black_box.c: 221:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 5), (0xC0 + 9));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 5 `i `uc `uc -> + -> 192 `i -> 9 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 5 `i `uc -> + -> 192 `i -> 9 `i `uc ]
 "224
 [; ;car_black_box.c: 224:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 6), (0xC0 + 11));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 6 `i `uc `uc -> + -> 192 `i -> 11 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 6 `i `uc -> + -> 192 `i -> 11 `i `uc ]
 "225
 [; ;car_black_box.c: 225:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 7), (0xC0 + 12));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 7 `i `uc `uc -> + -> 192 `i -> 12 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 7 `i `uc -> + -> 192 `i -> 12 `i `uc ]
 "227
 [; ;car_black_box.c: 227:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 8), (0xC0 + 14));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 8 `i `uc `uc -> + -> 192 `i -> 14 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 8 `i `uc -> + -> 192 `i -> 14 `i `uc ]
 "228
 [; ;car_black_box.c: 228:     clcd_putch(eeprom_at24c04_read(0x05 + (i * 10) + 9), (0xC0 + 15));
-[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read (1 -> + + -> 5 `i * _i -> 10 `i -> 9 `i `uc `uc -> + -> 192 `i -> 15 `i `uc ]
+[e ( _clcd_putch (2 , -> ( _eeprom_at24c04_read + + -> 5 `i * _i -> 10 `i -> 9 `i `uc -> + -> 192 `i -> 15 `i `uc ]
 "229
 [; ;car_black_box.c: 229: }
 [e :UE 133 ]
@@ -1034,30 +1043,187 @@ Version 4.0 HI-TECH Software Intermediate Code
 [; ;car_black_box.c: 282: }
 [e :UE 134 ]
 }
-"283
-[; ;car_black_box.c: 283: void clear_log(){
+"284
+[; ;car_black_box.c: 284: void clear_log() {
 [v _clear_log `(v ~T0 @X0 1 ef ]
 {
 [e :U _clear_log ]
 [f ]
-"285
-[; ;car_black_box.c: 285:     pos = -1;
-[e = _pos -U -> 1 `i ]
 "286
-[; ;car_black_box.c: 286:     roll_over_flag = 0;
-[e = _roll_over_flag -> 0 `i ]
+[; ;car_black_box.c: 286:     pos = -1;
+[e = _pos -U -> 1 `i ]
 "287
-[; ;car_black_box.c: 287:     clcd_print("  logs cleared  ", (0x80 + 0));
-[e ( _clcd_print (2 , :s 17C -> + -> 128 `i -> 0 `i `uc ]
+[; ;car_black_box.c: 287:     roll_over_flag = 0;
+[e = _roll_over_flag -> 0 `i ]
 "288
-[; ;car_black_box.c: 288:     _delay((unsigned long)((2000)*(20000000/4000.0)));
-[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
+[; ;car_black_box.c: 288:     clcd_print("  logs cleared  ", (0x80 + 0));
+[e ( _clcd_print (2 , :s 17C -> + -> 128 `i -> 0 `i `uc ]
 "289
-[; ;car_black_box.c: 289:     clear_screen();
-[e ( _clear_screen ..  ]
+[; ;car_black_box.c: 289:     _delay((unsigned long)((2000)*(20000000/4000.0)));
+[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
 "290
-[; ;car_black_box.c: 290: }
+[; ;car_black_box.c: 290:     clear_screen();
+[e ( _clear_screen ..  ]
+"291
+[; ;car_black_box.c: 291: }
 [e :UE 152 ]
+}
+"389
+[; ;car_black_box.c: 389: void download_log(void) {
+[v _download_log `(v ~T0 @X0 1 ef ]
+{
+[e :U _download_log ]
+[f ]
+"390
+[; ;car_black_box.c: 390:     int index = -1;
+[v _index `i ~T0 @X0 1 a ]
+[e = _index -U -> 1 `i ]
+"391
+[; ;car_black_box.c: 391:     char records[11];
+[v _records `uc ~T0 @X0 -> 11 `i a ]
+"392
+[; ;car_black_box.c: 392:     records[10] = '\0';
+[e = *U + &U _records * -> -> -> 10 `i `ui `ux -> -> # *U &U _records `ui `ux -> -> 0 `ui `uc ]
+"393
+[; ;car_black_box.c: 393:     int position = 0;
+[v _position `i ~T0 @X0 1 a ]
+[e = _position -> 0 `i ]
+"394
+[; ;car_black_box.c: 394:     unsigned char addr;
+[v _addr `uc ~T0 @X0 1 a ]
+"397
+[; ;car_black_box.c: 397:     if (pos == -1) {
+[e $ ! == _pos -U -> 1 `i 154  ]
+{
+"398
+[; ;car_black_box.c: 398:         puts("No logs available");
+[e ( _puts :s 18C ]
+"399
+[; ;car_black_box.c: 399:     }
+}
+[e $U 155  ]
+"400
+[; ;car_black_box.c: 400:     else {
+[e :U 154 ]
+{
+"401
+[; ;car_black_box.c: 401:         puts("Logs :");
+[e ( _puts :s 19C ]
+"402
+[; ;car_black_box.c: 402:         putchar('\n');
+[e ( _putchar -> 10 `ui ]
+"404
+[; ;car_black_box.c: 404:         puts(" #     Time        Event       Speed");
+[e ( _puts :s 20C ]
+"405
+[; ;car_black_box.c: 405:         putchar('\n');
+[e ( _putchar -> 10 `ui ]
+"408
+[; ;car_black_box.c: 408:         while (index < pos) {
+[e $U 156  ]
+[e :U 157 ]
+{
+"410
+[; ;car_black_box.c: 410:             position = index + 1;
+[e = _position + _index -> 1 `i ]
+"412
+[; ;car_black_box.c: 412:             index++;
+[e ++ _index -> 1 `i ]
+"415
+[; ;car_black_box.c: 415:             for (int i = 0; i < 10; i++) {
+{
+[v _i `i ~T0 @X0 1 a ]
+[e = _i -> 0 `i ]
+[e $ < _i -> 10 `i 159  ]
+[e $U 160  ]
+[e :U 159 ]
+{
+"417
+[; ;car_black_box.c: 417:                 addr = (unsigned char) (position * 10 + 5 + i);
+[e = _addr -> + + * _position -> 10 `i -> 5 `i _i `uc ]
+"419
+[; ;car_black_box.c: 419:                 records[i] = eeprom_read(addr);
+[e = *U + &U _records * -> -> _i `ui `ux -> -> # *U &U _records `ui `ux -> ( _eeprom_read (1 _addr `uc ]
+"420
+[; ;car_black_box.c: 420:             }
+}
+[e ++ _i -> 1 `i ]
+[e $ < _i -> 10 `i 159  ]
+[e :U 160 ]
+}
+"423
+[; ;car_black_box.c: 423:             if (index < 10)
+[e $ ! < _index -> 10 `i 162  ]
+"424
+[; ;car_black_box.c: 424:                 putchar(' ');
+[e ( _putchar -> 32 `ui ]
+[e :U 162 ]
+"426
+[; ;car_black_box.c: 426:             putchar(index + '0');
+[e ( _putchar + -> _index `ui -> 48 `ui ]
+"427
+[; ;car_black_box.c: 427:             puts("   ");
+[e ( _puts :s 21C ]
+"430
+[; ;car_black_box.c: 430:             putchar(records[0]);
+[e ( _putchar -> *U + &U _records * -> -> -> 0 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"431
+[; ;car_black_box.c: 431:             putchar(records[1]);
+[e ( _putchar -> *U + &U _records * -> -> -> 1 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"432
+[; ;car_black_box.c: 432:             putchar(':');
+[e ( _putchar -> 58 `ui ]
+"435
+[; ;car_black_box.c: 435:             putchar(records[2]);
+[e ( _putchar -> *U + &U _records * -> -> -> 2 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"436
+[; ;car_black_box.c: 436:             putchar(records[3]);
+[e ( _putchar -> *U + &U _records * -> -> -> 3 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"437
+[; ;car_black_box.c: 437:             putchar(':');
+[e ( _putchar -> 58 `ui ]
+"440
+[; ;car_black_box.c: 440:             putchar(records[4]);
+[e ( _putchar -> *U + &U _records * -> -> -> 4 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"441
+[; ;car_black_box.c: 441:             putchar(records[5]);
+[e ( _putchar -> *U + &U _records * -> -> -> 5 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"443
+[; ;car_black_box.c: 443:             puts("      ");
+[e ( _puts :s 22C ]
+"446
+[; ;car_black_box.c: 446:             putchar(records[6]);
+[e ( _putchar -> *U + &U _records * -> -> -> 6 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"447
+[; ;car_black_box.c: 447:             putchar(records[7]);
+[e ( _putchar -> *U + &U _records * -> -> -> 7 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"449
+[; ;car_black_box.c: 449:             puts("          ");
+[e ( _puts :s 23C ]
+"452
+[; ;car_black_box.c: 452:             putchar(records[8]);
+[e ( _putchar -> *U + &U _records * -> -> -> 8 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"453
+[; ;car_black_box.c: 453:             putchar(records[9]);
+[e ( _putchar -> *U + &U _records * -> -> -> 9 `i `ui `ux -> -> # *U &U _records `ui `ux `i ]
+"454
+[; ;car_black_box.c: 454:             putchar('\n');
+[e ( _putchar -> 10 `ui ]
+"455
+[; ;car_black_box.c: 455:         }
+}
+[e :U 156 ]
+"408
+[; ;car_black_box.c: 408:         while (index < pos) {
+[e $ < _index _pos 157  ]
+[e :U 158 ]
+"456
+[; ;car_black_box.c: 456:     }
+}
+[e :U 155 ]
+"457
+[; ;car_black_box.c: 457: }
+[e :UE 153 ]
 }
 [a 9C 97 116 116 101 109 112 116 115 32 108 101 102 116 0 ]
 [a 12C 115 101 99 115 0 ]
@@ -1066,13 +1232,19 @@ Version 4.0 HI-TECH Software Intermediate Code
 [a 2C 67 108 101 97 114 32 108 111 103 0 ]
 [a 3C 68 111 119 110 108 111 97 100 32 108 111 103 0 ]
 [a 4C 83 101 116 32 116 105 109 101 0 ]
+[a 18C 78 111 32 108 111 103 115 32 97 118 97 105 108 97 98 108 101 0 ]
 [a 16C 78 111 32 108 111 103 115 32 97 118 97 108 97 98 108 101 0 ]
 [a 5C 67 104 97 110 103 101 32 112 97 115 115 119 100 0 ]
 [a 13C 69 110 116 101 114 32 80 97 115 115 119 111 114 100 0 ]
 [a 8C 87 114 111 110 103 32 112 97 115 115 119 114 111 100 0 ]
 [a 10C 89 111 117 32 97 114 101 32 98 108 111 99 107 101 100 0 ]
+[a 20C 32 35 32 32 32 32 32 84 105 109 101 32 32 32 32 32 32 32 32 69 118 101 110 116 32 32 32 32 32 32 32 83 112 101 101 100 0 ]
 [a 7C 76 79 71 73 78 32 83 85 67 67 69 83 83 0 ]
 [a 14C 35 32 84 73 77 69 32 32 32 32 32 69 32 32 83 80 0 ]
 [a 15C 35 32 84 73 77 69 32 32 32 32 32 69 32 32 83 80 0 ]
 [a 6C 84 73 77 69 32 32 32 32 32 69 32 32 83 80 0 ]
+[a 19C 76 111 103 115 32 58 0 ]
 [a 17C 32 32 108 111 103 115 32 99 108 101 97 114 101 100 32 32 0 ]
+[a 23C 32 32 32 32 32 32 32 32 32 32 0 ]
+[a 22C 32 32 32 32 32 32 0 ]
+[a 21C 32 32 32 0 ]

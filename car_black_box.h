@@ -16,5 +16,6 @@ unsigned char menu_screen(unsigned char key, unsigned char reset_flag);
 void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
 void clear_log(void);
+void download_log(void);
 #endif	/* CAR_BLACK_BOX_H */
 
