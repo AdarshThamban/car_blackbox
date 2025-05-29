@@ -17,5 +17,8 @@ void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
 void clear_log(void);
 void download_log(void);
+int change_time(unsigned char key, unsigned char reset_flag);
+void putchar(unsigned char data);
+void puts(const char *s);
 #endif	/* CAR_BLACK_BOX_H */
 

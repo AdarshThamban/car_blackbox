@@ -1819,8 +1819,7 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
-# 1 "isr.c" 2
-
+# 2 "isr.c" 2
 # 1 "./main.h" 1
 # 12 "./main.h"
 # 1 "./adc.h" 1
@@ -1866,12 +1865,16 @@ void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
 void clear_log(void);
 void download_log(void);
+int change_time(unsigned char key, unsigned char reset_flag);
+void putchar(unsigned char data);
+void puts(const char *s);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
-# 15 "./external_eeprom.h"
-unsigned char eeprom_read(unsigned char addr);
-void eeprom_write(unsigned char addr, unsigned char data);
-void eeprom_write_string(unsigned char addr, char *data);
+# 18 "./external_eeprom.h"
+void init_at24c04(void);
+unsigned char eeprom_at24c04_read(unsigned char addr);
+void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
+void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
 # 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
@@ -1936,8 +1939,7 @@ void *memccpy (void *restrict, const void *restrict, int, size_t);
 void init_timer0(void);
 void init_timer2(void);
 # 21 "./main.h" 2
-# 2 "isr.c" 2
-
+# 3 "isr.c" 2
 extern unsigned char sec, ret_time;
 void __attribute__((picinterrupt(("")))) isr(void)
 {

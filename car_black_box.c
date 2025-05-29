@@ -7,6 +7,51 @@
 
 
 #include "main.h"
+//
+//void init_uart(unsigned long baud) {
+//    /* Setting RC6 and RC7 to work as Serial Port */
+//    SPEN = 1;
+//
+//    /* Continuous Reception Enable Bit */
+//    CREN = 1;
+//
+//    /* Baud Rate Setting Register */
+//    SPBRG = (FOSC / (16 * baud)) - 1;
+//}
+//
+//unsigned char getchar(void) {
+//    /* Wait for the byte to be received */
+//    while (RCIF != 1) {
+//        continue;
+//    }
+//
+//    /* Clear the interrupt flag */
+//    RCIF = 0;
+//
+//    /* Return the data to the caller */
+//    return RCREG;
+//}
+//
+//void putchar(unsigned char data) {
+//    /* Transmit the data to the Serial Port */
+//    TXREG = data;
+//
+//    /* Wait till the transmission is complete */
+//    do {
+//        continue;
+//    } while (TXIF != 1);
+//
+//    /* Clear the interrupt flag */
+//    TXIF = 0;
+//}
+//
+//void puts(const char *s) {
+//    while (*s) {
+//        putchar(*s++);
+//    }
+//}
+
+
 extern char ret_time_edit;
 unsigned char clock_reg[3], sec, ret_time;
 char time[7]; //hh:mm:ss , avoid colon, so size = 7
@@ -49,14 +94,14 @@ void display_time() {
 
 void display_dashboard(char event[], unsigned char speed) {
 
-
-
+    
+    
     clcd_print("TIME     E  SP", LINE1(2));
     display_time();
     clcd_print(event, LINE2(11)); // event is a string, so using clcd_print()
     clcd_putch(speed / 10 + '0', LINE2(14)); //convert int to char
     clcd_putch(speed % 10 + '0', LINE2(15));
-
+    
 }
 
 void log_event() {
@@ -68,7 +113,7 @@ void log_event() {
     }
     addr = pos * 10 + addr;
     eeprom_at24c04_str_write(addr, log);
-
+    
 
 }
 
@@ -85,11 +130,11 @@ void log_car_event(char event[], unsigned char speed) {
 unsigned char menu_screen(unsigned char key, unsigned char reset_flag) {
     static unsigned char menu_pos;
     if (reset_flag == RESET_LOGIN_MENU) {
-
+        
         menu_pos = 0;
-
+        
     }
-
+    
     if (key == SW4 && menu_pos < 4) {
         menu_pos++;
 
@@ -119,11 +164,11 @@ void clear_screen() {
 }
 
 unsigned char login(unsigned char key, unsigned char reset_flag) {
-    if (ret_time_edit == 1) {///looooooooooooonng press
-        ret_time = 0;
+    if(ret_time_edit == 1){///looooooooooooonng press
+        ret_time =0;
         clear_screen();
     }//////////////
-
+    
     static char u_password[4];
     static unsigned char i;
     static unsigned char attempt_left;
@@ -141,7 +186,7 @@ unsigned char login(unsigned char key, unsigned char reset_flag) {
         ret_time = 5;
     }
     if (ret_time == 0) {
-        ret_time_edit = 0; ////////////loooooooooong prsss
+        ret_time_edit = 0;////////////loooooooooong prsss
         return RETURN_BACK;
     }
     if (key == SW4 && i < 4 /*&& reset_flag != RESET_PASSWORD*/) {
@@ -280,9 +325,8 @@ void view_log(unsigned char key, unsigned char reset_flag) {
 
     }
 }
-
-void clear_log() {
-
+void clear_log(){
+    
     pos = -1;
     roll_over_flag = 0;
     clcd_print("  logs cleared  ", LINE1(0));
@@ -290,168 +334,190 @@ void clear_log() {
     clear_screen();
 }
 
-//void download_log(void) {
-//
-//    int d_index =0 ; //////////////////////
-//    int add;
-//    unsigned char down_log[10];
-//
-//    if (pos == -1) {
-//        clcd_print("No logs avalable", LINE1(0));
-//        clcd_print("download failed ", LINE2(0));
-//    } else {
-//        if (roll_over_flag) {
-//            while (d_index < 10) {
-//
-//                for (int i = 0; i < 10; i++) {
-//
-//                    add = (unsigned char)(d_index * 10) + 5 + i; /* updating the address with that of event data */
-//                    down_log[i] = eeprom_at24c04_read(add); /* reading the event data */
-//                }
-//
-//                /* printing index */
-//                uart_putchar(d_index + '0');
-//                uart_puts("   ");
-//
-//                /*printing hours value */
-//                uart_putchar(down_log[0]);
-//                uart_putchar(down_log[1]);
-//                uart_putchar(':');
-//
-//                /*printing minute  value */
-//                uart_putchar(down_log[2]);
-//                uart_putchar(down_log[3]);
-//                uart_putchar(':');
-//
-//                /*printing second  value */
-//                uart_putchar(down_log[4]);
-//                uart_putchar(down_log[5]);
-//                uart_puts("      ");
-//
-//                /*printing event  character  */
-//                uart_putchar(down_log[6]);
-//                uart_putchar(down_log[7]);
-//                uart_puts("            ");
-//
-//                /*printing speed value */
-//                uart_putchar(down_log[8]);
-//                uart_putchar(down_log[9]);
-//                uart_putchar('\n');
-//                uart_putchar('\r');
-//            }
-//
-//
-//        } else {////////////////
-//            while (d_index <= pos) {
-//
-//                for (int i = 0; i < 10; i++) {
-//
-//                    add = (d_index * 10) + 5 + i; /* updating the address with that of event data */
-//                    down_log[i] = eeprom_at24c04_read(add); /* reading the event data */
-//                }
-//
-//                /* printing index */
-//                uart_putchar(d_index + '0');
-//                uart_puts("   ");
-//
-//                /*printing hours value */
-//                uart_putchar(down_log[0]);
-//                uart_putchar(down_log[1]);
-//                uart_putchar(':');
-//
-//                /*printing minute  value */
-//                uart_putchar(down_log[2]);
-//                uart_putchar(down_log[3]);
-//                uart_putchar(':');
-//
-//                /*printing second  value */
-//                uart_putchar(down_log[4]);
-//                uart_putchar(down_log[5]);
-//                uart_puts("      ");
-//
-//                /*printing event  character  */
-//                uart_putchar(down_log[6]);
-//                uart_putchar(down_log[7]);
-//                uart_puts("            ");
-//
-//                /*printing speed value */
-//                uart_putchar(down_log[8]);
-//                uart_putchar(down_log[9]);
-//                uart_putchar('\n');
-//                uart_putchar('\r');
-//            }
-//
-//        }
-//
-//        d_index++;
-//    }
-//}
-void download_log(void) {
-    int index = -1; // Initialize index for logs
-    char records[11]; // Array to hold record data
-    records[10] = '\0'; // Null-terminate the records array
-    int position = 0; // Position for reading logs
-    unsigned char addr; // Address for reading from EEPROM
+/* function for downloading the logs */
+void download_log(void)
+{
+    int index = -1;
+    char log[11];
+    log[10] = 0;
+    int position = 0;
+    unsigned char add;
 
-    // If no logs are available, display the message
-    if (pos == -1) {
-        puts("No logs available"); // Indicate that no logs are found
-    }        // If logs are available, display logs on CLCD
-    else {
-        puts("Logs :"); // Display header for logs
-        putchar('\n'); // New line for better formatting
-        // Print the table for log display
-        puts(" #     Time        Event       Speed");
-        putchar('\n'); // New line for better formatting
+    if (pos == -1) /* if no logs available */
+    {
+        puts("No logs available");
+    }
+    else /* displaying all logs available */
+    {
+        puts("Logs :");
+        putchar('\n');
+        puts("#     Time        Event       Speed");
+        putchar('\n');
+        putchar('\r');
 
-        // Loop until the 10 logs (0 to 9)
-        while (index < pos) {
-            // Increment the log position for reading
-            position = index + 1; // Update position
-            // Incrementing to next log
-            index++; // Move to the next log
+        while (index < pos)
+        {
+            position = index + 1;
+            index++; /*incrementing to next log */
 
-            // Read the log data from EEPROM
-            for (int i = 0; i < 10; i++) {
-                // Updating the address with that of event data
-                addr = (unsigned char) (position * 10 + 5 + i); // Calculate address
-                // Read the log data from EEPROM
-                records[i] = eeprom_read(addr); // Fetch data from EEPROM
+            for (int i = 0; i < 10; i++)
+            {
+
+                add = position * 10 + 5 + i; /* updating the address with that of event data */
+                log[i] = eeprom_at24c04_read(add); /* reading the event data */
             }
 
-            // Printing all logs in a formatted manner
-            if (index < 10)
-                putchar(' '); // Add space for formatting
-            // Print the index
-            putchar(index + '0'); // Display log index
-            puts("   "); // Add spaces for alignment
+            /* printing index */
+            putchar(index + '0');
+            puts("   ");
 
-            // Printing hours value HH
-            putchar(records[0]); // Display hour
-            putchar(records[1]); // Display hour
-            putchar(':'); // Add colon separator
+            /*printing hours value */
+            putchar(log[0]);
+            putchar(log[1]);
+            putchar(':');
 
-            // Printing minute value MM
-            putchar(records[2]); // Display minute
-            putchar(records[3]); // Display minute
-            putchar(':'); // Add colon separator
+            /*printing minute  value */
+            putchar(log[2]);
+            putchar(log[3]);
+            putchar(':');
 
-            // Printing second value SS
-            putchar(records[4]); // Display second
-            putchar(records[5]); // Display second
-            // 6 spaces for alignment
-            puts("      "); // Add spaces for alignment
+            /*printing second  value */
+            putchar(log[4]);
+            putchar(log[5]);
+            puts("      ");
 
-            // Printing event character
-            putchar(records[6]); // Display event type
-            putchar(records[7]); // Display event type
-            // 10 spaces for alignment
-            puts("          "); // Add spaces for alignment
+            /*printing event  character  */
+            putchar(log[6]);
+            putchar(log[7]);
+            puts("            ");
 
-            // Printing speed value 
-            putchar(records[8]); // Display speed
-            putchar(records[9]); // Display speed
-            putchar('\n'); // New line for the next log entry
+            /*printing speed value */
+            putchar(log[8]);
+            putchar(log[9]);
+            putchar('\n');
+            putchar('\r');
         }
     }
+}
+
+int change_time(unsigned char key, unsigned char reset_time)
+{
+    static unsigned int new_time[3];
+    static unsigned int blink_pos;
+    static unsigned char wait;
+    static unsigned char blink;
+    static char t_done = 0;
+    char buffer;
+
+    if (reset_time == RESET_TIME)
+    {
+        get_time(); /* get time */
+
+        /*Storing values of new time hours */
+        new_time[0] = (time[0] & 0x0F) * 10 + (time[1] & 0x0F);
+
+        /*Storing values of new time minute*/
+        new_time[1] = (time[2] & 0x0F) * 10 + (time[3] & 0x0F);
+
+        /*Storing values of new time second */
+        new_time[2] = (time[4] & 0x0F) * 10 + (time[5] & 0x0F);
+
+        clcd_print("Time (HH:MM:SS)", LINE1(0));
+
+        blink_pos = 2;
+        wait = 0;
+        blink = 0;
+        t_done = 0;
+        key = ALL_RELEASED;
+    }
+
+    if (t_done)
+        return TASK_FAILURE;
+
+    switch (key)
+    {
+        case SW4: 
+            new_time[blink_pos]++;
+            break;
+
+        case SW5:
+            blink_pos = (blink_pos + 1) % 3;
+            break;
+
+        case LP_SW4: /* storing the new time */
+
+            get_time(); /* get the time */
+
+            buffer = ((new_time[0] / 10) << 4) | new_time[0] % 10; 
+            clock_reg[0] = (clock_reg[0] & 0xC0) | buffer; 
+            write_ds1307(HOUR_ADDR, clock_reg[0]); 
+
+
+            buffer = ((new_time[1] / 10) << 4) | new_time[1] % 10; 
+            clock_reg[1] = (clock_reg[1] & 0x80) | buffer; 
+            write_ds1307(MIN_ADDR, clock_reg[1]); 
+
+
+            buffer = ((new_time[2] / 10) << 4) | new_time[2] % 10; 
+            clock_reg[2] = (clock_reg[2] & 0x80) | buffer;
+            write_ds1307(SEC_ADDR, clock_reg[2]);
+
+            clcd_write(CLEAR_DISP_SCREEN, INST_MODE);
+            clcd_print("Time changed", LINE1(2));
+            clcd_print("Successfully", LINE2(2));
+
+            t_done = 1;
+            __delay_ms(1000);
+            return TASK_SUCCESS;
+    }
+    
+    /* conditions for roll over */
+    if (new_time[0] > 23)
+        new_time[0] = 0;
+    if (new_time[1] > 59)
+        new_time[1] = 0;
+    if (new_time[2] > 59)
+        new_time[2] = 0;
+
+    if (wait++ == 1)
+    {
+        wait = 0;
+        blink = !blink;
+
+        /*logic to blink at the current pos*/
+        if (blink)
+        {
+            switch (blink_pos)
+            {
+                case 0:
+                    clcd_print("  ", LINE2(0));
+                    __delay_ms(160);
+                    break;
+                case 1:
+                    clcd_print("  ", LINE2(3));
+                    __delay_ms(160);
+                    break;
+                case 2:
+                    clcd_print("  ", LINE2(6));
+                    __delay_ms(160);
+                    break;
+            }
+        }
+    }
+
+    /* Displaying hours field */
+    clcd_putch(new_time[0] / 10 + '0', LINE2(0));
+    clcd_putch(new_time[0] % 10 + '0', LINE2(1));
+    clcd_putch(':', LINE2(2));
+
+    /* Displaying mins field */
+    clcd_putch(new_time[1] / 10 + '0', LINE2(3));
+    clcd_putch(new_time[1] % 10 + '0', LINE2(4));
+    clcd_putch(':', LINE2(5));
+
+    /* Displaying secs field */
+    clcd_putch(new_time[2] / 10 + '0', LINE2(6));
+    clcd_putch(new_time[2] % 10 + '0', LINE2(7));
+
+    return TASK_FAILURE;
 }

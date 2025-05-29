@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 void init_uart(unsigned long baud) {
     /* Setting RC6 and RC7 to work as Serial Port */
     SPEN = 1;

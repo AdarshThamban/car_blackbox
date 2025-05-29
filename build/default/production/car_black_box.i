@@ -1873,12 +1873,16 @@ void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
 void clear_log(void);
 void download_log(void);
+int change_time(unsigned char key, unsigned char reset_flag);
+void putchar(unsigned char data);
+void puts(const char *s);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
-# 15 "./external_eeprom.h"
-unsigned char eeprom_read(unsigned char addr);
-void eeprom_write(unsigned char addr, unsigned char data);
-void eeprom_write_string(unsigned char addr, char *data);
+# 18 "./external_eeprom.h"
+void init_at24c04(void);
+unsigned char eeprom_at24c04_read(unsigned char addr);
+void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
+void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
 # 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
@@ -1943,8 +1947,8 @@ void *memccpy (void *restrict, const void *restrict, int, size_t);
 void init_timer0(void);
 void init_timer2(void);
 # 21 "./main.h" 2
-# 9 "car_black_box.c" 2
-
+# 10 "car_black_box.c" 2
+# 55 "car_black_box.c"
 extern char ret_time_edit;
 unsigned char clock_reg[3], sec, ret_time;
 char time[7];
@@ -2057,8 +2061,8 @@ void clear_screen() {
 }
 
 unsigned char login(unsigned char key, unsigned char reset_flag) {
-    if (ret_time_edit == 1) {
-        ret_time = 0;
+    if(ret_time_edit == 1){
+        ret_time =0;
         clear_screen();
     }
 
@@ -2218,8 +2222,7 @@ void view_log(unsigned char key, unsigned char reset_flag) {
 
     }
 }
-
-void clear_log() {
+void clear_log(){
 
     pos = -1;
     roll_over_flag = 0;
@@ -2227,73 +2230,191 @@ void clear_log() {
     _delay((unsigned long)((2000)*(20000000/4000.0)));
     clear_screen();
 }
-# 389 "car_black_box.c"
-void download_log(void) {
+
+
+void download_log(void)
+{
     int index = -1;
-    char records[11];
-    records[10] = '\0';
+    char log[11];
+    log[10] = 0;
     int position = 0;
-    unsigned char addr;
+    unsigned char add;
 
-
-    if (pos == -1) {
+    if (pos == -1)
+    {
         puts("No logs available");
     }
-    else {
+    else
+    {
         puts("Logs :");
         putchar('\n');
-
-        puts(" #     Time        Event       Speed");
+        puts("#     Time        Event       Speed");
         putchar('\n');
+        putchar('\r');
 
-
-        while (index < pos) {
-
+        while (index < pos)
+        {
             position = index + 1;
-
             index++;
 
+            for (int i = 0; i < 10; i++)
+            {
 
-            for (int i = 0; i < 10; i++) {
-
-                addr = (unsigned char) (position * 10 + 5 + i);
-
-                records[i] = eeprom_read(addr);
+                add = position * 10 + 5 + i;
+                log[i] = eeprom_at24c04_read(add);
             }
 
-
-            if (index < 10)
-                putchar(' ');
 
             putchar(index + '0');
             puts("   ");
 
 
-            putchar(records[0]);
-            putchar(records[1]);
+            putchar(log[0]);
+            putchar(log[1]);
             putchar(':');
 
 
-            putchar(records[2]);
-            putchar(records[3]);
+            putchar(log[2]);
+            putchar(log[3]);
             putchar(':');
 
 
-            putchar(records[4]);
-            putchar(records[5]);
-
+            putchar(log[4]);
+            putchar(log[5]);
             puts("      ");
 
 
-            putchar(records[6]);
-            putchar(records[7]);
+            putchar(log[6]);
+            putchar(log[7]);
+            puts("            ");
 
-            puts("          ");
 
-
-            putchar(records[8]);
-            putchar(records[9]);
+            putchar(log[8]);
+            putchar(log[9]);
             putchar('\n');
+            putchar('\r');
         }
     }
+}
+
+int change_time(unsigned char key, unsigned char reset_time)
+{
+    static unsigned int new_time[3];
+    static unsigned int blink_pos;
+    static unsigned char wait;
+    static unsigned char blink;
+    static char t_done = 0;
+    char buffer;
+
+    if (reset_time == 0x0A)
+    {
+        get_time();
+
+
+        new_time[0] = (time[0] & 0x0F) * 10 + (time[1] & 0x0F);
+
+
+        new_time[1] = (time[2] & 0x0F) * 10 + (time[3] & 0x0F);
+
+
+        new_time[2] = (time[4] & 0x0F) * 10 + (time[5] & 0x0F);
+
+        clcd_print("Time (HH:MM:SS)", (0x80 + 0));
+
+        blink_pos = 2;
+        wait = 0;
+        blink = 0;
+        t_done = 0;
+        key = 0x3F;
+    }
+
+    if (t_done)
+        return 0x2F;
+
+    switch (key)
+    {
+        case 0x37:
+            new_time[blink_pos]++;
+            break;
+
+        case 0x2F:
+            blink_pos = (blink_pos + 1) % 3;
+            break;
+
+        case 0x44:
+
+            get_time();
+
+            buffer = ((new_time[0] / 10) << 4) | new_time[0] % 10;
+            clock_reg[0] = (clock_reg[0] & 0xC0) | buffer;
+            write_ds1307(0x02, clock_reg[0]);
+
+
+            buffer = ((new_time[1] / 10) << 4) | new_time[1] % 10;
+            clock_reg[1] = (clock_reg[1] & 0x80) | buffer;
+            write_ds1307(0x01, clock_reg[1]);
+
+
+            buffer = ((new_time[2] / 10) << 4) | new_time[2] % 10;
+            clock_reg[2] = (clock_reg[2] & 0x80) | buffer;
+            write_ds1307(0x00, clock_reg[2]);
+
+            clcd_write(0x01, 0);
+            clcd_print("Time changed", (0x80 + 2));
+            clcd_print("Successfully", (0xC0 + 2));
+
+            t_done = 1;
+            _delay((unsigned long)((1000)*(20000000/4000.0)));
+            return 0x1F;
+    }
+
+
+    if (new_time[0] > 23)
+        new_time[0] = 0;
+    if (new_time[1] > 59)
+        new_time[1] = 0;
+    if (new_time[2] > 59)
+        new_time[2] = 0;
+
+    if (wait++ == 1)
+    {
+        wait = 0;
+        blink = !blink;
+
+
+        if (blink)
+        {
+            switch (blink_pos)
+            {
+                case 0:
+                    clcd_print("  ", (0xC0 + 0));
+                    _delay((unsigned long)((160)*(20000000/4000.0)));
+                    break;
+                case 1:
+                    clcd_print("  ", (0xC0 + 3));
+                    _delay((unsigned long)((160)*(20000000/4000.0)));
+                    break;
+                case 2:
+                    clcd_print("  ", (0xC0 + 6));
+                    _delay((unsigned long)((160)*(20000000/4000.0)));
+                    break;
+            }
+        }
+    }
+
+
+    clcd_putch(new_time[0] / 10 + '0', (0xC0 + 0));
+    clcd_putch(new_time[0] % 10 + '0', (0xC0 + 1));
+    clcd_putch(':', (0xC0 + 2));
+
+
+    clcd_putch(new_time[1] / 10 + '0', (0xC0 + 3));
+    clcd_putch(new_time[1] % 10 + '0', (0xC0 + 4));
+    clcd_putch(':', (0xC0 + 5));
+
+
+    clcd_putch(new_time[2] / 10 + '0', (0xC0 + 6));
+    clcd_putch(new_time[2] % 10 + '0', (0xC0 + 7));
+
+    return 0x2F;
 }

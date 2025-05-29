@@ -39,8 +39,12 @@
 #define LONG_P              0x07
 #define SHORT_P             0x08
 #define RESET_MEMORY        0x09
+#define RESET_TIME          0x0A
 
 #define DISPLAY_ON_AND_CURSOR_ON    0x0F
+#define TASK_SUCCESS        0x1F
+#define TASK_FAILURE        0x2F
+
 
 #endif	/* MAIN_H */
 

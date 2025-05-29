@@ -8,44 +8,20 @@
 
 #include "main.h"
 #pragma config WDTE = OFF // Watchdog Timer Enable bit (WDT disabled)
- unsigned char ret_time_edit = 0;////llllllloooooooooooooooooong prss
+unsigned char ret_time_edit = 0; ////llllllloooooooooooooooooong prss
+
 static void init_config(void) {
     //write initialization code here
-//    init_i2c(100000); //IT SHOULD BE FIRST 
-//    init_ds1307();
-//    init_clcd();
-//    init_digital_keypad();
-//    init_adc();
-//    init_timer2();
-//    GIE = 1;
-//    PEIE = 1;
-//    init_uart(9600);
- // initialization
-   //Initializations here
-    // To Initialize I2C
-    init_i2c(100000);
-
-    // To Initialize RTC
+    init_i2c(100000); //IT SHOULD BE FIRST 
     init_ds1307();
-
-    // To Initialize CLCD
     init_clcd();
-
-    // To Initialize DKP
     init_digital_keypad();
-
-    // To Initialize ADC
     init_adc();
-
-    // To Initialize Timer2
     init_timer2();
     GIE = 1;
     PEIE = 1;
+    //init_at24c04();
 
-    //To Initialize UART Polling
-    init_uart(9600);
-
-    puts("UART Test Code\n\r");
 
 }
 
@@ -66,26 +42,26 @@ void main(void) {
         key = read_digital_keypad(STATE);
         __delay_ms(20); // to avoid bouncing effect
 
-        if (key == SW4 || key == SW5) {
-            if (key != ALL_RELEASED) {
-                if ((l_press++) > 100) {
-                    if (key == SW4) {
-                        key = LP_SW4;
-                    } else
-                        key = LP_SW5;
-                }
-            } else {
-                if (l_press < 100 && l_press > 0) {
-                    l_press = 0;
-                    if (key == SW4) {
-                        key = SW4;
-                    } else
-                        key = SW5;
-                }
-            }
-
-        } else
-            l_press = 0;
+        //        if (key == SW4 || key == SW5) {
+        //            if (key != ALL_RELEASED) {
+        //                if ((l_press++) > 100) {
+        //                    if (key == SW4) {
+        //                        key = LP_SW4;
+        //                    } else
+        //                        key = LP_SW5;
+        //                }
+        //            } else {
+        //                if (l_press < 100 && l_press > 0) {
+        //                    l_press = 0;
+        //                    if (key == SW4) {
+        //                        key = SW4;
+        //                    } else
+        //                        key = SW5;
+        //                }
+        //            }
+        //
+        //        } else
+        //            l_press = 0;
 
 
 
@@ -127,37 +103,42 @@ void main(void) {
                     reset_flag = RESET_MEMORY;
                     break;
                 case 2:
-                    control_flag = DOWNLOAD_LOG_FLAG;
                     clear_screen();
-                    clcd_print(" OPEN TERATERM ", LINE1(0));
+
+                    clcd_print("      Open      ", LINE1(0));
+                    clcd_print("     Cutecom    ", LINE2(0));
+                    download_log();
                     __delay_ms(2000);
+                    control_flag = LOGIN_MENU_FLAG;
                     reset_flag = RESET_LOGIN_MENU;
                     break;
-                    
                 case 3:
                     control_flag = SET_TIME_FLAG;
+                    clear_screen();
+                    control_flag = SET_TIME_FLAG;
+                    reset_flag = RESET_TIME;
                     break;
                 case 4:
                     control_flag = CHANGE_PASSWORD_FLAG;
+                    
                     break;
+                    
             }
         } else if ((control_flag == VIEW_LOG_FLAG)&& (key == LP_SW4)) {////////////pppppppppp
             control_flag = LOGIN_MENU_FLAG;
             reset_flag = RESET_LOGIN_MENU;
         }
-
-       
         else if ((control_flag == LOGIN_MENU_FLAG)&& (key == LP_SW5)) {
             clear_screen();
             control_flag = DASH_BOARD_FLAG;
-            ret_time_edit = 1;////////////////lllllllllllllloooooooooooong press
+            ret_time_edit = 1; ////////////////lllllllllllllloooooooooooong press
         }
-        
+
         switch (control_flag) {
             case DASH_BOARD_FLAG:
                 display_dashboard(event, speed);
-                
-               
+
+
                 break;
             case LOGIN_FLAG:
                 //__delay_ms(1000);
@@ -187,20 +168,32 @@ void main(void) {
                 view_log(key, reset_flag);
                 break;
             case CLEAR_LOG_FLAG:
-                
+
                 clear_log();
                 control_flag = LOGIN_MENU_FLAG;
                 //reset_flag = RESET_LOGIN_MENU;
                 clear_screen();
                 break;
             case DOWNLOAD_LOG_FLAG:
+                //To Download Log Records
+                clear_screen();
+                clcd_print("      Open      ", LINE1(0));
+                clcd_print("     Cutecom    ", LINE2(0));
                 download_log();
+                __delay_ms(2000);
                 control_flag = LOGIN_MENU_FLAG;
                 reset_flag = RESET_LOGIN_MENU;
-                clear_screen();
                 break;
-                
-                
+            case SET_TIME_FLAG:
+                if (change_time(key, reset_flag) == TASK_SUCCESS)
+                {
+                    control_flag = LOGIN_MENU_FLAG; /* go back to login menu */
+                    reset_flag = RESET_LOGIN_MENU;
+                    clear_screen();
+                    continue;
+                }
+                break;
+
 
         }
         reset_flag = RESET_NOTHING;

@@ -1873,12 +1873,16 @@ void view_log(unsigned char key, unsigned char);
 void display_logs(int i);
 void clear_log(void);
 void download_log(void);
+int change_time(unsigned char key, unsigned char reset_flag);
+void putchar(unsigned char data);
+void puts(const char *s);
 # 18 "./main.h" 2
 # 1 "./external_eeprom.h" 1
-# 15 "./external_eeprom.h"
-unsigned char eeprom_read(unsigned char addr);
-void eeprom_write(unsigned char addr, unsigned char data);
-void eeprom_write_string(unsigned char addr, char *data);
+# 18 "./external_eeprom.h"
+void init_at24c04(void);
+unsigned char eeprom_at24c04_read(unsigned char addr);
+void eeprom_at24c04_byte_write(unsigned char addr, unsigned char data);
+void eeprom_at24c04_str_write(unsigned char addr, unsigned char *data);
 # 19 "./main.h" 2
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 1 3
 # 25 "C:\\Program Files\\Microchip\\xc8\\v2.46\\pic\\include\\c99\\string.h" 3
@@ -1943,35 +1947,22 @@ void *memccpy (void *restrict, const void *restrict, int, size_t);
 void init_timer0(void);
 void init_timer2(void);
 # 21 "./main.h" 2
-# 9 "main.c" 2
-
+# 10 "main.c" 2
 #pragma config WDTE = OFF
- unsigned char ret_time_edit = 0;
+unsigned char ret_time_edit = 0;
+
 static void init_config(void) {
-# 26 "main.c"
+
     init_i2c(100000);
-
-
     init_ds1307();
-
-
     init_clcd();
-
-
     init_digital_keypad();
-
-
     init_adc();
-
-
     init_timer2();
     GIE = 1;
     PEIE = 1;
 
 
-    init_uart(9600);
-
-    puts("UART Test Code\n\r");
 
 }
 
@@ -1991,31 +1982,7 @@ void main(void) {
     while (1) {
         key = read_digital_keypad(1);
         _delay((unsigned long)((20)*(20000000/4000.0)));
-
-        if (key == 0x37 || key == 0x2F) {
-            if (key != 0x3F) {
-                if ((l_press++) > 100) {
-                    if (key == 0x37) {
-                        key = 0x44;
-                    } else
-                        key = 0x55;
-                }
-            } else {
-                if (l_press < 100 && l_press > 0) {
-                    l_press = 0;
-                    if (key == 0x37) {
-                        key = 0x37;
-                    } else
-                        key = 0x2F;
-                }
-            }
-
-        } else
-            l_press = 0;
-
-
-
-
+# 69 "main.c"
         speed = read_adc() / 10;
         if (speed > 99) {
             speed = 99;
@@ -2053,26 +2020,31 @@ void main(void) {
                     reset_flag = 0x09;
                     break;
                 case 2:
-                    control_flag = 0x16;
                     clear_screen();
-                    clcd_print(" OPEN TERATERM ", (0x80 + 0));
+
+                    clcd_print("      Open      ", (0x80 + 0));
+                    clcd_print("     Cutecom    ", (0xC0 + 0));
+                    download_log();
                     _delay((unsigned long)((2000)*(20000000/4000.0)));
+                    control_flag = 0x13;
                     reset_flag = 0x05;
                     break;
-
                 case 3:
                     control_flag = 0x17;
+                    clear_screen();
+                    control_flag = 0x17;
+                    reset_flag = 0x0A;
                     break;
                 case 4:
                     control_flag = 0x18;
+
                     break;
+
             }
         } else if ((control_flag == 0x14)&& (key == 0x44)) {
             control_flag = 0x13;
             reset_flag = 0x05;
         }
-
-
         else if ((control_flag == 0x13)&& (key == 0x55)) {
             clear_screen();
             control_flag = 0x10;
@@ -2120,12 +2092,24 @@ void main(void) {
                 clear_screen();
                 break;
             case 0x16:
+
+                clear_screen();
+                clcd_print("      Open      ", (0x80 + 0));
+                clcd_print("     Cutecom    ", (0xC0 + 0));
                 download_log();
+                _delay((unsigned long)((2000)*(20000000/4000.0)));
                 control_flag = 0x13;
                 reset_flag = 0x05;
-                clear_screen();
                 break;
-
+            case 0x17:
+                if (change_time(key, reset_flag) == 0x1F)
+                {
+                    control_flag = 0x13;
+                    reset_flag = 0x05;
+                    clear_screen();
+                    continue;
+                }
+                break;
 
 
         }
