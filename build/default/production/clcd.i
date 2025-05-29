@@ -1827,16 +1827,14 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
-# 9 "clcd.c" 2
-
+# 10 "clcd.c" 2
 # 1 "./clcd.h" 1
 # 37 "./clcd.h"
 void init_clcd(void);
 void clcd_putch(const char data, unsigned char addr);
 void clcd_print(const char *str, unsigned char addr);
 void clcd_write(unsigned char byte, unsigned char mode);
-# 10 "clcd.c" 2
-
+# 11 "clcd.c" 2
 
  void clcd_write(unsigned char byte, unsigned char mode)
 {

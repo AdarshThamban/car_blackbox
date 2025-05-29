@@ -35,32 +35,34 @@
 [v ___eecpymem __eecpymem `(v  1 e 1 0 ]
 "39
 [v ___memcpyee __memcpyee `(v  1 e 1 0 ]
-"63 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"20 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
 [v _get_time get_time `(v  1 e 1 0 ]
-"82
+"39
 [v _display_time display_time `(v  1 e 1 0 ]
-"95
+"52
 [v _display_dashboard display_dashboard `(v  1 e 1 0 ]
-"107
+"64
 [v _log_event log_event `(v  1 e 1 0 ]
-"120
+"77
 [v _log_car_event log_car_event `(v  1 e 1 0 ]
-"130
+"87
 [v _menu_screen menu_screen `(uc  1 e 1 0 ]
-"160
+"117
 [v _clear_screen clear_screen `(v  1 e 1 0 ]
-"166
+"123
 [v _login login `(uc  1 e 1 0 ]
-"253
+"210
 [v _display_logs display_logs `(v  1 e 1 0 ]
-"276
+"233
 [v _view_log view_log `(v  1 e 1 0 ]
-"328
+"285
 [v _clear_log clear_log `(v  1 e 1 0 ]
-"338
+"295
 [v _download_log download_log `(v  1 e 1 0 ]
-"403
+"360
 [v _change_time change_time `(i  1 e 2 0 ]
+"482
+[v _change_password change_password `(i  1 e 2 0 ]
 "12 C:\Users\USER\Desktop\car_blackbox\clcd.c
 [v _clcd_write clcd_write `(v  1 e 1 0 ]
 "29
@@ -203,20 +205,20 @@
 [v _TXIF TXIF `VEb  1 e 0 @100 ]
 "3070
 [v _nDONE nDONE `VEb  1 e 0 @250 ]
-"56 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"13 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
 [v _clock_reg clock_reg `[3]uc  1 e 3 0 ]
 [v _sec sec `uc  1 e 1 0 ]
 [v _ret_time ret_time `uc  1 e 1 0 ]
-"57
+"14
 [v _time time `[7]uc  1 e 7 0 ]
-"58
+"15
 [v _log log `[11]uc  1 e 11 0 ]
-"59
+"16
 [v _pos pos `i  1 e 2 0 ]
 [v _roll_over_flag roll_over_flag `i  1 e 2 0 ]
-"60
+"17
 [v _index index `i  1 e 2 0 ]
-"61
+"18
 [v _menu menu `[5]*.25uc  1 e 10 0 ]
 "11 C:\Users\USER\Desktop\car_blackbox\main.c
 [v _ret_time_edit ret_time_edit `uc  1 e 1 0 ]
@@ -241,23 +243,23 @@
 [v main@F1220 F1220 `[3]uc  1 s 3 F1220 ]
 "33
 [v main@F1226 F1226 `[6]*.25uc  1 s 12 F1226 ]
-"202
+"226
 } 0
-"276 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"233 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
 [v _view_log view_log `(v  1 e 1 0 ]
 {
 [v view_log@key key `uc  1 a 1 wreg ]
 [v view_log@key key `uc  1 a 1 wreg ]
 [v view_log@reset_flag reset_flag `uc  1 p 1 7 ]
-"279
+"236
 [v view_log@key key `uc  1 a 1 11 ]
-"327
+"284
 } 0
-"253
+"210
 [v _display_logs display_logs `(v  1 e 1 0 ]
 {
 [v display_logs@i i `i  1 p 2 5 ]
-"274
+"231
 } 0
 "3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strcpy.c
 [v _strcpy strcpy `(*.4uc  1 e 1 0 ]
@@ -299,97 +301,53 @@
 [v read_adc@adc_reg_val adc_reg_val `us  1 a 2 4 ]
 "35
 } 0
-"130 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"87 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
 [v _menu_screen menu_screen `(uc  1 e 1 0 ]
 {
 [v menu_screen@key key `uc  1 a 1 wreg ]
 [v menu_screen@key key `uc  1 a 1 wreg ]
 [v menu_screen@reset_flag reset_flag `uc  1 p 1 5 ]
-"131
+"88
 [v menu_screen@menu_pos menu_pos `uc  1 s 1 menu_pos ]
 [v menu_screen@key key `uc  1 a 1 8 ]
-"158
+"115
 } 0
-"166
+"123
 [v _login login `(uc  1 e 1 0 ]
 {
 [v login@key key `uc  1 a 1 wreg ]
-"207
+"164
 [v login@j j `i  1 a 2 14 ]
-"206
+"163
 [v login@s_password s_password `[4]uc  1 a 4 9 ]
-"166
+"123
 [v login@key key `uc  1 a 1 wreg ]
 [v login@reset_flag reset_flag `uc  1 p 1 5 ]
-"172
+"129
 [v login@u_password u_password `[4]uc  1 s 4 u_password ]
-"173
+"130
 [v login@i i `uc  1 s 1 i ]
-"174
+"131
 [v login@attempt_left attempt_left `uc  1 s 1 attempt_left ]
-"167
+"124
 [v login@key key `uc  1 a 1 13 ]
-"251
+"208
 } 0
-"3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strncmp.c
-[v _strncmp strncmp `(i  1 e 2 0 ]
-{
-[v strncmp@l l `*.4DCuc  1 a 1 wreg ]
-[v strncmp@l l `*.4DCuc  1 a 1 wreg ]
-[v strncmp@r r `*.4DCuc  1 p 1 2 ]
-[v strncmp@n n `ui  1 p 2 3 ]
-"5
-[v strncmp@l l `*.4DCuc  1 a 1 7 ]
-"8
-} 0
-"120 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"77
 [v _log_car_event log_car_event `(v  1 e 1 0 ]
 {
 [v log_car_event@event event `*.4uc  1 a 1 wreg ]
 [v log_car_event@event event `*.4uc  1 a 1 wreg ]
 [v log_car_event@speed speed `uc  1 p 1 0 ]
 [v log_car_event@event event `*.4uc  1 a 1 3 ]
-"128
+"85
 } 0
-"3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strncpy.c
-[v _strncpy strncpy `(*.4uc  1 e 1 0 ]
-{
-[v strncpy@d d `*.4uc  1 a 1 wreg ]
-"5
-[v strncpy@cp cp `*.4uc  1 a 1 6 ]
-"3
-[v strncpy@d d `*.4uc  1 a 1 wreg ]
-[v strncpy@s s `*.4DCuc  1 p 1 2 ]
-[v strncpy@n n `ui  1 p 2 3 ]
-"6
-[v strncpy@d d `*.4uc  1 a 1 5 ]
-"15
-} 0
-"107 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"64
 [v _log_event log_event `(v  1 e 1 0 ]
 {
-"108
+"65
 [v log_event@addr addr `uc  1 a 1 8 ]
-"118
-} 0
-"46 C:\Users\USER\Desktop\car_blackbox\external_eeprom.c
-[v _eeprom_at24c04_str_write eeprom_at24c04_str_write `(v  1 e 1 0 ]
-{
-[v eeprom_at24c04_str_write@addr addr `uc  1 a 1 wreg ]
-[v eeprom_at24c04_str_write@addr addr `uc  1 a 1 wreg ]
-[v eeprom_at24c04_str_write@data data `*.26uc  1 p 2 5 ]
-[v eeprom_at24c04_str_write@addr addr `uc  1 a 1 7 ]
-"54
-} 0
-"37
-[v _eeprom_at24c04_byte_write eeprom_at24c04_byte_write `(v  1 e 1 0 ]
-{
-[v eeprom_at24c04_byte_write@addr addr `uc  1 a 1 wreg ]
-[v eeprom_at24c04_byte_write@addr addr `uc  1 a 1 wreg ]
-[v eeprom_at24c04_byte_write@data data `uc  1 p 1 3 ]
-"39
-[v eeprom_at24c04_byte_write@addr addr `uc  1 a 1 4 ]
-"44
+"75
 } 0
 "13 C:\Users\USER\Desktop\car_blackbox\main.c
 [v _init_config init_config `(v  1 s 1 init_config ]
@@ -446,20 +404,20 @@
 {
 "18
 } 0
-"338 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"295 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
 [v _download_log download_log `(v  1 e 1 0 ]
 {
-"363
+"320
 [v download_log@i i `i  1 a 2 16 ]
-"341
+"298
 [v download_log@log log `[11]uc  1 a 11 0 ]
-"340
+"297
 [v download_log@index index `i  1 a 2 14 ]
-"343
+"300
 [v download_log@position position `i  1 a 2 12 ]
-"344
+"301
 [v download_log@add add `uc  1 a 1 11 ]
-"401
+"358
 } 0
 "41 C:\Users\USER\Desktop\car_blackbox\uart.c
 [v _puts puts `(v  1 e 1 0 ]
@@ -501,20 +459,20 @@
 [v ___bmul@multiplier multiplier `uc  1 a 1 4 ]
 "51
 } 0
-"95 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"52 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
 [v _display_dashboard display_dashboard `(v  1 e 1 0 ]
 {
 [v display_dashboard@event event `*.4uc  1 a 1 wreg ]
 [v display_dashboard@event event `*.4uc  1 a 1 wreg ]
 [v display_dashboard@speed speed `uc  1 p 1 5 ]
-"99
+"56
 [v display_dashboard@event event `*.4uc  1 a 1 8 ]
-"105
+"62
 } 0
-"82
+"39
 [v _display_time display_time `(v  1 e 1 0 ]
 {
-"93
+"50
 } 0
 "5 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\awmod.c
 [v ___awmod __awmod `(i  1 e 2 0 ]
@@ -540,38 +498,33 @@
 [v ___awdiv@dividend dividend `i  1 p 2 4 ]
 "41
 } 0
-"328 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"285 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
 [v _clear_log clear_log `(v  1 e 1 0 ]
 {
-"335
+"292
 } 0
-"160
-[v _clear_screen clear_screen `(v  1 e 1 0 ]
-{
-"164
-} 0
-"403
+"360
 [v _change_time change_time `(i  1 e 2 0 ]
 {
 [v change_time@key key `uc  1 a 1 wreg ]
-"410
+"367
 [v change_time@buffer buffer `uc  1 a 1 11 ]
-"403
+"360
 [v change_time@key key `uc  1 a 1 wreg ]
 [v change_time@reset_time reset_time `uc  1 p 1 5 ]
-"405
+"362
 [v change_time@new_time new_time `[3]ui  1 s 6 new_time ]
-"406
+"363
 [v change_time@blink_pos blink_pos `ui  1 s 2 blink_pos ]
-"407
+"364
 [v change_time@wait wait `uc  1 s 1 wait ]
-"408
+"365
 [v change_time@blink blink `uc  1 s 1 blink ]
-"409
+"366
 [v change_time@t_done t_done `uc  1 s 1 t_done ]
-"412
+"369
 [v change_time@key key `uc  1 a 1 10 ]
-"523
+"480
 } 0
 "36 C:\Users\USER\Desktop\car_blackbox\ds1307.c
 [v _write_ds1307 write_ds1307 `(v  1 e 1 0 ]
@@ -583,10 +536,10 @@
 [v write_ds1307@addr addr `uc  1 a 1 4 ]
 "43
 } 0
-"63 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+"20 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
 [v _get_time get_time `(v  1 e 1 0 ]
 {
-"80
+"37
 } 0
 "21 C:\Users\USER\Desktop\car_blackbox\ds1307.c
 [v _read_ds1307 read_ds1307 `(uc  1 e 1 0 ]
@@ -600,29 +553,10 @@
 [v read_ds1307@addr addr `uc  1 a 1 4 ]
 "34
 } 0
-"73 C:\Users\USER\Desktop\car_blackbox\i2c.c
-[v _i2c_write i2c_write `(i  1 e 2 0 ]
-{
-[v i2c_write@data data `uc  1 a 1 wreg ]
-[v i2c_write@data data `uc  1 a 1 wreg ]
-"75
-[v i2c_write@data data `uc  1 a 1 2 ]
-"79
-} 0
-"36
+"36 C:\Users\USER\Desktop\car_blackbox\i2c.c
 [v _i2c_rep_start i2c_rep_start `(v  1 e 1 0 ]
 {
 "41
-} 0
-"43
-[v _i2c_stop i2c_stop `(v  1 e 1 0 ]
-{
-"47
-} 0
-"30
-[v _i2c_start i2c_start `(v  1 e 1 0 ]
-{
-"34
 } 0
 "49
 [v _i2c_read i2c_read `(uc  1 e 1 0 ]
@@ -635,38 +569,6 @@
 "53
 [v i2c_read@ack ack `uc  1 a 1 2 ]
 "71
-} 0
-"24
-[v _i2c_wait_for_idle i2c_wait_for_idle `(v  1 s 1 i2c_wait_for_idle ]
-{
-"28
-} 0
-"64 C:\Users\USER\Desktop\car_blackbox\clcd.c
-[v _clcd_putch clcd_putch `(v  1 e 1 0 ]
-{
-[v clcd_putch@data data `DCuc  1 a 1 wreg ]
-[v clcd_putch@data data `DCuc  1 a 1 wreg ]
-[v clcd_putch@addr addr `uc  1 p 1 3 ]
-"66
-[v clcd_putch@data data `DCuc  1 a 1 4 ]
-"68
-} 0
-"70
-[v _clcd_print clcd_print `(v  1 e 1 0 ]
-{
-[v clcd_print@str str `*.26DCuc  1 p 2 6 ]
-[v clcd_print@addr addr `uc  1 p 1 8 ]
-"79
-} 0
-"12
-[v _clcd_write clcd_write `(v  1 e 1 0 ]
-{
-[v clcd_write@byte byte `uc  1 a 1 wreg ]
-[v clcd_write@byte byte `uc  1 a 1 wreg ]
-[v clcd_write@mode mode `uc  1 p 1 2 ]
-"14
-[v clcd_write@byte byte `uc  1 a 1 5 ]
-"27
 } 0
 "15 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\Umul16.c
 [v ___wmul __wmul `(ui  1 e 2 0 ]
@@ -699,6 +601,120 @@
 [v ___lwdiv@divisor divisor `ui  1 p 2 6 ]
 [v ___lwdiv@dividend dividend `ui  1 p 2 8 ]
 "30
+} 0
+"482 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+[v _change_password change_password `(i  1 e 2 0 ]
+{
+[v change_password@key key `uc  1 a 1 wreg ]
+[v change_password@key key `uc  1 a 1 wreg ]
+[v change_password@reset_pwd reset_pwd `uc  1 p 1 5 ]
+"484
+[v change_password@new_pwd new_pwd `[9]uc  1 s 9 new_pwd ]
+"485
+[v change_password@pwd_pos pwd_pos `i  1 s 2 pwd_pos ]
+"487
+[v change_password@key key `uc  1 a 1 10 ]
+"572
+} 0
+"3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strncpy.c
+[v _strncpy strncpy `(*.4uc  1 e 1 0 ]
+{
+[v strncpy@d d `*.4uc  1 a 1 wreg ]
+"5
+[v strncpy@cp cp `*.4uc  1 a 1 9 ]
+"3
+[v strncpy@d d `*.4uc  1 a 1 wreg ]
+[v strncpy@s s `*.26DCuc  1 p 2 2 ]
+[v strncpy@n n `ui  1 p 2 4 ]
+"6
+[v strncpy@d d `*.4uc  1 a 1 8 ]
+"15
+} 0
+"3 C:\Program Files\Microchip\xc8\v2.46\pic\sources\c99\common\strncmp.c
+[v _strncmp strncmp `(i  1 e 2 0 ]
+{
+[v strncmp@l l `*.4DCuc  1 a 1 wreg ]
+[v strncmp@l l `*.4DCuc  1 a 1 wreg ]
+[v strncmp@r r `*.4DCuc  1 p 1 2 ]
+[v strncmp@n n `ui  1 p 2 3 ]
+"5
+[v strncmp@l l `*.4DCuc  1 a 1 7 ]
+"8
+} 0
+"46 C:\Users\USER\Desktop\car_blackbox\external_eeprom.c
+[v _eeprom_at24c04_str_write eeprom_at24c04_str_write `(v  1 e 1 0 ]
+{
+[v eeprom_at24c04_str_write@addr addr `uc  1 a 1 wreg ]
+[v eeprom_at24c04_str_write@addr addr `uc  1 a 1 wreg ]
+[v eeprom_at24c04_str_write@data data `*.26uc  1 p 2 5 ]
+[v eeprom_at24c04_str_write@addr addr `uc  1 a 1 7 ]
+"54
+} 0
+"37
+[v _eeprom_at24c04_byte_write eeprom_at24c04_byte_write `(v  1 e 1 0 ]
+{
+[v eeprom_at24c04_byte_write@addr addr `uc  1 a 1 wreg ]
+[v eeprom_at24c04_byte_write@addr addr `uc  1 a 1 wreg ]
+[v eeprom_at24c04_byte_write@data data `uc  1 p 1 3 ]
+"39
+[v eeprom_at24c04_byte_write@addr addr `uc  1 a 1 4 ]
+"44
+} 0
+"73 C:\Users\USER\Desktop\car_blackbox\i2c.c
+[v _i2c_write i2c_write `(i  1 e 2 0 ]
+{
+[v i2c_write@data data `uc  1 a 1 wreg ]
+[v i2c_write@data data `uc  1 a 1 wreg ]
+"75
+[v i2c_write@data data `uc  1 a 1 2 ]
+"79
+} 0
+"43
+[v _i2c_stop i2c_stop `(v  1 e 1 0 ]
+{
+"47
+} 0
+"30
+[v _i2c_start i2c_start `(v  1 e 1 0 ]
+{
+"34
+} 0
+"24
+[v _i2c_wait_for_idle i2c_wait_for_idle `(v  1 s 1 i2c_wait_for_idle ]
+{
+"28
+} 0
+"117 C:\Users\USER\Desktop\car_blackbox\car_black_box.c
+[v _clear_screen clear_screen `(v  1 e 1 0 ]
+{
+"121
+} 0
+"64 C:\Users\USER\Desktop\car_blackbox\clcd.c
+[v _clcd_putch clcd_putch `(v  1 e 1 0 ]
+{
+[v clcd_putch@data data `DCuc  1 a 1 wreg ]
+[v clcd_putch@data data `DCuc  1 a 1 wreg ]
+[v clcd_putch@addr addr `uc  1 p 1 3 ]
+"66
+[v clcd_putch@data data `DCuc  1 a 1 4 ]
+"68
+} 0
+"70
+[v _clcd_print clcd_print `(v  1 e 1 0 ]
+{
+[v clcd_print@str str `*.26DCuc  1 p 2 6 ]
+[v clcd_print@addr addr `uc  1 p 1 8 ]
+"79
+} 0
+"12
+[v _clcd_write clcd_write `(v  1 e 1 0 ]
+{
+[v clcd_write@byte byte `uc  1 a 1 wreg ]
+[v clcd_write@byte byte `uc  1 a 1 wreg ]
+[v clcd_write@mode mode `uc  1 p 1 2 ]
+"14
+[v clcd_write@byte byte `uc  1 a 1 5 ]
+"27
 } 0
 "4 C:\Users\USER\Desktop\car_blackbox\isr.c
 [v _isr isr `II(v  1 e 1 0 ]

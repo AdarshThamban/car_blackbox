@@ -120,15 +120,21 @@ void main(void) {
                     break;
                 case 4:
                     control_flag = CHANGE_PASSWORD_FLAG;
-                    
+                    clear_screen();
+                    clcd_print("Enter new pwd:  ", LINE1(0));
+                    reset_flag = RESET_PASSWORD;
+                    TMR2ON = 1;
                     break;
-                    
+
             }
         } else if ((control_flag == VIEW_LOG_FLAG)&& (key == LP_SW4)) {////////////pppppppppp
             control_flag = LOGIN_MENU_FLAG;
             reset_flag = RESET_LOGIN_MENU;
-        }
-        else if ((control_flag == LOGIN_MENU_FLAG)&& (key == LP_SW5)) {
+
+        } else if (key == LP_SW4 && control_flag == CHANGE_PASSWORD_FLAG) {
+            control_flag = LOGIN_MENU_FLAG;
+            clear_screen();
+        } else if ((control_flag == LOGIN_MENU_FLAG)&& (key == LP_SW5)) {
             clear_screen();
             control_flag = DASH_BOARD_FLAG;
             ret_time_edit = 1; ////////////////lllllllllllllloooooooooooong press
@@ -185,15 +191,33 @@ void main(void) {
                 reset_flag = RESET_LOGIN_MENU;
                 break;
             case SET_TIME_FLAG:
-                if (change_time(key, reset_flag) == TASK_SUCCESS)
-                {
+                if (change_time(key, reset_flag) == TASK_SUCCESS) {
                     control_flag = LOGIN_MENU_FLAG; /* go back to login menu */
                     reset_flag = RESET_LOGIN_MENU;
                     clear_screen();
                     continue;
                 }
                 break;
+            case CHANGE_PASSWORD_FLAG:
+                
+                switch (change_password(key, reset_flag)) {
+                    case TASK_SUCCESS:
+                        __delay_ms(1000);
+                        
+                        control_flag = LOGIN_MENU_FLAG; /* go back to login menu */
+                        reset_flag = RESET_LOGIN_MENU;
+                        clear_screen();
+                        break;
 
+                    case RETURN_BACK:
+                        clear_screen();
+                        control_flag = LOGIN_MENU_FLAG; /* go back to dashboard */
+                        reset_flag = RESET_LOGIN_MENU;
+                        clcd_write(DISP_ON_AND_CURSOR_OFF, INST_MODE); //turn off cursor
+                        TMR2ON = 0;
+                        break;
+                }
+                break;
 
         }
         reset_flag = RESET_NOTHING;

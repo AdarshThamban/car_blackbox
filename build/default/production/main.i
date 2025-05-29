@@ -2037,15 +2037,21 @@ void main(void) {
                     break;
                 case 4:
                     control_flag = 0x18;
-
+                    clear_screen();
+                    clcd_print("Enter new pwd:  ", (0x80 + 0));
+                    reset_flag = 0X03;
+                    TMR2ON = 1;
                     break;
 
             }
         } else if ((control_flag == 0x14)&& (key == 0x44)) {
             control_flag = 0x13;
             reset_flag = 0x05;
-        }
-        else if ((control_flag == 0x13)&& (key == 0x55)) {
+
+        } else if (key == 0x44 && control_flag == 0x18) {
+            control_flag = 0x13;
+            clear_screen();
+        } else if ((control_flag == 0x13)&& (key == 0x55)) {
             clear_screen();
             control_flag = 0x10;
             ret_time_edit = 1;
@@ -2102,15 +2108,33 @@ void main(void) {
                 reset_flag = 0x05;
                 break;
             case 0x17:
-                if (change_time(key, reset_flag) == 0x1F)
-                {
+                if (change_time(key, reset_flag) == 0x1F) {
                     control_flag = 0x13;
                     reset_flag = 0x05;
                     clear_screen();
                     continue;
                 }
                 break;
+            case 0x18:
 
+                switch (change_password(key, reset_flag)) {
+                    case 0x1F:
+                        _delay((unsigned long)((1000)*(20000000/4000.0)));
+
+                        control_flag = 0x13;
+                        reset_flag = 0x05;
+                        clear_screen();
+                        break;
+
+                    case 0x02:
+                        clear_screen();
+                        control_flag = 0x13;
+                        reset_flag = 0x05;
+                        clcd_write(0x0C, 0);
+                        TMR2ON = 0;
+                        break;
+                }
+                break;
 
         }
         reset_flag = 0X04;

@@ -7,49 +7,6 @@
 
 
 #include "main.h"
-//
-//void init_uart(unsigned long baud) {
-//    /* Setting RC6 and RC7 to work as Serial Port */
-//    SPEN = 1;
-//
-//    /* Continuous Reception Enable Bit */
-//    CREN = 1;
-//
-//    /* Baud Rate Setting Register */
-//    SPBRG = (FOSC / (16 * baud)) - 1;
-//}
-//
-//unsigned char getchar(void) {
-//    /* Wait for the byte to be received */
-//    while (RCIF != 1) {
-//        continue;
-//    }
-//
-//    /* Clear the interrupt flag */
-//    RCIF = 0;
-//
-//    /* Return the data to the caller */
-//    return RCREG;
-//}
-//
-//void putchar(unsigned char data) {
-//    /* Transmit the data to the Serial Port */
-//    TXREG = data;
-//
-//    /* Wait till the transmission is complete */
-//    do {
-//        continue;
-//    } while (TXIF != 1);
-//
-//    /* Clear the interrupt flag */
-//    TXIF = 0;
-//}
-//
-//void puts(const char *s) {
-//    while (*s) {
-//        putchar(*s++);
-//    }
-//}
 
 
 extern char ret_time_edit;
@@ -521,3 +478,96 @@ int change_time(unsigned char key, unsigned char reset_time)
 
     return TASK_FAILURE;
 }
+
+int change_password(unsigned char key, char reset_pwd)
+{
+    static char new_pwd[9];
+    static int pwd_pos = 0;
+
+    if (reset_pwd == RESET_PASSWORD)
+    {
+        strncpy(new_pwd, "        ", 8);  // Clear all 8 chars
+        pwd_pos = 0;
+        ret_time = 5;
+        key = ALL_RELEASED;
+        __delay_ms(1500);
+
+        clear_screen();
+        clcd_print("Enter new pwd:  ", LINE1(0));
+        clcd_write(LINE2(0), INST_MODE); // Cursor to first position
+        clcd_write(DISPLAY_ON_AND_CURSOR_ON, INST_MODE); // Cursor blinking ON
+        return TASK_FAILURE; // Return early to wait for key input
+    }
+
+    if (!ret_time)
+        return RETURN_BACK;
+
+    if (pwd_pos == 4)
+{
+    clcd_write(DISP_ON_AND_CURSOR_OFF, INST_MODE); // Temporarily stop blinking
+    clcd_print("                 ", LINE2(0)); // Clear LINE2
+    clcd_print("Re-enter new pwd", LINE1(0));
+
+    // Reposition cursor at start for re-entry
+    clcd_write(LINE2(0), INST_MODE);
+    clcd_write(DISPLAY_ON_AND_CURSOR_ON, INST_MODE); // Resume blinking
+}
+
+    // Handle key input
+    if (pwd_pos < 8)
+    {
+        switch (key)
+        {
+            case SW4: // '1'
+                new_pwd[pwd_pos] = '1';
+                clcd_putch('*', LINE2(pwd_pos % 4));
+                pwd_pos++;
+                ret_time = 5;
+                break;
+
+            case SW5: // '0'
+                new_pwd[pwd_pos] = '0';
+                clcd_putch('*', LINE2(pwd_pos % 4));
+                pwd_pos++;
+                ret_time = 5;
+                break;
+
+            default:
+                break;
+        }
+
+        // Update cursor to next position
+        if (pwd_pos < 8)
+        {
+            clcd_write(LINE2(pwd_pos % 4), INST_MODE); // Move to next position
+        }
+    }
+
+    // After password entry
+    if (pwd_pos == 8)
+    {
+        clcd_write(DISP_ON_AND_CURSOR_OFF, INST_MODE); // Stop blinking
+
+        if (strncmp(new_pwd, &new_pwd[4], 4) == 0)
+        {
+            new_pwd[8] = '\0';
+            eeprom_at24c04_str_write(0x00, &new_pwd[4]);
+            clear_screen();
+            clcd_print("Password changed", LINE1(0));
+            clcd_print("successfully", LINE2(2));
+            __delay_ms(2000);
+            return TASK_SUCCESS;
+        }
+        else
+        {
+            clear_screen();
+            clcd_print("Password  change", LINE1(0));
+            clcd_print("failed", LINE2(5));
+            __delay_ms(2000);
+            return TASK_SUCCESS;
+        }
+    }
+
+    return TASK_FAILURE;
+}
+

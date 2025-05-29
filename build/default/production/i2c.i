@@ -1827,8 +1827,7 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files (x86)/Microchip/MPLABX/v5.35/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
-# 9 "i2c.c" 2
-
+# 10 "i2c.c" 2
 # 1 "./i2c.h" 1
 # 14 "./i2c.h"
 void init_i2c(unsigned long baud);
@@ -1837,8 +1836,7 @@ void i2c_rep_start(void);
 void i2c_stop(void);
 unsigned char i2c_read(unsigned char ack);
 int i2c_write(unsigned char data);
-# 10 "i2c.c" 2
-
+# 11 "i2c.c" 2
 
 void init_i2c(unsigned long baud)
 {

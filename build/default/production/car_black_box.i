@@ -1948,7 +1948,8 @@ void init_timer0(void);
 void init_timer2(void);
 # 21 "./main.h" 2
 # 10 "car_black_box.c" 2
-# 55 "car_black_box.c"
+
+
 extern char ret_time_edit;
 unsigned char clock_reg[3], sec, ret_time;
 char time[7];
@@ -2415,6 +2416,98 @@ int change_time(unsigned char key, unsigned char reset_time)
 
     clcd_putch(new_time[2] / 10 + '0', (0xC0 + 6));
     clcd_putch(new_time[2] % 10 + '0', (0xC0 + 7));
+
+    return 0x2F;
+}
+
+int change_password(unsigned char key, char reset_pwd)
+{
+    static char new_pwd[9];
+    static int pwd_pos = 0;
+
+    if (reset_pwd == 0X03)
+    {
+        strncpy(new_pwd, "        ", 8);
+        pwd_pos = 0;
+        ret_time = 5;
+        key = 0x3F;
+        _delay((unsigned long)((1500)*(20000000/4000.0)));
+
+        clear_screen();
+        clcd_print("Enter new pwd:  ", (0x80 + 0));
+        clcd_write((0xC0 + 0), 0);
+        clcd_write(0x0F, 0);
+        return 0x2F;
+    }
+
+    if (!ret_time)
+        return 0x02;
+
+    if (pwd_pos == 4)
+{
+    clcd_write(0x0C, 0);
+    clcd_print("                 ", (0xC0 + 0));
+    clcd_print("Re-enter new pwd", (0x80 + 0));
+
+
+    clcd_write((0xC0 + 0), 0);
+    clcd_write(0x0F, 0);
+}
+
+
+    if (pwd_pos < 8)
+    {
+        switch (key)
+        {
+            case 0x37:
+                new_pwd[pwd_pos] = '1';
+                clcd_putch('*', (0xC0 + pwd_pos % 4));
+                pwd_pos++;
+                ret_time = 5;
+                break;
+
+            case 0x2F:
+                new_pwd[pwd_pos] = '0';
+                clcd_putch('*', (0xC0 + pwd_pos % 4));
+                pwd_pos++;
+                ret_time = 5;
+                break;
+
+            default:
+                break;
+        }
+
+
+        if (pwd_pos < 8)
+        {
+            clcd_write((0xC0 + pwd_pos % 4), 0);
+        }
+    }
+
+
+    if (pwd_pos == 8)
+    {
+        clcd_write(0x0C, 0);
+
+        if (strncmp(new_pwd, &new_pwd[4], 4) == 0)
+        {
+            new_pwd[8] = '\0';
+            eeprom_at24c04_str_write(0x00, &new_pwd[4]);
+            clear_screen();
+            clcd_print("Password changed", (0x80 + 0));
+            clcd_print("successfully", (0xC0 + 2));
+            _delay((unsigned long)((2000)*(20000000/4000.0)));
+            return 0x1F;
+        }
+        else
+        {
+            clear_screen();
+            clcd_print("Password  change", (0x80 + 0));
+            clcd_print("failed", (0xC0 + 5));
+            _delay((unsigned long)((2000)*(20000000/4000.0)));
+            return 0x1F;
+        }
+    }
 
     return 0x2F;
 }
